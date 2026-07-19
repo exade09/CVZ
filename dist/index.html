@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="KitVsZomb ($KVZ) is a cute Solana meme coin set in a kawaii garden battle between kitty plant defenders and zombie dogs."
+    />
+    <title>KitVsZomb | $KVZ on Solana</title>
+    <link rel="icon" type="image/jpeg" href="kvz-kitty.jpg" />
+    <link rel="apple-touch-icon" href="kvz-kitty.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Luckiest+Guy&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <svg aria-hidden="true" class="icon-sprite">
+      <symbol id="icon-x" viewBox="0 0 48 48">
+        <path d="M10 8h9.1l7.1 9.6L35.1 8H43L30 22.1 45 40H35.8l-8-10.7L17.9 40H10l14-15.1L10 8Z" />
+      </symbol>
+      <symbol id="icon-telegram" viewBox="0 0 48 48">
+        <path
+          d="M41.9 9.6 35.8 39c-.4 2-1.8 2.5-3.5 1.5l-9.8-7.2-4.8 4.6c-.5.5-1 .9-2 .9l.7-10 18.2-16.4c.8-.7-.2-1.1-1.2-.4L10.9 26.1 1.2 23c-2.1-.7-2.1-2.1.4-3.1L39.5 5.3c1.8-.7 3.4.4 2.4 4.3Z"
+        />
+      </symbol>
+      <symbol id="icon-pump" viewBox="0 0 48 48">
+        <g class="pump-mark">
+          <path
+            fill="#f8fff2"
+            stroke="#24170f"
+            stroke-width="4"
+            stroke-linejoin="round"
+            d="M14.2 40.1c-2.1-1.2-4-3-5.2-5.2-3-5.3-1.2-12 4.1-15L30 10.1c5.3-3 12-1.2 15 4.1s1.2 12-4.1 15L24 39c-3.2 1.8-6.9 2-9.8 1.1Z"
+          />
+          <path
+            fill="#5fe08b"
+            stroke="#24170f"
+            stroke-width="3"
+            stroke-linejoin="round"
+            d="M26 12.4 13.1 19.9C7.8 23 6 29.7 9 35c1.2 2.1 3.1 4 5.2 5.2 2.9.9 6.6.7 9.8-1.1l12.9-7.5L26 12.4Z"
+          />
+          <path fill="none" stroke="#fffdf5" stroke-width="3" stroke-linecap="round" d="M17.1 31.5c.5 1.5 1.7 2.8 3.1 3.5" />
+          <path fill="none" stroke="#fffdf5" stroke-width="3" stroke-linecap="round" d="M14.7 26.4c.2 1 .4 1.8.8 2.6" />
+        </g>
+      </symbol>
+      <symbol id="icon-dex" viewBox="0 0 48 48">
+        <g class="dex-mark">
+          <path fill="#17c9bd" stroke="#24170f" stroke-width="4" stroke-linejoin="round" d="M7 6h34v36H7V6Z" />
+          <path
+            fill="#fffdf5"
+            stroke="#24170f"
+            stroke-width="2.4"
+            stroke-linejoin="round"
+            d="M10.8 35.7c4.2-5.4 5.6-12.2 5.2-20.2 3.5 3.5 6.1 4.3 8 4.3s4.5-.8 8-4.3c-.4 8 1 14.8 5.2 20.2l-8-3.6L24 41l-5.2-8.9-8 3.6Z"
+          />
+          <path
+            fill="#fffdf5"
+            stroke="#24170f"
+            stroke-width="2.4"
+            stroke-linejoin="round"
+            d="M13.8 13.5c4.4 1.2 7.4 2.1 10.2 2.1s5.8-.9 10.2-2.1l-3 7.5c-2.2-1.2-4.6-1.8-7.2-1.8s-5 .6-7.2 1.8l-3-7.5Z"
+          />
+          <path
+            fill="none"
+            stroke="#24170f"
+            stroke-width="2.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M19.1 23.6c2.2-.7 4.1 0 4.9 2.2.8-2.2 2.7-2.9 4.9-2.2-1.3 2.1-3 3-4.9 3s-3.6-.9-4.9-3Z"
+          />
+          <path fill="none" stroke="#24170f" stroke-width="2.6" stroke-linecap="round" d="M24 23.6v9.7" />
+        </g>
+      </symbol>
+    </svg>
+
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="KitVsZomb home">
+        <span class="brand-orb" aria-hidden="true">
+          <span class="cat-ear ear-left"></span>
+          <span class="cat-ear ear-right"></span>
+          <span class="cat-bow"></span>
+        </span>
+        <span class="brand-name">KitVsZomb</span>
+      </a>
+      <span class="ticker-badge">$KVZ</span>
+      <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#tokenomics">Tokenomics</a>
+        <a href="#community">Community</a>
+        <a href="#home" data-kvz-open-game>Play Game</a>
+      </nav>
+      <div class="social-row header-social" aria-label="Social links">
+        <a class="social-icon" href="https://x.com/KitVsZomb" target="_blank" rel="noopener noreferrer" aria-label="Open X">
+          <svg aria-hidden="true"><use href="#icon-x"></use></svg>
+        </a>
+        <a class="social-icon" href="https://t.me/KitVsZombie" target="_blank" rel="noopener noreferrer" aria-label="Open Telegram">
+          <svg aria-hidden="true"><use href="#icon-telegram"></use></svg>
+        </a>
+        <a class="social-icon pump" href="https://pump.fun/coin/aeMKLMx5kKwRNdfMSQWdfunT65TMhtRU22iyCB4pump" target="_blank" rel="noopener noreferrer" aria-label="Open Pump.fun">
+          <svg aria-hidden="true"><use href="#icon-pump"></use></svg>
+        </a>
+        <a class="social-icon dex" href="https://dexscreener.com/solana/aeMKLMx5kKwRNdfMSQWdfunT65TMhtRU22iyCB4pump" target="_blank" rel="noopener noreferrer" aria-label="Open Dexscreener">
+          <svg aria-hidden="true"><use href="#icon-dex"></use></svg>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero section" id="home" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <span class="battle-chip">Solana garden battle meme coin</span>
+          <h1 id="hero-title" aria-label="Kit Vs Zomb">
+            <span>Kit</span>
+            <span>Vs</span>
+            <span>Zomb</span>
+          </h1>
+          <p>Cute kitties. Zombie dogs. One garden. One meme.</p>
+          <div class="hero-actions">
+            <button class="game-button game-launch-button" type="button" data-kvz-open-game>
+              <span class="game-launch-paw" aria-hidden="true">&#128062;</span>
+              Play Garden Defense
+            </button>
+            <a class="game-button primary" href="https://pump.fun/coin/aeMKLMx5kKwRNdfMSQWdfunT65TMhtRU22iyCB4pump" target="_blank" rel="noopener noreferrer">Join the Battle</a>
+            <a class="game-button secondary" href="https://dexscreener.com/solana/aeMKLMx5kKwRNdfMSQWdfunT65TMhtRU22iyCB4pump" target="_blank" rel="noopener noreferrer">View Chart</a>
+          </div>
+        </div>
+        <div class="hero-stage" aria-label="KVZ mascot artwork with kitty pea shooter, KVZ logo, and zombie dog">
+          <div class="pea pea-one"></div>
+          <div class="pea pea-two"></div>
+          <img
+            src="kvz-avatar.jpg"
+            alt="KitVsZomb avatar showing the kitty pea-shooter mascot, chunky KVZ logo, and cute zombie dog with an orange cone hat"
+          />
+        </div>
+      </section>
+
+      <section class="section about" id="about" aria-labelledby="about-title">
+        <div class="section-heading">
+          <span class="seed-label">Garden file</span>
+          <h2 id="about-title">About</h2>
+        </div>
+        <div class="about-grid">
+          <img
+            class="about-mascot kitty"
+            src="kvz-kitty.jpg"
+            alt="Cute kitty pea-shooter mascot on a bright clover garden background"
+          />
+          <article class="story-panel">
+            <p>
+              KitVsZomb is a meme coin born from a cute garden battlefield where tiny kitty defenders
+              protect the lawn from adorable zombie dogs. Powered by Solana and fueled by community
+              energy, KVZ mixes kawaii chaos, meme culture, and playful tower-defense vibes into one
+              collectible crypto project. The kitties shoot peas, the zombies keep marching, and the
+              community decides who wins the garden.
+            </p>
+          </article>
+          <img
+            class="about-mascot dog"
+            src="kvz-dogzombie.png"
+            alt="Cute zombie dog mascot wearing an orange cone hat on a grassy garden background"
+          />
+        </div>
+      </section>
+
+      <section class="section tokenomics" id="tokenomics" aria-labelledby="tokenomics-title">
+        <div class="section-heading">
+          <span class="seed-label">Seed packets</span>
+          <h2 id="tokenomics-title">Tokenomics</h2>
+        </div>
+        <div class="token-card-grid">
+          <article class="token-card">
+            <span class="card-sun"></span>
+            <h3>Ticker</h3>
+            <p>KVZ</p>
+          </article>
+          <article class="token-card">
+            <span class="card-sun"></span>
+            <h3>Supply</h3>
+            <p>1B</p>
+          </article>
+          <article class="token-card">
+            <span class="card-sun"></span>
+            <h3>Tax</h3>
+            <p>0%</p>
+          </article>
+          <article class="token-card">
+            <span class="card-sun"></span>
+            <h3>Blockchain</h3>
+            <p>Solana</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section community" id="community" aria-labelledby="community-title">
+        <div class="community-panel">
+          <span class="seed-label">Community lane</span>
+          <h2 id="community-title">Join The Garden</h2>
+          <p>Pick your lane, defend the garden, and join the cutest battle on Solana.</p>
+          <div class="social-buttons">
+            <a class="social-button" href="https://x.com/KitVsZomb" target="_blank" rel="noopener noreferrer" aria-label="Open X">
+              <svg aria-hidden="true"><use href="#icon-x"></use></svg>
+              <span>X</span>
+            </a>
+            <a class="social-button" href="https://t.me/KitVsZombie" target="_blank" rel="noopener noreferrer" aria-label="Open Telegram">
+              <svg aria-hidden="true"><use href="#icon-telegram"></use></svg>
+              <span>Telegram</span>
+            </a>
+            <a class="social-button pump" href="https://pump.fun/coin/aeMKLMx5kKwRNdfMSQWdfunT65TMhtRU22iyCB4pump" target="_blank" rel="noopener noreferrer" aria-label="Open Pump.fun">
+              <svg aria-hidden="true"><use href="#icon-pump"></use></svg>
+              <span>Pump.fun</span>
+            </a>
+            <a class="social-button dex" href="https://dexscreener.com/solana/aeMKLMx5kKwRNdfMSQWdfunT65TMhtRU22iyCB4pump" target="_blank" rel="noopener noreferrer" aria-label="Open Dexscreener">
+              <svg aria-hidden="true"><use href="#icon-dex"></use></svg>
+              <span>Dexscreener</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <strong>KitVsZomb</strong>
+        <span>$KVZ</span>
+      </div>
+      <p>Built for memes, community, and the garden.</p>
+      <div class="social-row" aria-label="Footer social links">
+        <a class="social-icon" href="https://x.com/KitVsZomb" target="_blank" rel="noopener noreferrer" aria-label="Open X">
+          <svg aria-hidden="true"><use href="#icon-x"></use></svg>
+        </a>
+        <a class="social-icon" href="https://t.me/KitVsZombie" target="_blank" rel="noopener noreferrer" aria-label="Open Telegram">
+          <svg aria-hidden="true"><use href="#icon-telegram"></use></svg>
+        </a>
+        <a class="social-icon pump" href="https://pump.fun/coin/aeMKLMx5kKwRNdfMSQWdfunT65TMhtRU22iyCB4pump" target="_blank" rel="noopener noreferrer" aria-label="Open Pump.fun">
+          <svg aria-hidden="true"><use href="#icon-pump"></use></svg>
+        </a>
+        <a class="social-icon dex" href="https://dexscreener.com/solana/aeMKLMx5kKwRNdfMSQWdfunT65TMhtRU22iyCB4pump" target="_blank" rel="noopener noreferrer" aria-label="Open Dexscreener">
+          <svg aria-hidden="true"><use href="#icon-dex"></use></svg>
+        </a>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

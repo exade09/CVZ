@@ -1,0 +1,2740 @@
+:root {
+  --kvz-ink: #25170f;
+  --kvz-bark: #70431e;
+  --kvz-bark-deep: #442817;
+  --kvz-cream: #fff4c7;
+  --kvz-paper: #fffdf5;
+  --kvz-grass: #55c936;
+  --kvz-grass-deep: #238b2b;
+  --kvz-lime: #a8ec36;
+  --kvz-mint: #dffbd1;
+  --kvz-pink: #ff82ad;
+  --kvz-pink-deep: #df4e83;
+  --kvz-yellow: #ffe15d;
+  --kvz-orange: #ff922f;
+  --kvz-sky: #99e6ed;
+  --kvz-blue: #5ecce2;
+  --kvz-danger: #ef5b4f;
+  --kvz-shadow: rgba(37, 23, 15, 0.28);
+  --kvz-outline: 4px solid var(--kvz-ink);
+  --kvz-radius: 12px;
+  --kvz-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+body.kvz-game-open {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.kvz-game-overlay,
+.kvz-game-overlay *,
+.kvz-game-overlay *::before,
+.kvz-game-overlay *::after {
+  box-sizing: border-box;
+}
+
+.kvz-game-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  min-width: 320px;
+  padding:
+    max(clamp(6px, 1.2vw, 18px), env(safe-area-inset-top))
+    max(clamp(6px, 1.2vw, 18px), env(safe-area-inset-right))
+    max(clamp(6px, 1.2vw, 18px), env(safe-area-inset-bottom))
+    max(clamp(6px, 1.2vw, 18px), env(safe-area-inset-left));
+  place-items: center;
+  color: var(--kvz-ink);
+  font-family: "Baloo 2", "Trebuchet MS", Arial, sans-serif;
+  background:
+    linear-gradient(rgba(28, 79, 30, 0.5), rgba(37, 23, 15, 0.64)),
+    url("../kvz-fon.png") center / cover no-repeat,
+    #76c959;
+  opacity: 1;
+  overscroll-behavior: contain;
+  transition: opacity 220ms ease, visibility 220ms ease;
+}
+
+.kvz-game-overlay[hidden] {
+  display: none !important;
+}
+
+.kvz-game-overlay.is-closing {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.kvz-game-overlay button,
+.kvz-game-overlay input {
+  font: inherit;
+}
+
+.kvz-game-overlay button,
+.kvz-game-overlay [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.kvz-game-overlay img {
+  display: block;
+  max-width: 100%;
+}
+
+.kvz-game-frame {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  width: min(1480px, 100%);
+  height: min(920px, 100%);
+  min-height: 420px;
+  flex-direction: column;
+  overflow: hidden;
+  border: 5px solid var(--kvz-ink);
+  border-radius: 18px;
+  background: var(--kvz-cream);
+  box-shadow:
+    0 9px 0 var(--kvz-bark-deep),
+    0 24px 70px rgba(25, 15, 9, 0.5),
+    inset 0 0 0 4px rgba(255, 255, 255, 0.36);
+}
+
+.kvz-game-frame::after {
+  position: absolute;
+  inset: 7px;
+  z-index: 50;
+  border: 2px dashed rgba(112, 67, 30, 0.2);
+  border-radius: 10px;
+  content: "";
+  pointer-events: none;
+}
+
+.kvz-game-overlay:fullscreen,
+.kvz-game-overlay:-webkit-full-screen {
+  padding: 0;
+  background-color: #5eaa48;
+}
+
+.kvz-game-overlay:fullscreen .kvz-game-frame,
+.kvz-game-overlay:-webkit-full-screen .kvz-game-frame,
+.kvz-game-frame:fullscreen,
+.kvz-game-frame:-webkit-full-screen {
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  border-radius: 0;
+}
+
+.kvz-game-topbar {
+  position: relative;
+  z-index: 60;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: center;
+  min-height: 62px;
+  padding: 8px 12px 10px;
+  border-bottom: 4px solid var(--kvz-ink);
+  background:
+    radial-gradient(circle at 8% 50%, rgba(255, 130, 173, 0.38) 0 9px, transparent 10px),
+    radial-gradient(circle at 90% 35%, rgba(255, 225, 93, 0.52) 0 12px, transparent 13px),
+    linear-gradient(180deg, #fff9df, #efce8a);
+  box-shadow: 0 5px 0 rgba(112, 67, 30, 0.52);
+}
+
+.kvz-game-topbar > :last-child {
+  justify-self: end;
+}
+
+.kvz-game-brand-mark {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 9px;
+  font-family: "Luckiest Guy", "Baloo 2", sans-serif;
+  font-size: clamp(1rem, 2vw, 1.42rem);
+  color: var(--kvz-grass-deep);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-shadow: 2px 2px 0 var(--kvz-paper);
+}
+
+.kvz-game-brand-mark::before {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  border: 3px solid var(--kvz-ink);
+  border-radius: 50% 50% 46% 46%;
+  content: "";
+  background:
+    radial-gradient(circle at 35% 48%, var(--kvz-ink) 0 2px, transparent 3px),
+    radial-gradient(circle at 65% 48%, var(--kvz-ink) 0 2px, transparent 3px),
+    radial-gradient(ellipse at 50% 66%, var(--kvz-pink) 0 4px, transparent 5px),
+    linear-gradient(145deg, #efff9c, var(--kvz-lime));
+  box-shadow: inset -4px -5px 0 rgba(112, 67, 30, 0.16), 0 3px 0 var(--kvz-bark);
+}
+
+.kvz-game-icon-button {
+  position: relative;
+  display: inline-grid;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0;
+  place-items: center;
+  border: 3px solid var(--kvz-ink);
+  border-radius: 10px;
+  color: var(--kvz-ink);
+  background: linear-gradient(180deg, var(--kvz-paper), #f3dc9f);
+  box-shadow: 0 4px 0 var(--kvz-bark), inset 0 -3px 0 rgba(112, 67, 30, 0.1);
+  cursor: pointer;
+  transition: transform 150ms var(--kvz-ease), box-shadow 150ms var(--kvz-ease), filter 150ms ease;
+}
+
+.kvz-game-icon-button svg {
+  width: 23px;
+  height: 23px;
+  fill: currentColor;
+}
+
+.kvz-game-icon-button:hover {
+  filter: brightness(1.06) saturate(1.08);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--kvz-bark), 0 9px 16px var(--kvz-shadow);
+}
+
+.kvz-game-icon-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--kvz-bark);
+}
+
+.kvz-game-screen {
+  position: relative;
+  z-index: 1;
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  scrollbar-color: var(--kvz-pink) rgba(255, 244, 199, 0.8);
+  scrollbar-width: thin;
+}
+
+.kvz-game-overlay.is-playing .kvz-game-screen {
+  overflow: hidden;
+}
+
+.kvz-game-screen[hidden] {
+  display: none !important;
+}
+
+.kvz-game-screen::-webkit-scrollbar,
+.kvz-game-card-tray::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.kvz-game-screen::-webkit-scrollbar-track,
+.kvz-game-card-tray::-webkit-scrollbar-track {
+  background: rgba(255, 244, 199, 0.82);
+}
+
+.kvz-game-screen::-webkit-scrollbar-thumb,
+.kvz-game-card-tray::-webkit-scrollbar-thumb {
+  border: 2px solid var(--kvz-ink);
+  border-radius: 999px;
+  background: var(--kvz-pink);
+}
+
+.kvz-game-menu-screen {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.9fr) minmax(360px, 1.1fr);
+  gap: clamp(18px, 4vw, 52px);
+  align-items: center;
+  min-height: 100%;
+  padding: clamp(20px, 4vw, 56px);
+  background:
+    radial-gradient(circle at 8% 16%, rgba(255, 225, 93, 0.7) 0 6px, transparent 7px),
+    radial-gradient(circle at 92% 72%, rgba(255, 130, 173, 0.62) 0 7px, transparent 8px),
+    linear-gradient(rgba(255, 253, 245, 0.14), rgba(126, 211, 79, 0.18)),
+    url("../kvz-fon.png") center / cover no-repeat,
+    var(--kvz-grass);
+}
+
+.kvz-game-menu-hero {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 14px;
+  align-content: center;
+}
+
+.kvz-game-menu-art {
+  position: relative;
+  min-width: 0;
+  max-width: 620px;
+  justify-self: center;
+  border: 5px solid var(--kvz-ink);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.7) 0 5%, transparent 5.4%),
+    linear-gradient(150deg, #dffbd1, #7cdb55 56%, #4eae3e);
+  box-shadow: 0 10px 0 var(--kvz-bark), 0 25px 44px var(--kvz-shadow);
+  transform: rotate(1deg);
+  animation: kvz-menu-float 4.5s ease-in-out infinite;
+}
+
+.kvz-game-menu-art::before,
+.kvz-game-menu-art::after {
+  position: absolute;
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  border: 3px solid var(--kvz-ink);
+  border-radius: 50%;
+  content: "";
+  box-shadow: inset -4px -5px 0 rgba(112, 67, 30, 0.15);
+}
+
+.kvz-game-menu-art::before {
+  top: -15px;
+  left: 9%;
+  background: var(--kvz-yellow);
+}
+
+.kvz-game-menu-art::after {
+  right: 8%;
+  bottom: -17px;
+  background: var(--kvz-pink);
+}
+
+.kvz-game-menu-art img {
+  width: 100%;
+  max-height: min(62vh, 580px);
+  aspect-ratio: 1.05;
+  border-radius: 14px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.kvz-game-menu-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  width: min(100%, 600px);
+}
+
+.kvz-game-menu-actions .kvz-game-button:first-child,
+.kvz-game-menu-actions .kvz-game-button:last-child {
+  grid-column: 1 / -1;
+}
+
+.kvz-game-panel {
+  position: relative;
+  padding: clamp(18px, 3vw, 34px);
+  border: 5px solid var(--kvz-ink);
+  border-radius: var(--kvz-radius);
+  background:
+    radial-gradient(circle at 7% 12%, rgba(255, 130, 173, 0.2) 0 36px, transparent 37px),
+    radial-gradient(circle at 96% 88%, rgba(255, 225, 93, 0.3) 0 52px, transparent 53px),
+    linear-gradient(180deg, #fff8d7, #f4d991);
+  box-shadow: 0 8px 0 var(--kvz-bark), 0 18px 34px var(--kvz-shadow);
+}
+
+.kvz-game-panel::after {
+  position: absolute;
+  inset: 9px;
+  border: 2px dashed rgba(112, 67, 30, 0.32);
+  border-radius: 7px;
+  content: "";
+  pointer-events: none;
+}
+
+.kvz-game-title,
+.kvz-game-subtitle {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: "Luckiest Guy", "Baloo 2", sans-serif;
+  line-height: 0.98;
+}
+
+.kvz-game-title {
+  color: var(--kvz-yellow);
+  font-size: clamp(2.5rem, 6vw, 5.4rem);
+  -webkit-text-stroke: 3px var(--kvz-ink);
+  paint-order: stroke fill;
+  text-shadow: 0 6px 0 var(--kvz-bark), 0 10px 20px rgba(37, 23, 15, 0.3);
+}
+
+.kvz-game-subtitle {
+  color: var(--kvz-grass-deep);
+  font-size: clamp(1.15rem, 2.2vw, 1.7rem);
+  text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.72);
+}
+
+.kvz-game-button {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  min-height: 50px;
+  padding: 9px 18px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 4px solid var(--kvz-ink);
+  border-radius: 11px;
+  color: var(--kvz-ink);
+  background: linear-gradient(180deg, var(--kvz-paper), #edd99d);
+  box-shadow: 0 5px 0 var(--kvz-bark), 0 9px 15px rgba(37, 23, 15, 0.18);
+  font-weight: 900;
+  line-height: 1.05;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 150ms var(--kvz-ease), box-shadow 150ms var(--kvz-ease), filter 150ms ease;
+}
+
+.kvz-game-button.primary,
+.kvz-game-button.kvz-game-primary {
+  background: linear-gradient(180deg, #fff67a, #f5b83e);
+}
+
+.kvz-game-button.secondary,
+.kvz-game-button.kvz-game-secondary {
+  background: linear-gradient(180deg, #efffd7, #8be25e);
+}
+
+.kvz-game-button.danger,
+.kvz-game-button.kvz-game-danger {
+  color: #fffdf5;
+  background: linear-gradient(180deg, #ff8c79, var(--kvz-danger));
+  text-shadow: 1px 2px 0 rgba(68, 40, 23, 0.35);
+}
+
+.kvz-game-button.back,
+.kvz-game-button.kvz-game-back {
+  background: linear-gradient(180deg, #ffd5e5, var(--kvz-pink));
+}
+
+.kvz-game-button:hover:not(:disabled) {
+  filter: brightness(1.07) saturate(1.05);
+  transform: translateY(-3px) rotate(-0.3deg);
+  box-shadow: 0 8px 0 var(--kvz-bark), 0 13px 20px rgba(37, 23, 15, 0.2);
+}
+
+.kvz-game-button:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--kvz-bark);
+}
+
+.kvz-game-button:disabled,
+.kvz-game-button[aria-disabled="true"] {
+  filter: grayscale(0.78) opacity(0.72);
+  cursor: not-allowed;
+}
+
+.kvz-game-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  padding: clamp(18px, 3vw, 32px);
+}
+
+.kvz-game-loading {
+  display: grid;
+  min-height: 100%;
+  padding: 24px;
+  place-items: center;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255, 225, 93, 0.62), transparent 18rem),
+    linear-gradient(155deg, #a3e66e, #4aad3d);
+}
+
+.kvz-game-loading .kvz-game-panel {
+  display: grid;
+  width: min(560px, 100%);
+  gap: 18px;
+  justify-items: center;
+}
+
+.kvz-game-loading-track {
+  position: relative;
+  z-index: 2;
+  width: min(420px, 100%);
+  height: 28px;
+  overflow: hidden;
+  border: 4px solid var(--kvz-ink);
+  border-radius: 999px;
+  background: #d8bd7b;
+  box-shadow: inset 0 4px 0 rgba(112, 67, 30, 0.18), 0 4px 0 var(--kvz-bark);
+}
+
+.kvz-game-loading-track > span,
+.kvz-game-loading-track:empty::before {
+  display: block;
+  width: var(--progress, 0%);
+  height: 100%;
+  content: "";
+  border-radius: inherit;
+  background:
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0 9px, transparent 9px 18px),
+    linear-gradient(90deg, var(--kvz-lime), var(--kvz-yellow));
+  transition: width 220ms var(--kvz-ease);
+}
+
+.kvz-game-codex-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 22px);
+  padding: clamp(16px, 3vw, 30px);
+}
+
+.kvz-game-codex-card {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  gap: 10px;
+  align-content: start;
+  overflow: hidden;
+  padding: 12px;
+  border: 4px solid var(--kvz-ink);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #fffbe3, #eed593);
+  box-shadow: 0 6px 0 var(--kvz-bark), 0 12px 22px var(--kvz-shadow);
+  transition: transform 180ms var(--kvz-ease), box-shadow 180ms var(--kvz-ease);
+}
+
+.kvz-game-codex-card:hover {
+  transform: translateY(-5px) rotate(-0.5deg);
+  box-shadow: 0 10px 0 var(--kvz-bark), 0 18px 26px var(--kvz-shadow);
+}
+
+.kvz-game-codex-card h3,
+.kvz-game-codex-card p {
+  margin: 0;
+}
+
+.kvz-game-codex-card h3 {
+  color: var(--kvz-grass-deep);
+  font-size: 1.18rem;
+  line-height: 1;
+}
+
+.kvz-game-codex-card p {
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.kvz-game-codex-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.12;
+  overflow: hidden;
+  border: 3px solid var(--kvz-ink);
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 50% 82%, rgba(37, 23, 15, 0.13) 0 22%, transparent 23%),
+    linear-gradient(155deg, #e9ffd2, #81d85a);
+}
+
+.kvz-game-codex-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 7px 5px rgba(37, 23, 15, 0.22));
+  transition: transform 240ms var(--kvz-ease);
+}
+
+.kvz-game-codex-card:hover .kvz-game-codex-image img {
+  transform: translateY(-3px) scale(1.035);
+}
+
+.kvz-game-codex-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.kvz-game-stat-pill {
+  display: inline-flex;
+  min-height: 27px;
+  padding: 3px 8px;
+  align-items: center;
+  gap: 4px;
+  border: 2px solid var(--kvz-ink);
+  border-radius: 999px;
+  background: var(--kvz-mint);
+  box-shadow: 0 2px 0 rgba(112, 67, 30, 0.45);
+  font-size: 0.75rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.kvz-game-stat-pill:nth-child(3n + 2) {
+  background: #fff0a0;
+}
+
+.kvz-game-stat-pill:nth-child(3n) {
+  background: #ffd5e5;
+}
+
+.kvz-game-locked {
+  filter: grayscale(0.9) saturate(0.4);
+}
+
+.kvz-game-locked::after {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  padding: 18px;
+  place-items: center;
+  content: attr(data-locked-label);
+  color: var(--kvz-paper);
+  background: rgba(37, 23, 15, 0.7);
+  font-size: 1rem;
+  font-weight: 900;
+  text-align: center;
+  text-shadow: 1px 2px 0 var(--kvz-ink);
+}
+
+.kvz-game-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  max-width: 880px;
+  padding: clamp(18px, 4vw, 42px);
+  margin: 0 auto;
+}
+
+.kvz-game-range-row,
+.kvz-game-toggle-row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-height: 64px;
+  padding: 10px 12px;
+  align-items: center;
+  gap: 10px;
+  border: 3px solid var(--kvz-ink);
+  border-radius: 10px;
+  background: rgba(255, 253, 245, 0.76);
+  box-shadow: 0 4px 0 rgba(112, 67, 30, 0.5);
+  font-weight: 900;
+}
+
+.kvz-game-range-row {
+  grid-template-columns: minmax(110px, auto) minmax(100px, 1fr) auto;
+}
+
+.kvz-game-range-row input[type="range"] {
+  width: 100%;
+  accent-color: var(--kvz-grass-deep);
+  cursor: pointer;
+}
+
+.kvz-game-toggle-row {
+  grid-template-columns: 1fr auto;
+  cursor: pointer;
+}
+
+.kvz-game-toggle-row input {
+  width: 48px;
+  height: 27px;
+  margin: 0;
+  appearance: none;
+  border: 3px solid var(--kvz-ink);
+  border-radius: 999px;
+  background: #c4b897;
+  box-shadow: inset 0 3px 0 rgba(37, 23, 15, 0.16);
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.kvz-game-toggle-row input::before {
+  display: block;
+  width: 17px;
+  height: 17px;
+  margin: 2px;
+  border: 2px solid var(--kvz-ink);
+  border-radius: 50%;
+  content: "";
+  background: var(--kvz-paper);
+  box-shadow: 0 2px 0 rgba(112, 67, 30, 0.4);
+  transition: transform 150ms var(--kvz-ease);
+}
+
+.kvz-game-toggle-row input:checked {
+  background: var(--kvz-lime);
+}
+
+.kvz-game-toggle-row input:checked::before {
+  transform: translateX(21px);
+}
+
+.kvz-game-gameplay {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+  background: linear-gradient(180deg, #a7e9ef 0 25%, #72c953 25% 100%);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+.kvz-game-hud {
+  position: relative;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: minmax(175px, 0.8fr) minmax(220px, 1.6fr) minmax(150px, 0.7fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 76px;
+  padding: 7px 10px 9px;
+  border-bottom: 4px solid var(--kvz-ink);
+  background:
+    radial-gradient(circle at 4% 20%, rgba(255, 130, 173, 0.34) 0 14px, transparent 15px),
+    linear-gradient(180deg, #fff8d9, #e7c77f);
+  box-shadow: 0 5px 0 rgba(112, 67, 30, 0.48);
+}
+
+.kvz-game-hud-status {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.kvz-game-energy-meter {
+  position: relative;
+  display: inline-flex;
+  min-width: 118px;
+  min-height: 48px;
+  padding: 5px 11px 5px 48px;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--kvz-ink);
+  border-radius: 999px 12px 12px 999px;
+  background: linear-gradient(180deg, #fff793, var(--kvz-yellow));
+  box-shadow: 0 4px 0 var(--kvz-bark), inset 0 -3px 0 rgba(112, 67, 30, 0.12);
+  font-family: "Luckiest Guy", "Baloo 2", sans-serif;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.kvz-game-energy-meter::before {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  width: 34px;
+  height: 34px;
+  border: 3px solid var(--kvz-ink);
+  border-radius: 50%;
+  content: "";
+  background:
+    radial-gradient(circle at 33% 33%, #fff 0 9%, transparent 10%),
+    radial-gradient(circle at 50% 60%, var(--kvz-orange) 0 27%, transparent 28%),
+    var(--kvz-yellow);
+  box-shadow: 0 2px 0 var(--kvz-bark);
+  transform: translateY(-50%);
+}
+
+.kvz-game-wave-meter {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.kvz-game-wave-meter > span,
+.kvz-game-wave-meter > strong {
+  overflow: hidden;
+  font-weight: 900;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kvz-game-wave-track {
+  position: relative;
+  height: 18px;
+  overflow: hidden;
+  border: 3px solid var(--kvz-ink);
+  border-radius: 999px;
+  background: #cab275;
+  box-shadow: inset 0 3px 0 rgba(37, 23, 15, 0.14);
+}
+
+.kvz-game-wave-track > span,
+.kvz-game-wave-track:empty::before {
+  display: block;
+  width: var(--progress, 0%);
+  height: 100%;
+  content: "";
+  border-radius: inherit;
+  background:
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.24) 0 7px, transparent 7px 14px),
+    linear-gradient(90deg, var(--kvz-grass), var(--kvz-lime));
+  transition: width 300ms linear;
+}
+
+.kvz-game-wave-track::after {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  left: calc(var(--final-wave-start, 80%) - 2px);
+  width: 4px;
+  content: "";
+  background: var(--kvz-danger);
+}
+
+.kvz-game-card-tray {
+  position: relative;
+  z-index: 24;
+  display: grid;
+  grid-auto-columns: minmax(92px, 1fr);
+  grid-auto-flow: column;
+  gap: 7px;
+  min-height: 113px;
+  padding: 7px 9px 9px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-bottom: 4px solid var(--kvz-ink);
+  background:
+    repeating-linear-gradient(90deg, rgba(112, 67, 30, 0.08) 0 1px, transparent 1px 16px),
+    linear-gradient(180deg, #d6b16c, #ba8445);
+  box-shadow: inset 0 4px 0 rgba(255, 255, 255, 0.22), 0 5px 0 rgba(68, 40, 23, 0.38);
+  scroll-snap-type: x proximity;
+  overscroll-behavior: contain;
+  touch-action: pan-x;
+}
+
+.kvz-game-card {
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-width: 92px;
+  height: 96px;
+  padding: 4px;
+  grid-template-columns: 56px minmax(30px, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) 24px;
+  gap: 2px 5px;
+  overflow: hidden;
+  border: 3px solid var(--kvz-ink);
+  border-radius: 9px;
+  color: var(--kvz-ink);
+  background: linear-gradient(160deg, #f7ffdb, #9be36b);
+  box-shadow: 0 4px 0 var(--kvz-bark), inset 0 0 0 2px rgba(255, 255, 255, 0.44);
+  font: inherit;
+  font-size: 0.69rem;
+  font-weight: 900;
+  line-height: 1;
+  text-align: left;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: transform 120ms var(--kvz-ease), filter 120ms ease, box-shadow 120ms ease;
+}
+
+.kvz-game-card:hover:not(:disabled) {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--kvz-bark);
+}
+
+.kvz-game-card.selected,
+.kvz-game-card.is-selected,
+.kvz-game-card[aria-pressed="true"] {
+  border-color: #fff;
+  outline: 4px solid var(--kvz-pink-deep);
+  outline-offset: -2px;
+  background: linear-gradient(160deg, #fff2a7, #ffc85a);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 0 var(--kvz-bark), 0 0 0 7px rgba(255, 130, 173, 0.42);
+}
+
+.kvz-game-card.insufficient,
+.kvz-game-card.is-insufficient,
+.kvz-game-card:disabled:not(.cooling):not(.is-cooling) {
+  filter: grayscale(0.78) brightness(0.78);
+  cursor: not-allowed;
+}
+
+.kvz-game-card.cooling,
+.kvz-game-card.is-cooling {
+  cursor: wait;
+}
+
+.kvz-game-card.locked,
+.kvz-game-card.is-locked {
+  filter: grayscale(1) brightness(0.68);
+  cursor: not-allowed;
+}
+
+.kvz-game-card-image {
+  grid-row: 1 / 4;
+  width: 56px;
+  height: 76px;
+  align-self: center;
+  border: 2px solid var(--kvz-ink);
+  border-radius: 7px;
+  background: rgba(255, 253, 245, 0.5);
+  object-fit: contain;
+  filter: drop-shadow(0 3px 2px rgba(37, 23, 15, 0.2));
+}
+
+.kvz-game-card > strong {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.kvz-game-card-cost {
+  grid-column: 2;
+  grid-row: 3;
+  display: inline-flex;
+  min-width: 34px;
+  height: 24px;
+  min-height: 24px;
+  padding: 2px 5px;
+  align-self: end;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--kvz-ink);
+  border-radius: 999px;
+  background: var(--kvz-yellow);
+  box-shadow: 0 2px 0 rgba(112, 67, 30, 0.5);
+}
+
+.kvz-game-card-description {
+  grid-column: 2;
+  grid-row: 2;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  min-height: 0;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  font-size: 0.61rem;
+  font-weight: 800;
+  line-height: 1.08;
+}
+
+.kvz-game-card-tray.is-dense .kvz-game-card-description {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@media (min-height: 621px) {
+  .kvz-game-card-tray.is-dense {
+    min-height: 121px;
+  }
+
+  .kvz-game-card-tray.is-dense .kvz-game-card {
+    height: 104px;
+  }
+}
+
+.kvz-game-card-cooldown {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  color: var(--kvz-paper);
+  background: rgba(37, 23, 15, 0.7);
+  clip-path: inset(var(--cooldown-inset, 0%) 0 0);
+  transform: scaleY(var(--cooldown, 1));
+  transform-origin: center bottom;
+  font-size: 1.05rem;
+  font-weight: 900;
+  text-shadow: 1px 2px 0 var(--kvz-ink);
+  pointer-events: none;
+}
+
+.kvz-game-card:not(.cooling):not(.is-cooling) .kvz-game-card-cooldown:empty {
+  display: none;
+}
+
+.kvz-game-battlefield-wrap {
+  position: relative;
+  display: grid;
+  min-height: 0;
+  flex: 1;
+  padding: clamp(6px, 1vw, 12px);
+  place-items: center;
+  overflow: hidden;
+  container-type: size;
+  background:
+    radial-gradient(ellipse at 50% 105%, rgba(37, 23, 15, 0.25), transparent 55%),
+    linear-gradient(180deg, #9ee3ec 0 15%, #62b945 15% 100%);
+}
+
+.kvz-game-battlefield-wrap::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    radial-gradient(circle at 5% 13%, #fff4b5 0 8px, transparent 9px),
+    radial-gradient(circle at 93% 9%, rgba(255, 255, 255, 0.72) 0 18px, transparent 19px),
+    linear-gradient(90deg, transparent 0 7%, rgba(255, 244, 199, 0.26) 7% 8%, transparent 8% 100%);
+  pointer-events: none;
+}
+
+.kvz-game-battlefield {
+  position: relative;
+  isolation: isolate;
+  width: min(100%, 1250px);
+  width: min(100%, 1250px, 190cqh);
+  min-width: 0;
+  aspect-ratio: 1.9 / 1;
+  overflow: hidden;
+  border: 5px solid var(--kvz-ink);
+  border-radius: 14px;
+  background:
+    radial-gradient(ellipse at 7% 10%, #ffd5e5 0 12px, transparent 13px),
+    radial-gradient(ellipse at 88% 88%, #fff0a0 0 11px, transparent 12px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.08) 0 calc(20% - 2px), rgba(68, 40, 23, 0.2) calc(20% - 2px) 20%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0 calc(11.111% - 2px), rgba(68, 40, 23, 0.12) calc(11.111% - 2px) 11.111%),
+    linear-gradient(90deg, #61ca47, #72d052 48%, #56b83e);
+  box-shadow: 0 7px 0 var(--kvz-bark), 0 16px 26px var(--kvz-shadow), inset 0 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+.kvz-game-battlefield::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  content: "";
+  background:
+    radial-gradient(ellipse at 5% 10%, rgba(255, 244, 199, 0.44) 0 2%, transparent 2.2%),
+    radial-gradient(ellipse at 52% 29%, rgba(255, 225, 93, 0.25) 0 1.2%, transparent 1.4%),
+    radial-gradient(ellipse at 81% 70%, rgba(255, 130, 173, 0.22) 0 1.4%, transparent 1.6%),
+    repeating-linear-gradient(90deg, transparent 0 2.5%, rgba(255, 255, 255, 0.04) 2.5% 4.5%);
+  pointer-events: none;
+}
+
+.kvz-game-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  grid-template-rows: repeat(5, minmax(0, 1fr));
+}
+
+.kvz-game-cell {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid rgba(37, 23, 15, 0.12);
+  background: transparent;
+  cursor: pointer;
+  transition: background 100ms ease, box-shadow 100ms ease;
+}
+
+.kvz-game-cell:nth-child(even) {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.kvz-game-cell:hover,
+.kvz-game-cell.preview,
+.kvz-game-cell.is-preview {
+  background: rgba(255, 244, 199, 0.23);
+  box-shadow: inset 0 0 0 3px rgba(255, 253, 245, 0.58);
+}
+
+.kvz-game-cell.valid,
+.kvz-game-cell.is-valid {
+  background: rgba(168, 236, 54, 0.28);
+  box-shadow: inset 0 0 0 3px rgba(239, 255, 215, 0.8);
+}
+
+.kvz-game-cell.invalid,
+.kvz-game-cell.is-invalid {
+  background:
+    linear-gradient(45deg, transparent 43%, rgba(239, 91, 79, 0.78) 44% 56%, transparent 57%),
+    linear-gradient(-45deg, transparent 43%, rgba(239, 91, 79, 0.78) 44% 56%, transparent 57%),
+    rgba(239, 91, 79, 0.18);
+  box-shadow: inset 0 0 0 3px rgba(255, 219, 214, 0.72);
+  animation: kvz-invalid-shake 220ms ease both;
+}
+
+.kvz-game-entity-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+}
+
+.kvz-game-defender,
+.kvz-game-enemy {
+  position: absolute;
+  display: grid;
+  width: 11.111%;
+  height: 20%;
+  place-items: end center;
+  transform-origin: 50% 82%;
+  pointer-events: none;
+  will-change: left, transform;
+}
+
+.kvz-game-defender::before,
+.kvz-game-enemy::before {
+  position: absolute;
+  bottom: 3%;
+  left: 19%;
+  z-index: 0;
+  width: 62%;
+  height: 11%;
+  border-radius: 50%;
+  content: "";
+  background: rgba(37, 23, 15, 0.22);
+  filter: blur(2px);
+  transform: scaleX(1.08);
+}
+
+.kvz-game-placement-preview {
+  position: absolute;
+  z-index: 38;
+  width: 10.5%;
+  height: 20%;
+  object-fit: contain;
+  object-position: center bottom;
+  opacity: 0.58;
+  filter: drop-shadow(0 0 7px var(--kvz-lime));
+  transform: translateX(-50%) scale(0.94);
+  pointer-events: none;
+}
+
+.kvz-game-placement-preview[hidden] {
+  display: none;
+}
+
+.kvz-game-placement-preview.is-invalid {
+  filter: grayscale(0.7) sepia(1) saturate(5) hue-rotate(320deg) drop-shadow(0 0 7px var(--kvz-danger));
+}
+
+.kvz-game-defender {
+  z-index: calc(12 + var(--lane, 0));
+}
+
+.kvz-game-enemy {
+  z-index: calc(15 + var(--lane, 0));
+  width: clamp(58px, 11.5%, 132px);
+}
+
+.kvz-game-unit-sprite {
+  position: relative;
+  z-index: 1;
+  width: 92%;
+  height: 96%;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
+  transform-origin: 50% 85%;
+  animation: kvz-unit-idle 2.4s ease-in-out infinite;
+  will-change: transform, filter, opacity;
+}
+
+.kvz-game-enemy .kvz-game-unit-sprite {
+  animation-name: kvz-dog-walk;
+  animation-duration: 0.58s;
+}
+
+.kvz-game-defender.behavior-energy-producer .kvz-game-unit-sprite {
+  animation-name: kvz-producer-idle;
+  animation-duration: 1.9s;
+}
+
+.kvz-game-defender.behavior-blocker .kvz-game-unit-sprite {
+  animation-name: kvz-guard-idle;
+  animation-duration: 3.1s;
+}
+
+.kvz-game-defender.behavior-double-shot .kvz-game-unit-sprite {
+  animation-name: kvz-twin-idle;
+  animation-duration: 1.55s;
+}
+
+.kvz-game-defender.behavior-slow-shot .kvz-game-unit-sprite {
+  animation-name: kvz-frost-idle;
+  animation-duration: 2.7s;
+}
+
+.kvz-game-defender.behavior-area-burst .kvz-game-unit-sprite {
+  animation-name: kvz-pop-idle;
+  animation-duration: 0.72s;
+}
+
+.kvz-game-defender.behavior-heavy-shot .kvz-game-unit-sprite {
+  animation-name: kvz-heavy-idle;
+  animation-duration: 3.4s;
+}
+
+.kvz-game-defender.behavior-root-pulse .kvz-game-unit-sprite {
+  animation-name: kvz-guide-idle;
+  animation-duration: 2.25s;
+}
+
+.kvz-game-enemy.behavior-armored-walker .kvz-game-unit-sprite {
+  animation-name: kvz-armored-step;
+  animation-duration: 0.7s;
+}
+
+.kvz-game-enemy.behavior-heavy-armor .kvz-game-unit-sprite {
+  animation-name: kvz-bucket-step;
+  animation-duration: 0.88s;
+}
+
+.kvz-game-enemy.behavior-shield-walker .kvz-game-unit-sprite {
+  animation-name: kvz-shield-step;
+  animation-duration: 0.96s;
+}
+
+.kvz-game-enemy.behavior-charging-brute .kvz-game-unit-sprite {
+  animation-name: kvz-brute-charge;
+  animation-duration: 0.4s;
+}
+
+.kvz-game-defender.is-attacking .kvz-game-unit-sprite,
+.kvz-game-defender.attacking .kvz-game-unit-sprite {
+  animation: kvz-cat-attack 260ms var(--kvz-ease) both;
+}
+
+.kvz-game-defender.is-placing .kvz-game-unit-sprite {
+  animation: kvz-cat-place 500ms var(--kvz-ease) both;
+}
+
+.kvz-game-enemy.is-attacking .kvz-game-unit-sprite,
+.kvz-game-enemy.attacking .kvz-game-unit-sprite {
+  animation: kvz-dog-attack 430ms var(--kvz-ease) both;
+}
+
+.kvz-game-defender.behavior-energy-producer.is-attacking .kvz-game-unit-sprite {
+  animation: kvz-producer-pulse 500ms var(--kvz-ease) both;
+}
+
+.kvz-game-defender.behavior-double-shot.is-attacking .kvz-game-unit-sprite {
+  animation: kvz-twin-volley 390ms var(--kvz-ease) both;
+}
+
+.kvz-game-defender.behavior-slow-shot.is-attacking .kvz-game-unit-sprite {
+  animation: kvz-frost-cast 300ms var(--kvz-ease) both;
+}
+
+.kvz-game-defender.behavior-heavy-shot.is-attacking .kvz-game-unit-sprite {
+  animation: kvz-heavy-recoil 360ms var(--kvz-ease) both;
+}
+
+.kvz-game-defender.behavior-root-pulse.is-attacking .kvz-game-unit-sprite {
+  animation: kvz-guide-cast 600ms var(--kvz-ease) both;
+}
+
+.kvz-game-defender.behavior-area-burst.is-defeated .kvz-game-unit-sprite {
+  animation: kvz-pop-finale 480ms var(--kvz-ease) forwards;
+}
+
+.kvz-game-enemy.behavior-heavy-armor.is-attacking .kvz-game-unit-sprite {
+  animation: kvz-bucket-bash 430ms var(--kvz-ease) both;
+}
+
+.kvz-game-enemy.behavior-shield-walker.is-attacking .kvz-game-unit-sprite {
+  animation: kvz-shield-bash 430ms var(--kvz-ease) both;
+}
+
+.kvz-game-enemy.behavior-charging-brute.is-attacking .kvz-game-unit-sprite {
+  animation: kvz-brute-bash 430ms var(--kvz-ease) both;
+}
+
+.kvz-game-healthbar,
+.kvz-game-armorbar,
+.kvz-game-shieldbar {
+  position: absolute;
+  left: 14%;
+  z-index: 5;
+  width: 72%;
+  height: 7px;
+  overflow: hidden;
+  border: 2px solid var(--kvz-ink);
+  border-radius: 999px;
+  background: rgba(37, 23, 15, 0.55);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.kvz-game-healthbar {
+  top: 2%;
+}
+
+.kvz-game-armorbar {
+  top: 11%;
+}
+
+.kvz-game-shieldbar {
+  top: 20%;
+}
+
+.kvz-game-healthbar > span,
+.kvz-game-armorbar > span,
+.kvz-game-shieldbar > span {
+  display: block;
+  width: calc(var(--value, 1) * 100%);
+  height: 100%;
+  transform-origin: left;
+  transition: width 140ms ease;
+}
+
+.kvz-game-healthbar > span {
+  background: linear-gradient(90deg, #5ad83e, var(--kvz-lime));
+}
+
+.kvz-game-armorbar > span {
+  background: linear-gradient(90deg, #fb9d3e, var(--kvz-yellow));
+}
+
+.kvz-game-shieldbar > span {
+  background: linear-gradient(90deg, #48bddb, #9cf7ff);
+}
+
+.kvz-game-projectile {
+  position: absolute;
+  z-index: 25;
+  width: clamp(9px, 1.8%, 22px);
+  aspect-ratio: 1;
+  border: 2px solid var(--kvz-ink);
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 27%, #f8ffbc 0 18%, transparent 19%), var(--kvz-lime);
+  box-shadow: 0 0 8px rgba(168, 236, 54, 0.8), 0 3px 0 rgba(68, 40, 23, 0.42);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.kvz-game-projectile.frost,
+.kvz-game-projectile.is-frost {
+  background: radial-gradient(circle at 32% 27%, #fff 0 18%, transparent 19%), var(--kvz-blue);
+  box-shadow: 0 0 10px rgba(153, 230, 237, 0.95), 0 3px 0 rgba(68, 40, 23, 0.42);
+}
+
+.kvz-game-projectile.is-heavy {
+  width: clamp(14px, 2.4%, 28px);
+  background: radial-gradient(circle at 32% 27%, #fff7a5 0 16%, transparent 17%), #8b54cf;
+  box-shadow: 0 0 12px rgba(139, 84, 207, 0.9), 0 4px 0 rgba(68, 40, 23, 0.45);
+}
+
+.kvz-game-effect {
+  position: absolute;
+  z-index: 45;
+  width: 4.5%;
+  min-width: 24px;
+  aspect-ratio: 1;
+  border: 3px solid var(--kvz-ink);
+  border-radius: 50%;
+  background: var(--kvz-yellow);
+  box-shadow: 0 0 16px rgba(255, 225, 93, 0.9);
+  transform: translate(-50%, -50%);
+  animation: kvz-effect-pop 580ms var(--kvz-ease) forwards;
+  pointer-events: none;
+}
+
+.kvz-game-effect.frost {
+  background: var(--kvz-sky);
+  box-shadow: 0 0 18px rgba(153, 230, 237, 0.95);
+}
+
+.kvz-game-effect.heavy {
+  background: #a985dc;
+}
+
+.kvz-game-effect.burst {
+  width: 18%;
+  background: radial-gradient(circle, var(--kvz-yellow) 0 22%, var(--kvz-pink) 23% 48%, transparent 49%);
+  border-color: transparent;
+  box-shadow: 0 0 28px rgba(255, 130, 173, 0.9);
+}
+
+.kvz-game-effect.root {
+  background: conic-gradient(from 20deg, var(--kvz-lime), var(--kvz-yellow), var(--kvz-lime));
+}
+
+.kvz-game-effect.place {
+  width: 8%;
+  border-color: var(--kvz-paper);
+  background: repeating-conic-gradient(from 15deg, var(--kvz-lime) 0 14deg, transparent 14deg 30deg);
+  box-shadow: 0 0 0 6px rgba(168, 236, 54, 0.28), 0 0 18px rgba(255, 253, 245, 0.9);
+}
+
+.kvz-game-effect.energy-spawn {
+  width: 7%;
+  border-color: var(--kvz-yellow);
+  background: transparent;
+  box-shadow: 0 0 0 8px rgba(255, 225, 93, 0.24), 0 0 22px rgba(255, 225, 93, 0.92);
+}
+
+.kvz-game-effect.armor-break,
+.kvz-game-effect.shield-break {
+  width: 9%;
+  border-color: transparent;
+  background: repeating-conic-gradient(from 8deg, var(--kvz-orange) 0 10deg, transparent 10deg 28deg);
+  box-shadow: 0 0 18px rgba(255, 146, 47, 0.8);
+}
+
+.kvz-game-effect.shield-break {
+  background: repeating-conic-gradient(from 8deg, var(--kvz-sky) 0 10deg, transparent 10deg 28deg);
+  box-shadow: 0 0 20px rgba(94, 204, 226, 0.9);
+}
+
+.kvz-game-effect.enemy-defeat,
+.kvz-game-effect.defender-defeat {
+  width: 11%;
+  border-color: rgba(255, 253, 245, 0.82);
+  background: radial-gradient(circle, rgba(255, 253, 245, 0.9) 0 22%, rgba(153, 230, 237, 0.62) 23% 48%, transparent 49%);
+  box-shadow: 0 0 22px rgba(255, 253, 245, 0.82);
+}
+
+.kvz-game-effect.defender-defeat {
+  background: radial-gradient(circle, rgba(255, 253, 245, 0.9) 0 22%, rgba(168, 236, 54, 0.58) 23% 48%, transparent 49%);
+}
+
+.kvz-game-effect.sweeper {
+  width: 16%;
+  border-color: var(--kvz-paper);
+  background: repeating-conic-gradient(var(--kvz-pink) 0 12deg, var(--kvz-yellow) 12deg 24deg);
+  box-shadow: 0 0 28px rgba(255, 130, 173, 0.92);
+}
+
+.kvz-game-enemy.armor-damaged .kvz-game-unit-sprite {
+  filter: contrast(1.05) drop-shadow(0 0 4px var(--kvz-orange)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
+}
+
+.kvz-game-enemy.armor-critical .kvz-game-unit-sprite {
+  filter: contrast(1.08) saturate(0.82) drop-shadow(0 0 6px var(--kvz-danger)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
+}
+
+.kvz-game-enemy.shield-damaged .kvz-game-unit-sprite {
+  filter: contrast(1.05) drop-shadow(0 0 6px var(--kvz-sky)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
+}
+
+.kvz-game-enemy.shield-critical .kvz-game-unit-sprite {
+  filter: contrast(1.1) saturate(0.76) drop-shadow(0 0 8px #79ddec) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
+}
+
+.kvz-game-enemy:is(.armor-damaged, .armor-critical):not(.is-armor-broken)::after {
+  position: absolute;
+  top: 24%;
+  right: 17%;
+  z-index: 6;
+  width: 24%;
+  height: 31%;
+  content: "";
+  background:
+    linear-gradient(64deg, transparent 43%, var(--kvz-ink) 44% 51%, transparent 52%) 10% 8% / 55% 54% no-repeat,
+    linear-gradient(116deg, transparent 43%, var(--kvz-ink) 44% 51%, transparent 52%) 78% 48% / 58% 58% no-repeat;
+  opacity: 0.74;
+  transform: rotate(7deg);
+  pointer-events: none;
+}
+
+.kvz-game-enemy:is(.shield-damaged, .shield-critical):not(.is-shield-broken)::after {
+  position: absolute;
+  top: 27%;
+  right: 10%;
+  z-index: 6;
+  width: 32%;
+  height: 40%;
+  border-right: 3px solid rgba(220, 252, 255, 0.9);
+  border-bottom: 3px solid rgba(94, 204, 226, 0.9);
+  content: "";
+  transform: skew(-17deg) rotate(-9deg);
+  pointer-events: none;
+}
+
+.kvz-game-image-fallback {
+  display: inline-grid;
+  min-width: 64px;
+  min-height: 64px;
+  padding: 8px;
+  place-items: center;
+  border: 2px dashed rgba(37, 23, 15, 0.55);
+  border-radius: 12px;
+  color: var(--kvz-bark-deep);
+  background:
+    radial-gradient(circle at 50% 62%, var(--kvz-pink) 0 17%, transparent 18%),
+    radial-gradient(circle at 34% 36%, var(--kvz-pink) 0 8%, transparent 9%),
+    radial-gradient(circle at 66% 36%, var(--kvz-pink) 0 8%, transparent 9%),
+    rgba(255, 253, 245, 0.72);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.kvz-game-defender > .kvz-game-image-fallback,
+.kvz-game-enemy > .kvz-game-image-fallback {
+  position: absolute;
+  inset: 18% 9% 4%;
+  z-index: 1;
+}
+
+.kvz-game-card > .kvz-game-image-fallback {
+  width: 56px;
+  min-width: 0;
+  height: 76px;
+  min-height: 0;
+  grid-column: 1;
+  grid-row: 1 / 4;
+}
+
+.kvz-game-defender.health-damaged .kvz-game-unit-sprite {
+  filter: saturate(0.88) drop-shadow(0 0 4px var(--kvz-orange)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
+}
+
+.kvz-game-defender.health-critical .kvz-game-unit-sprite {
+  filter: saturate(0.7) contrast(0.95) drop-shadow(0 0 6px var(--kvz-danger)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
+}
+
+.kvz-game-energy-orb {
+  position: absolute;
+  z-index: 35;
+  display: grid;
+  width: clamp(40px, 5.4%, 64px);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 3px solid var(--kvz-ink);
+  border-radius: 50%;
+  color: var(--kvz-ink);
+  background:
+    radial-gradient(circle at 32% 25%, rgba(255, 255, 255, 0.94) 0 10%, transparent 11%),
+    radial-gradient(circle at 50% 60%, var(--kvz-orange) 0 23%, transparent 24%),
+    var(--kvz-yellow);
+  box-shadow: 0 0 18px rgba(255, 225, 93, 0.95), 0 5px 0 var(--kvz-bark);
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+  animation: kvz-orb-float 1.7s ease-in-out infinite;
+}
+
+.kvz-game-energy-orb::before {
+  width: 34%;
+  height: 28%;
+  border-radius: 50% 50% 45% 45%;
+  content: "";
+  background: var(--kvz-orange);
+  box-shadow:
+    -12px -10px 0 -4px var(--kvz-orange),
+    -4px -15px 0 -4px var(--kvz-orange),
+    5px -15px 0 -4px var(--kvz-orange),
+    13px -10px 0 -4px var(--kvz-orange);
+}
+
+.kvz-game-energy-orb:hover,
+.kvz-game-energy-orb:focus-visible {
+  filter: brightness(1.08);
+  transform: scale(1.08);
+}
+
+.kvz-game-energy-orb.is-collecting {
+  animation: kvz-orb-collect 450ms var(--kvz-ease) forwards;
+}
+
+.kvz-game-sweeper {
+  position: absolute;
+  left: 0.3%;
+  z-index: 20;
+  width: 7.5%;
+  height: 16%;
+  border: 3px solid var(--kvz-ink);
+  border-radius: 45% 55% 30% 30%;
+  background:
+    radial-gradient(circle at 31% 39%, var(--kvz-ink) 0 3px, transparent 4px),
+    radial-gradient(circle at 63% 39%, var(--kvz-ink) 0 3px, transparent 4px),
+    linear-gradient(145deg, var(--kvz-pink), #f5568d);
+  box-shadow: 0 5px 0 var(--kvz-bark), inset -5px -6px 0 rgba(112, 67, 30, 0.18);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.kvz-game-sweeper::before,
+.kvz-game-sweeper::after {
+  position: absolute;
+  top: -18%;
+  width: 38%;
+  height: 42%;
+  border: 3px solid var(--kvz-ink);
+  border-radius: 10px 70% 10px 60%;
+  content: "";
+  background: var(--kvz-pink);
+}
+
+.kvz-game-sweeper::before {
+  left: 4%;
+  transform: rotate(-25deg);
+}
+
+.kvz-game-sweeper::after {
+  right: 4%;
+  transform: rotate(25deg) scaleX(-1);
+}
+
+.kvz-game-sweeper.is-active {
+  animation: kvz-sweeper-run 1.2s linear forwards;
+}
+
+.kvz-game-sweeper.is-used {
+  opacity: 0.25;
+  filter: grayscale(1);
+}
+
+.kvz-game-status-slow .kvz-game-unit-sprite,
+.kvz-game-enemy.status-slow .kvz-game-unit-sprite {
+  filter: hue-rotate(145deg) saturate(0.8) drop-shadow(0 0 7px #bdfaff) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.22));
+}
+
+.kvz-game-status-root .kvz-game-unit-sprite,
+.kvz-game-enemy.status-root .kvz-game-unit-sprite {
+  filter: sepia(0.32) saturate(1.25) drop-shadow(0 0 7px #ffe15d) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.22));
+  animation-play-state: paused;
+}
+
+.kvz-game-status-weakened .kvz-game-unit-sprite,
+.kvz-game-enemy.status-weakened .kvz-game-unit-sprite {
+  filter: saturate(0.55) contrast(0.9) drop-shadow(0 0 7px var(--kvz-pink)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.22));
+}
+
+.kvz-game-damage-flash .kvz-game-unit-sprite,
+.kvz-game-defender.is-hit .kvz-game-unit-sprite,
+.kvz-game-enemy.is-hit .kvz-game-unit-sprite {
+  animation: kvz-damage-flash 220ms ease both;
+}
+
+.kvz-game-defeated,
+.kvz-game-defender.is-defeated,
+.kvz-game-enemy.is-defeated {
+  pointer-events: none;
+  animation: kvz-defeated 460ms var(--kvz-ease) forwards;
+}
+
+.kvz-game-toast-stack {
+  position: absolute;
+  top: 78px;
+  right: 14px;
+  z-index: 90;
+  display: grid;
+  width: min(330px, calc(100% - 28px));
+  gap: 8px;
+  pointer-events: none;
+}
+
+.kvz-game-toast {
+  position: relative;
+  padding: 10px 14px;
+  border: 3px solid var(--kvz-ink);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fffbe2, #f2d486);
+  box-shadow: 0 5px 0 var(--kvz-bark), 0 11px 20px var(--kvz-shadow);
+  font-weight: 900;
+  line-height: 1.15;
+  animation: kvz-toast-in 250ms var(--kvz-ease) both;
+}
+
+.kvz-game-overlay.is-playing .kvz-game-toast-stack {
+  top: max(8px, env(safe-area-inset-top));
+  right: auto;
+  left: 50%;
+  width: clamp(180px, 34vw, 300px);
+  gap: 4px;
+  transform: translateX(-50%);
+}
+
+.kvz-game-overlay.is-playing .kvz-game-toast {
+  padding: 6px 10px;
+  border-width: 2px;
+  font-size: 0.78rem;
+  box-shadow: 0 3px 0 var(--kvz-bark), 0 7px 14px var(--kvz-shadow);
+}
+
+.kvz-game-toast.success {
+  background: linear-gradient(180deg, #edffd8, #9be36b);
+}
+
+.kvz-game-toast.warning {
+  background: linear-gradient(180deg, #fff4ad, #ffb247);
+}
+
+.kvz-game-toast.error {
+  color: var(--kvz-paper);
+  background: linear-gradient(180deg, #ff8d7a, var(--kvz-danger));
+}
+
+.kvz-game-final-warning {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 80;
+  width: min(720px, calc(100% - 36px));
+  padding: clamp(14px, 3vw, 24px);
+  border: 5px solid var(--kvz-ink);
+  border-radius: 14px;
+  color: var(--kvz-paper);
+  background:
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0 12px, transparent 12px 24px),
+    linear-gradient(180deg, #ff8a57, var(--kvz-danger));
+  box-shadow: 0 8px 0 var(--kvz-bark-deep), 0 20px 40px rgba(37, 23, 15, 0.44);
+  font-family: "Luckiest Guy", "Baloo 2", sans-serif;
+  font-size: clamp(1.75rem, 5vw, 4rem);
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 4px 0 var(--kvz-bark-deep);
+  transform: translate(-50%, -50%);
+  animation: kvz-warning-pop 1.8s var(--kvz-ease) both;
+  pointer-events: none;
+}
+
+.kvz-game-overlay.is-paused .kvz-game-final-warning {
+  animation-play-state: paused;
+}
+
+.kvz-game-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  padding: 18px;
+  place-items: center;
+  overflow: auto;
+  background: rgba(37, 23, 15, 0.68);
+  backdrop-filter: blur(4px);
+}
+
+.kvz-game-modal-backdrop[hidden] {
+  display: none !important;
+}
+
+.kvz-game-frame > .kvz-game-paused {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  padding: 18px;
+  place-items: center;
+  overflow: auto;
+  background: rgba(37, 23, 15, 0.68);
+  backdrop-filter: blur(4px);
+}
+
+.kvz-game-frame > .kvz-game-paused[hidden] {
+  display: none !important;
+}
+
+.kvz-game-paused > .kvz-game-panel {
+  display: grid;
+  width: min(560px, 100%);
+  gap: 16px;
+  justify-items: center;
+  text-align: center;
+}
+
+.kvz-game-modal {
+  position: relative;
+  display: grid;
+  width: min(590px, 100%);
+  max-height: 100%;
+  gap: 16px;
+  padding: clamp(22px, 4vw, 40px);
+  overflow: auto;
+  border: 5px solid var(--kvz-ink);
+  border-radius: 15px;
+  background:
+    radial-gradient(circle at 10% 12%, rgba(255, 130, 173, 0.26) 0 24px, transparent 25px),
+    radial-gradient(circle at 90% 88%, rgba(255, 225, 93, 0.4) 0 34px, transparent 35px),
+    linear-gradient(180deg, #fff9da, #efd28b);
+  box-shadow: 0 9px 0 var(--kvz-bark), 0 26px 52px rgba(20, 12, 7, 0.52);
+  text-align: center;
+  animation: kvz-modal-in 220ms var(--kvz-ease) both;
+}
+
+.kvz-game-modal h2,
+.kvz-game-modal p {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+}
+
+.kvz-game-modal h2 {
+  color: var(--kvz-grass-deep);
+  font-family: "Luckiest Guy", "Baloo 2", sans-serif;
+  font-size: clamp(2rem, 6vw, 3.8rem);
+  line-height: 0.95;
+  -webkit-text-stroke: 2px var(--kvz-ink);
+  paint-order: stroke fill;
+  text-shadow: 0 4px 0 var(--kvz-bark);
+}
+
+.kvz-game-paused .kvz-game-modal,
+.kvz-game-modal.paused {
+  background:
+    radial-gradient(circle at 50% 0, rgba(255, 225, 93, 0.5), transparent 12rem),
+    linear-gradient(180deg, #fff9da, #efd28b);
+}
+
+.kvz-game-victory-confetti {
+  position: absolute;
+  inset: 0;
+  z-index: 110;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.kvz-game-victory-confetti > i {
+  position: absolute;
+  top: -12%;
+  left: var(--x, 50%);
+  width: clamp(8px, 1vw, 14px);
+  height: clamp(13px, 1.6vw, 22px);
+  border: 2px solid var(--kvz-ink);
+  border-radius: 4px;
+  background: var(--color, var(--kvz-pink));
+  animation: kvz-confetti-fall var(--duration, 2.8s) linear var(--delay, 0s) infinite;
+}
+
+.kvz-game-orientation-hint {
+  position: absolute;
+  inset: 0;
+  z-index: 150;
+  display: none;
+  padding: 28px;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(255, 225, 93, 0.58), transparent 15rem),
+    linear-gradient(155deg, #9be36b, #4fad3d);
+  text-align: center;
+}
+
+.kvz-game-orientation-hint .kvz-game-panel {
+  display: grid;
+  max-width: 420px;
+  gap: 12px;
+  justify-items: center;
+}
+
+.kvz-game-orientation-hint::before {
+  width: 64px;
+  height: 102px;
+  border: 5px solid var(--kvz-ink);
+  border-radius: 13px;
+  content: "";
+  background: linear-gradient(145deg, var(--kvz-sky), var(--kvz-pink));
+  box-shadow: 0 7px 0 var(--kvz-bark);
+  animation: kvz-turn-device 2.4s ease-in-out infinite;
+}
+
+.kvz-game-overlay :is(button, [href], input, select, textarea, [tabindex]):focus-visible {
+  outline: 4px solid #fff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 7px var(--kvz-pink-deep), 0 5px 0 var(--kvz-bark);
+}
+
+.kvz-game-gameplay.is-paused .kvz-game-entity-layer *,
+.kvz-game-overlay.is-paused .kvz-game-gameplay .kvz-game-entity-layer * {
+  animation-play-state: paused !important;
+}
+
+.kvz-game-overlay.reduce-motion,
+.kvz-game-overlay.reduce-motion *,
+.kvz-game-overlay.reduce-motion *::before,
+.kvz-game-overlay.reduce-motion *::after {
+  scroll-behavior: auto !important;
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
+.kvz-game-overlay.screen-shake-enabled .kvz-game-frame.is-shaking {
+  animation: kvz-screen-shake 320ms ease both;
+}
+
+.kvz-game-overlay .is-paused .kvz-game-modal,
+.kvz-game-overlay.is-paused .kvz-game-modal {
+  opacity: 1;
+  animation: none;
+  transform: none;
+}
+
+@keyframes kvz-menu-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-7px) rotate(0deg);
+  }
+}
+
+@keyframes kvz-unit-idle {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-0.7deg) scale(1);
+  }
+  50% {
+    transform: translateY(-3%) rotate(0.7deg) scale(1.015, 0.99);
+  }
+}
+
+@keyframes kvz-producer-idle {
+  0%, 100% { transform: translateY(0) rotate(-1deg) scale(1); filter: drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25)); }
+  50% { transform: translateY(-5%) rotate(1deg) scale(1.025, 0.98); filter: brightness(1.08) drop-shadow(0 0 7px rgba(255, 225, 93, 0.72)); }
+}
+
+@keyframes kvz-guard-idle {
+  0%, 100% { transform: translateY(0) scale(1.02, 0.98); }
+  50% { transform: translateY(-1.5%) rotate(-0.8deg) scale(0.99, 1.01); }
+}
+
+@keyframes kvz-twin-idle {
+  0%, 100% { transform: translateY(0) rotate(-1.8deg); }
+  45% { transform: translateY(-4%) rotate(1.8deg) scale(1.025, 0.98); }
+  70% { transform: translateY(-2%) rotate(-0.8deg); }
+}
+
+@keyframes kvz-frost-idle {
+  0%, 100% { transform: translateY(0) rotate(-0.4deg); filter: drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25)); }
+  50% { transform: translateY(-3.5%) rotate(0.4deg) scale(1.01); filter: drop-shadow(0 0 6px rgba(153, 230, 237, 0.62)); }
+}
+
+@keyframes kvz-pop-idle {
+  0%, 100% { transform: translate(0, 0) rotate(-1deg) scale(1); }
+  35% { transform: translate(-1.5%, -3%) rotate(1deg) scale(1.025, 0.97); }
+  70% { transform: translate(1.5%, -1%) rotate(-1.5deg) scale(0.99, 1.02); }
+}
+
+@keyframes kvz-heavy-idle {
+  0%, 100% { transform: translateY(0) rotate(-0.4deg) scale(1.02, 0.98); }
+  50% { transform: translateY(-2%) rotate(0.4deg) scale(0.99, 1.01); }
+}
+
+@keyframes kvz-guide-idle {
+  0%, 100% { transform: translateY(0) rotate(-1deg); filter: drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25)); }
+  50% { transform: translateY(-4%) rotate(1deg) scale(1.015); filter: brightness(1.06) drop-shadow(0 0 7px rgba(168, 236, 54, 0.58)); }
+}
+
+@keyframes kvz-armored-step {
+  0%, 100% { transform: translateY(0) rotate(-1deg) scale(1.01, 0.99); }
+  50% { transform: translateY(-3.5%) rotate(1.2deg) scale(0.99, 1.015); }
+}
+
+@keyframes kvz-bucket-step {
+  0%, 100% { transform: translateY(0) rotate(-1.4deg) scale(1.025, 0.975); }
+  42% { transform: translateY(-2%) rotate(1.1deg) scale(0.99, 1.01); }
+  55% { transform: translateY(0.5%) rotate(0); }
+}
+
+@keyframes kvz-shield-step {
+  0%, 100% { transform: translateX(0) translateY(0) rotate(-0.5deg); }
+  50% { transform: translateX(-1.5%) translateY(-2.5%) rotate(0.8deg) scale(1.01, 0.99); }
+}
+
+@keyframes kvz-brute-charge {
+  0%, 100% { transform: translateX(1%) translateY(0) rotate(-2deg) scale(1.02, 0.98); }
+  50% { transform: translateX(-2%) translateY(-5%) rotate(2deg) scale(0.99, 1.015); }
+}
+
+@keyframes kvz-producer-pulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25)); }
+  50% { transform: translateY(-7%) scale(1.12, 0.92); filter: brightness(1.18) drop-shadow(0 0 12px var(--kvz-yellow)); }
+}
+
+@keyframes kvz-twin-volley {
+  0%, 100% { transform: translateX(0) scale(1); }
+  26%, 68% { transform: translateX(-7%) scale(0.96, 1.04); }
+  44%, 86% { transform: translateX(8%) scale(1.055, 0.96); }
+}
+
+@keyframes kvz-frost-cast {
+  0%, 100% { transform: rotate(0) scale(1); }
+  45% { transform: translateX(-5%) rotate(-3deg) scale(0.96, 1.04); filter: drop-shadow(0 0 11px var(--kvz-sky)); }
+  72% { transform: translateX(7%) rotate(2deg) scale(1.04, 0.97); }
+}
+
+@keyframes kvz-heavy-recoil {
+  0%, 100% { transform: translateX(0) scale(1); }
+  38% { transform: translateX(-10%) rotate(-2deg) scale(0.92, 1.07); }
+  72% { transform: translateX(10%) rotate(1deg) scale(1.08, 0.93); }
+}
+
+@keyframes kvz-guide-cast {
+  0%, 100% { transform: translateY(0) rotate(0) scale(1); }
+  45% { transform: translateY(-9%) rotate(-3deg) scale(1.08, 0.94); filter: brightness(1.12) drop-shadow(0 0 12px var(--kvz-lime)); }
+  72% { transform: translateY(-2%) rotate(2deg) scale(0.98, 1.03); }
+}
+
+@keyframes kvz-pop-finale {
+  0% { opacity: 1; transform: scale(1); }
+  45% { opacity: 1; transform: translateY(-8%) rotate(4deg) scale(1.22, 0.82); filter: brightness(1.35) drop-shadow(0 0 15px var(--kvz-pink)); }
+  100% { opacity: 0; transform: scale(1.7); }
+}
+
+@keyframes kvz-bucket-bash {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  48% { transform: translateX(-7%) translateY(3%) rotate(-3deg) scale(1.05, 0.95); }
+  70% { transform: translateX(-2%) rotate(1deg); }
+}
+
+@keyframes kvz-shield-bash {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  40% { transform: translateX(-12%) rotate(-1deg) scale(1.07, 0.96); }
+  67% { transform: translateX(-3%) rotate(0.5deg); }
+}
+
+@keyframes kvz-brute-bash {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  38% { transform: translateX(-14%) rotate(-4deg) scale(1.09, 0.94); }
+  62% { transform: translateX(-4%) rotate(2deg) scale(0.98, 1.02); }
+}
+
+@keyframes kvz-screen-shake {
+  0%,
+  100% { transform: translate3d(0, 0, 0); }
+  24% { transform: translate3d(-5px, 2px, 0) rotate(-0.2deg); }
+  48% { transform: translate3d(6px, -2px, 0) rotate(0.2deg); }
+  72% { transform: translate3d(-3px, 1px, 0); }
+}
+
+@keyframes kvz-effect-pop {
+  0% {
+    opacity: 0;
+    scale: 0.2;
+  }
+  35% {
+    opacity: 1;
+    scale: 1.35;
+  }
+  100% {
+    opacity: 0;
+    scale: 2.1;
+  }
+}
+
+@keyframes kvz-dog-walk {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1.5deg) scale(1, 1);
+  }
+  50% {
+    transform: translateY(-5%) rotate(1.5deg) scale(1.02, 0.97);
+  }
+}
+
+@keyframes kvz-cat-attack {
+  0% {
+    transform: translateX(0) scale(1);
+  }
+  38% {
+    transform: translateX(-7%) scale(0.96, 1.05);
+  }
+  70% {
+    transform: translateX(8%) scale(1.06, 0.96);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes kvz-cat-place {
+  0% {
+    opacity: 0;
+    transform: translateY(-35%) rotate(-6deg) scale(0.35);
+  }
+  62% {
+    opacity: 1;
+    transform: translateY(4%) rotate(2deg) scale(1.12, 0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0) scale(1);
+  }
+}
+
+@keyframes kvz-dog-attack {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+  44% {
+    transform: translateX(-9%) rotate(-2deg) scale(1.04, 0.97);
+  }
+  66% {
+    transform: translateX(-3%) rotate(1deg);
+  }
+}
+
+@keyframes kvz-orb-float {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: -2deg;
+  }
+  50% {
+    translate: 0 -8px;
+    rotate: 2deg;
+  }
+}
+
+@keyframes kvz-orb-collect {
+  0% {
+    opacity: 1;
+    scale: 1;
+    translate: 0 0;
+  }
+  65% {
+    opacity: 1;
+    scale: 1.25;
+    translate: calc(var(--collect-x, 0px) * 0.35) calc(var(--collect-y, 0px) * 0.35);
+  }
+  100% {
+    opacity: 0;
+    scale: 0.2;
+    translate: var(--collect-x, 0px) var(--collect-y, 0px);
+  }
+}
+
+@keyframes kvz-damage-flash {
+  0%,
+  100% {
+    filter: drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
+    transform: translateX(0);
+  }
+  30% {
+    filter: brightness(2) saturate(0) drop-shadow(0 0 8px #fff);
+    transform: translateX(-5%);
+  }
+  60% {
+    filter: brightness(1.5) sepia(1) saturate(5) hue-rotate(320deg);
+    transform: translateX(4%);
+  }
+}
+
+@keyframes kvz-defeated {
+  0% {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(-12%) rotate(-8deg) scale(1.06, 0.88);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(38%) rotate(8deg) scale(0.16);
+  }
+}
+
+@keyframes kvz-sweeper-run {
+  0% {
+    left: 0.3%;
+    transform: translateY(-50%) rotate(0);
+  }
+  100% {
+    left: 104%;
+    transform: translateY(-50%) rotate(5deg);
+  }
+}
+
+@keyframes kvz-invalid-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  30% {
+    transform: translateX(-4px);
+  }
+  70% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes kvz-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(28px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes kvz-warning-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.35) rotate(-4deg);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08) rotate(2deg);
+  }
+  28%,
+  76% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+}
+
+@keyframes kvz-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.93);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes kvz-confetti-fall {
+  0% {
+    translate: 0 -10%;
+    rotate: 0deg;
+  }
+  100% {
+    translate: var(--drift, 20px) 115vh;
+    rotate: 720deg;
+  }
+}
+
+@keyframes kvz-turn-device {
+  0%,
+  20%,
+  100% {
+    transform: rotate(0);
+  }
+  55%,
+  80% {
+    transform: rotate(90deg);
+  }
+}
+
+@media (max-width: 1180px) {
+  .kvz-game-menu-screen {
+    grid-template-columns: minmax(280px, 0.92fr) minmax(320px, 1.08fr);
+    gap: 24px;
+    padding: 24px;
+  }
+
+  .kvz-game-menu-grid,
+  .kvz-game-codex-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .kvz-game-card-tray {
+    grid-auto-columns: minmax(112px, 1fr);
+  }
+}
+
+@media (max-width: 860px) {
+  .kvz-game-frame {
+    height: 100%;
+    min-height: 390px;
+    border-width: 4px;
+    border-radius: 13px;
+  }
+
+  .kvz-game-topbar {
+    min-height: 52px;
+    padding-block: 5px 7px;
+  }
+
+  .kvz-game-brand-mark::before {
+    width: 32px;
+    height: 32px;
+  }
+
+  .kvz-game-icon-button {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+  }
+
+  .kvz-game-menu-screen {
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: 24px;
+    padding: 22px;
+    text-align: center;
+  }
+
+  .kvz-game-menu-hero {
+    justify-items: center;
+  }
+
+  .kvz-game-menu-art {
+    width: min(520px, 90%);
+  }
+
+  .kvz-game-menu-art img {
+    max-height: 380px;
+    aspect-ratio: 1.35;
+  }
+
+  .kvz-game-menu-grid,
+  .kvz-game-codex-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .kvz-game-settings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kvz-game-hud {
+    grid-template-columns: minmax(140px, 0.8fr) minmax(190px, 1.4fr) auto;
+    gap: 7px;
+    min-height: 65px;
+    padding: 5px 7px 7px;
+  }
+
+  .kvz-game-energy-meter {
+    min-width: 104px;
+    min-height: 42px;
+    padding-left: 43px;
+    font-size: 1.05rem;
+  }
+
+  .kvz-game-energy-meter::before {
+    width: 31px;
+    height: 31px;
+  }
+
+  .kvz-game-card-tray {
+    grid-auto-columns: 108px;
+    min-height: 91px;
+    padding: 5px 7px 7px;
+  }
+
+  .kvz-game-card {
+    min-width: 104px;
+    height: 77px;
+    grid-template-columns: 47px 1fr;
+  }
+
+  .kvz-game-card-image {
+    width: 47px;
+    height: 65px;
+  }
+
+  .kvz-game-battlefield {
+    width: min(100%, 1040px);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 620px) {
+  .kvz-game-overlay {
+    padding:
+      max(3px, env(safe-area-inset-top))
+      max(3px, env(safe-area-inset-right))
+      max(3px, env(safe-area-inset-bottom))
+      max(3px, env(safe-area-inset-left));
+  }
+
+  .kvz-game-frame {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    border-width: 3px;
+    border-radius: 9px;
+    box-shadow: 0 3px 0 var(--kvz-bark-deep);
+  }
+
+  .kvz-game-frame::after {
+    display: none;
+  }
+
+  .kvz-game-topbar {
+    min-height: 42px;
+    padding: 3px 7px 5px;
+    border-bottom-width: 3px;
+  }
+
+  .kvz-game-brand-mark {
+    font-size: 0.9rem;
+  }
+
+  .kvz-game-brand-mark::before {
+    width: 28px;
+    height: 28px;
+    border-width: 2px;
+  }
+
+  .kvz-game-icon-button {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    border-width: 2px;
+    border-radius: 8px;
+    box-shadow: 0 2px 0 var(--kvz-bark);
+  }
+
+  .kvz-game-icon-button svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .kvz-game-gameplay {
+    display: grid;
+    grid-template-columns: minmax(96px, 15vw) 1fr;
+    grid-template-rows: 54px minmax(0, 1fr);
+  }
+
+  .kvz-game-hud {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    min-height: 54px;
+    border-bottom-width: 3px;
+  }
+
+  .kvz-game-energy-meter {
+    min-width: 90px;
+    min-height: 36px;
+    padding: 3px 7px 3px 36px;
+    border-width: 2px;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 0 var(--kvz-bark);
+  }
+
+  .kvz-game-energy-meter::before {
+    width: 27px;
+    height: 27px;
+    border-width: 2px;
+  }
+
+  .kvz-game-card-tray {
+    grid-column: 1;
+    grid-row: 2;
+    grid-auto-columns: auto;
+    grid-auto-flow: row;
+    grid-auto-rows: 62px;
+    min-width: 0;
+    min-height: 0;
+    padding: 5px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    touch-action: pan-y;
+    border-right: 3px solid var(--kvz-ink);
+    border-bottom: 0;
+  }
+
+  .kvz-game-card {
+    width: 100%;
+    min-width: 0;
+    height: 58px;
+    grid-template-columns: 38px 1fr;
+    grid-template-rows: minmax(0, 1fr) 18px;
+    gap: 1px 4px;
+    border-width: 2px;
+    border-radius: 7px;
+    box-shadow: 0 2px 0 var(--kvz-bark);
+  }
+
+  .kvz-game-card-image {
+    width: 38px;
+    height: 46px;
+    grid-row: 1 / 3;
+    border-width: 1px;
+  }
+
+  .kvz-game-card > strong {
+    grid-row: 1;
+    align-self: center;
+  }
+
+  .kvz-game-card-description {
+    display: none;
+  }
+
+  .kvz-game-card-tray.is-dense .kvz-game-card-description {
+    display: none;
+  }
+
+  .kvz-game-card-cost {
+    grid-row: 2;
+    min-width: 27px;
+    height: 18px;
+    min-height: 18px;
+    padding: 0 3px;
+    border-width: 1px;
+  }
+
+  .kvz-game-battlefield-wrap {
+    grid-column: 2;
+    grid-row: 2;
+    padding: 3px;
+  }
+
+  .kvz-game-battlefield {
+    width: min(100%, 1080px, 190cqh);
+    min-width: 0;
+    border-width: 3px;
+    border-radius: 8px;
+    box-shadow: 0 3px 0 var(--kvz-bark);
+  }
+
+  .kvz-game-menu-screen {
+    grid-template-columns: minmax(250px, 0.9fr) minmax(280px, 1.1fr);
+    align-content: center;
+    gap: 20px;
+    padding: 14px 24px;
+    text-align: left;
+  }
+
+  .kvz-game-menu-hero {
+    justify-items: stretch;
+    gap: 8px;
+  }
+
+  .kvz-game-title {
+    font-size: clamp(2rem, 7vw, 3.7rem);
+    -webkit-text-stroke-width: 2px;
+    text-shadow: 0 4px 0 var(--kvz-bark);
+  }
+
+  .kvz-game-subtitle {
+    font-size: 1rem;
+  }
+
+  .kvz-game-menu-actions {
+    gap: 6px;
+  }
+
+  .kvz-game-button {
+    min-height: 39px;
+    padding: 6px 10px;
+    border-width: 3px;
+    box-shadow: 0 3px 0 var(--kvz-bark);
+    font-size: 0.82rem;
+  }
+
+  .kvz-game-menu-art {
+    width: min(100%, 500px);
+    border-width: 3px;
+    border-radius: 11px;
+    box-shadow: 0 5px 0 var(--kvz-bark), 0 12px 20px var(--kvz-shadow);
+  }
+
+  .kvz-game-menu-art img {
+    width: 100%;
+    max-height: calc(100dvh - 86px);
+    aspect-ratio: 1.2;
+  }
+
+  .kvz-game-toast-stack {
+    top: 50px;
+  }
+}
+
+@media (max-width: 620px) {
+  .kvz-game-overlay {
+    padding: 0;
+  }
+
+  .kvz-game-frame {
+    width: 100%;
+    height: 100%;
+    min-height: 360px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .kvz-game-frame::after {
+    display: none;
+  }
+
+  .kvz-game-topbar {
+    grid-template-columns: 1fr auto;
+    padding-right: max(7px, env(safe-area-inset-right));
+    padding-left: max(7px, env(safe-area-inset-left));
+  }
+
+  .kvz-game-topbar > :nth-child(2) {
+    display: none;
+  }
+
+  .kvz-game-menu-screen {
+    padding: 18px 14px 28px;
+  }
+
+  .kvz-game-menu-actions,
+  .kvz-game-menu-grid,
+  .kvz-game-codex-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kvz-game-menu-actions .kvz-game-button,
+  .kvz-game-menu-actions .kvz-game-button:first-child,
+  .kvz-game-menu-actions .kvz-game-button:last-child {
+    grid-column: auto;
+  }
+
+  .kvz-game-codex-card {
+    grid-template-columns: 112px 1fr;
+  }
+
+  .kvz-game-codex-image {
+    grid-row: 1 / 5;
+  }
+
+  .kvz-game-codex-stats {
+    align-self: start;
+  }
+
+  .kvz-game-range-row {
+    grid-template-columns: 1fr auto;
+  }
+
+  .kvz-game-range-row input[type="range"] {
+    grid-column: 1 / -1;
+  }
+
+  .kvz-game-hud {
+    grid-template-columns: 1fr 1fr auto;
+  }
+
+  .kvz-game-hud-status {
+    min-width: 0;
+  }
+
+  .kvz-game-energy-meter {
+    min-width: 86px;
+  }
+
+  .kvz-game-wave-meter > span {
+    font-size: 0.74rem;
+  }
+
+  .kvz-game-battlefield-wrap {
+    place-items: center start;
+    overflow: auto hidden;
+  }
+
+  .kvz-game-battlefield {
+    min-width: 680px;
+  }
+
+  .kvz-game-toast-stack {
+    top: 58px;
+    right: 8px;
+    width: calc(100% - 16px);
+  }
+}
+
+@media (orientation: portrait) and (max-width: 760px) {
+  .kvz-game-gameplay:not([hidden]) ~ .kvz-game-orientation-hint,
+  .kvz-game-gameplay:not([hidden]) .kvz-game-orientation-hint,
+  .kvz-game-overlay.is-playing .kvz-game-orientation-hint {
+    display: grid;
+  }
+}
+
+@media (pointer: coarse) {
+  .kvz-game-button {
+    min-height: 52px;
+  }
+
+  .kvz-game-icon-button {
+    width: 46px;
+    min-width: 46px;
+    height: 46px;
+  }
+
+  .kvz-game-card {
+    min-width: 106px;
+  }
+
+  .kvz-game-cell {
+    cursor: default;
+  }
+
+  .kvz-game-cell.is-placement-valid {
+    background: rgba(168, 236, 54, 0.12);
+    box-shadow: inset 0 0 0 2px rgba(239, 255, 215, 0.38);
+  }
+
+  .kvz-game-cell.is-placement-unavailable {
+    background: rgba(68, 40, 23, 0.055);
+  }
+
+  .kvz-game-energy-orb {
+    min-width: 46px;
+    min-height: 46px;
+  }
+}
+
+@media (pointer: coarse) and (orientation: landscape) and (max-height: 620px) {
+  .kvz-game-button {
+    min-height: 44px;
+  }
+
+  .kvz-game-icon-button {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+  }
+
+  .kvz-game-card {
+    min-width: 0;
+  }
+
+  .kvz-game-energy-orb {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 620px) {
+  .kvz-game-battlefield {
+    width: min(100%, 1080px, 190cqh);
+    min-width: 0;
+  }
+
+  .kvz-game-card > .kvz-game-image-fallback {
+    width: 38px;
+    height: 49px;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .kvz-game-cell {
+    border-color: rgba(37, 23, 15, 0.38);
+  }
+
+  .kvz-game-healthbar,
+  .kvz-game-armorbar,
+  .kvz-game-shieldbar {
+    height: 9px;
+  }
+
+  .kvz-game-card.insufficient,
+  .kvz-game-card.is-insufficient {
+    opacity: 0.68;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kvz-game-overlay,
+  .kvz-game-overlay *,
+  .kvz-game-overlay *::before,
+  .kvz-game-overlay *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .kvz-game-unit-sprite,
+  .kvz-game-energy-orb,
+  .kvz-game-orientation-hint::before {
+    animation: none !important;
+  }
+}

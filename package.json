@@ -1,0 +1,12 @@
+{
+  "name": "kit-vs-zomb-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test game/tests/*.test.js",
+    "check": "node tools/validate.mjs",
+    "build": "node tools/build.mjs",
+    "start": "node tools/serve.mjs"
+  }
+}
