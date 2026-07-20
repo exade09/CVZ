@@ -1,0 +1,4 @@
+.tools/
+.vercel/
+node_modules/
+tmp/

@@ -62,46 +62,46 @@ export class GameRenderer {
   build() {
     const { level } = this.engine;
     this.container.innerHTML = `
-      <section class="kvz-game-gameplay" aria-label="${level.name} battlefield">
-        <div class="kvz-game-hud">
-          <div class="kvz-game-hud-status">
-            <div class="kvz-game-energy-meter" aria-label="Paw Energy"><span data-energy>0</span></div>
+      <section class="cvz-game-gameplay" aria-label="${level.name} battlefield">
+        <div class="cvz-game-hud">
+          <div class="cvz-game-hud-status">
+            <div class="cvz-game-energy-meter" aria-label="Paw Energy"><span data-energy>0</span></div>
           </div>
-          <div class="kvz-game-wave-meter">
+          <div class="cvz-game-wave-meter">
             <strong data-level-name>${level.name}</strong>
             <span data-wave-label>Wave 1 of ${level.waves.length}</span>
-            <div class="kvz-game-wave-track" role="progressbar" aria-label="Level progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+            <div class="cvz-game-wave-track" role="progressbar" aria-label="Level progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
           </div>
-          <div class="kvz-game-hud-status">
-            <button class="kvz-game-icon-button" type="button" data-game-action="speed" aria-label="Switch to fast speed" title="Game speed">1x</button>
-            <button class="kvz-game-icon-button" type="button" data-game-action="pause" aria-label="Pause game" title="Pause">II</button>
-          </div>
-        </div>
-        <div class="kvz-game-card-tray" aria-label="Cat defender cards"></div>
-        <div class="kvz-game-battlefield-wrap">
-          <div class="kvz-game-battlefield" aria-label="Five lane garden defense board">
-            <div class="kvz-game-grid" role="group" aria-label="Five lanes with nine garden cells each"></div>
-            <div class="kvz-game-entity-layer" aria-live="off"></div>
+          <div class="cvz-game-hud-status">
+            <button class="cvz-game-icon-button" type="button" data-game-action="speed" aria-label="Switch to fast speed" title="Game speed">1x</button>
+            <button class="cvz-game-icon-button" type="button" data-game-action="pause" aria-label="Pause game" title="Pause">II</button>
           </div>
         </div>
-        <div class="kvz-game-orientation-hint" aria-hidden="true">
-          <div class="kvz-game-panel" role="status" aria-live="assertive" tabindex="-1">
+        <div class="cvz-game-card-tray" aria-label="Cat defender cards"></div>
+        <div class="cvz-game-battlefield-wrap">
+          <div class="cvz-game-battlefield" aria-label="Five lane garden defense board">
+            <div class="cvz-game-grid" role="group" aria-label="Five lanes with nine garden cells each"></div>
+            <div class="cvz-game-entity-layer" aria-live="off"></div>
+          </div>
+        </div>
+        <div class="cvz-game-orientation-hint" aria-hidden="true">
+          <div class="cvz-game-panel" role="status" aria-live="assertive" tabindex="-1">
             <h2>Turn Your Device</h2>
-            <p>The garden is paused. Landscape view keeps every lane readable and easy to tap.</p>
+            <p>The garden is paused. Landscape view keeps every lane readable and easy to tap</p>
           </div>
         </div>
       </section>`;
 
-    this.gameplay = /** @type {HTMLElement} */ (this.container.querySelector(".kvz-game-gameplay"));
+    this.gameplay = /** @type {HTMLElement} */ (this.container.querySelector(".cvz-game-gameplay"));
     this.energyNode = /** @type {HTMLElement} */ (this.container.querySelector("[data-energy]"));
     this.waveLabel = /** @type {HTMLElement} */ (this.container.querySelector("[data-wave-label]"));
-    this.waveTrack = /** @type {HTMLElement} */ (this.container.querySelector(".kvz-game-wave-track"));
+    this.waveTrack = /** @type {HTMLElement} */ (this.container.querySelector(".cvz-game-wave-track"));
     this.waveFill = /** @type {HTMLElement} */ (this.waveTrack.querySelector("span"));
     this.speedButton = /** @type {HTMLButtonElement} */ (this.container.querySelector("[data-game-action='speed']"));
-    this.cardTray = /** @type {HTMLElement} */ (this.container.querySelector(".kvz-game-card-tray"));
-    this.grid = /** @type {HTMLElement} */ (this.container.querySelector(".kvz-game-grid"));
-    this.battlefield = /** @type {HTMLElement} */ (this.container.querySelector(".kvz-game-battlefield"));
-    this.entityLayer = /** @type {HTMLElement} */ (this.container.querySelector(".kvz-game-entity-layer"));
+    this.cardTray = /** @type {HTMLElement} */ (this.container.querySelector(".cvz-game-card-tray"));
+    this.grid = /** @type {HTMLElement} */ (this.container.querySelector(".cvz-game-grid"));
+    this.battlefield = /** @type {HTMLElement} */ (this.container.querySelector(".cvz-game-battlefield"));
+    this.entityLayer = /** @type {HTMLElement} */ (this.container.querySelector(".cvz-game-entity-layer"));
     this.cells = [];
     this.cards = new Map();
     this.sweepers = [];
@@ -109,7 +109,7 @@ export class GameRenderer {
     this.buildCards();
     this.buildSweepers();
     this.placementPreview = document.createElement("img");
-    this.placementPreview.className = "kvz-game-placement-preview";
+    this.placementPreview.className = "cvz-game-placement-preview";
     this.placementPreview.alt = "Selected cat placement preview";
     this.placementPreview.hidden = true;
     this.entityLayer.append(this.placementPreview);
@@ -125,7 +125,7 @@ export class GameRenderer {
       for (let column = 0; column < this.engine.level.columnCount; column += 1) {
         const cell = document.createElement("button");
         cell.type = "button";
-        cell.className = "kvz-game-cell";
+        cell.className = "cvz-game-cell";
         cell.dataset.lane = String(lane);
         cell.dataset.column = String(column);
         const label = `Lane ${lane + 1}, garden cell ${column + 1}`;
@@ -147,15 +147,15 @@ export class GameRenderer {
       if (!definition) return;
       const button = document.createElement("button");
       button.type = "button";
-      button.className = "kvz-game-card";
+      button.className = "cvz-game-card";
       button.dataset.defenderId = defenderId;
       button.setAttribute("aria-label", `${index + 1}. ${definition.name}. ${definition.cost} Paw Energy. ${definition.ability}`);
       button.innerHTML = `
-        <img class="kvz-game-card-image" src="${definition.assets.card}" alt="${definition.name} card portrait" decoding="async" />
+        <img class="cvz-game-card-image" src="${definition.assets.card}" alt="${definition.name} card portrait" decoding="async" />
         <strong>${definition.name}</strong>
-        <span class="kvz-game-card-cost">${definition.cost}</span>
-        <span class="kvz-game-card-description">${definition.ability}</span>
-        <span class="kvz-game-card-cooldown" aria-hidden="true"></span>`;
+        <span class="cvz-game-card-cost">${definition.cost}</span>
+        <span class="cvz-game-card-description">${definition.ability}</span>
+        <span class="cvz-game-card-cooldown" aria-hidden="true"></span>`;
       fragment.append(button);
       this.cards.set(defenderId, button);
     });
@@ -165,7 +165,7 @@ export class GameRenderer {
   buildSweepers() {
     for (let lane = 0; lane < this.engine.level.laneCount; lane += 1) {
       const sweeper = document.createElement("div");
-      sweeper.className = "kvz-game-sweeper";
+      sweeper.className = "cvz-game-sweeper";
       sweeper.style.top = `${(lane + 0.5) * 20}%`;
       sweeper.setAttribute("aria-label", `Lane ${lane + 1} Yarn Sweeper ready`);
       this.entityLayer.append(sweeper);
@@ -188,13 +188,13 @@ export class GameRenderer {
       return;
     }
 
-    const card = /** @type {HTMLButtonElement | null} */ (target.closest(".kvz-game-card"));
+    const card = /** @type {HTMLButtonElement | null} */ (target.closest(".cvz-game-card"));
     if (card?.dataset.defenderId && !card.disabled) {
       this.engine.selectDefender(card.dataset.defenderId);
       return;
     }
 
-    const cell = /** @type {HTMLButtonElement | null} */ (target.closest(".kvz-game-cell"));
+    const cell = /** @type {HTMLButtonElement | null} */ (target.closest(".cvz-game-cell"));
     if (cell) {
       this.setRovingCell(cell);
       const lane = Number(cell.dataset.lane);
@@ -204,13 +204,13 @@ export class GameRenderer {
       return;
     }
 
-    const orb = /** @type {HTMLButtonElement | null} */ (target.closest(".kvz-game-energy-orb"));
+    const orb = /** @type {HTMLButtonElement | null} */ (target.closest(".cvz-game-energy-orb"));
     if (orb?.dataset.orbId) this.engine.collectEnergy(orb.dataset.orbId);
   }
 
   /** @param {PointerEvent} event */
   handlePointerOver(event) {
-    const cell = event.target instanceof Element ? event.target.closest(".kvz-game-cell") : null;
+    const cell = event.target instanceof Element ? event.target.closest(".cvz-game-cell") : null;
     if (!(cell instanceof HTMLButtonElement) || !cell.dataset.lane || !cell.dataset.column) return;
     const selectedId = this.engine.getState().selectedDefenderId;
     if (!selectedId) return;
@@ -228,7 +228,7 @@ export class GameRenderer {
 
   /** @param {PointerEvent} event */
   handlePointerOut(event) {
-    const cell = event.target instanceof Element ? event.target.closest(".kvz-game-cell") : null;
+    const cell = event.target instanceof Element ? event.target.closest(".cvz-game-cell") : null;
     if (!(cell instanceof HTMLElement)) return;
     cell.classList.remove("is-preview", "is-valid", "is-invalid");
     this.placementPreview.hidden = true;
@@ -240,7 +240,7 @@ export class GameRenderer {
     void cell.offsetWidth;
     cell.classList.add("is-invalid");
     const baseLabel = cell.dataset.baseLabel ?? "Garden cell";
-    cell.setAttribute("aria-label", `${baseLabel}. Placement unavailable: ${reason.replaceAll("-", " ")}.`);
+    cell.setAttribute("aria-label", `${baseLabel}. Placement unavailable: ${reason.replaceAll("-", " ")}`);
     this.scheduleEffect(() => {
       cell.classList.remove("is-invalid");
       cell.setAttribute("aria-label", baseLabel);
@@ -262,7 +262,7 @@ export class GameRenderer {
 
   /** @param {KeyboardEvent} event */
   handleGridKeydown(event) {
-    const cell = event.target instanceof Element ? event.target.closest(".kvz-game-cell") : null;
+    const cell = event.target instanceof Element ? event.target.closest(".cvz-game-cell") : null;
     if (!(cell instanceof HTMLButtonElement)) return;
     const lane = Number(cell.dataset.lane);
     const column = Number(cell.dataset.column);
@@ -294,7 +294,7 @@ export class GameRenderer {
   render(state) {
     const displayedEnergy = Math.floor(state.energy);
     setText(this.energyNode, String(displayedEnergy));
-    this.energyNode.closest(".kvz-game-energy-meter")?.setAttribute("aria-label", `Paw Energy: ${displayedEnergy}`);
+    this.energyNode.closest(".cvz-game-energy-meter")?.setAttribute("aria-label", `Paw Energy: ${displayedEnergy}`);
     const waveNumber = this.engine.getCurrentWaveNumber();
     setText(this.waveLabel, `Wave ${waveNumber} of ${state.level.waves.length}`);
     const progress = this.engine.getWaveProgress();
@@ -336,11 +336,11 @@ export class GameRenderer {
       card.setAttribute("aria-disabled", String(cooling || insufficient));
       card.disabled = cooling || insufficient;
       card.title = cooling
-        ? `${definition.name} is ready in ${Math.ceil(remaining / 1000)} seconds.`
+        ? `${definition.name} is ready in ${Math.ceil(remaining / 1000)} seconds`
         : insufficient
-          ? `${definition.name} needs ${definition.cost} Paw Energy.`
+          ? `${definition.name} needs ${definition.cost} Paw Energy`
           : definition.ability;
-      const overlay = /** @type {HTMLElement} */ (card.querySelector(".kvz-game-card-cooldown"));
+      const overlay = /** @type {HTMLElement} */ (card.querySelector(".cvz-game-card-cooldown"));
       overlay.style.setProperty("--cooldown-inset", `${Math.round((1 - cooldown) * 100)}%`);
       setText(overlay, cooling ? `${Math.ceil(remaining / 1000)}s` : "");
     }
@@ -434,7 +434,7 @@ export class GameRenderer {
       const armorBroken = enemy.maxArmor > 0 && enemy.armor <= 0;
       toggle(node, "is-shield-broken", shieldBroken);
       toggle(node, "is-armor-broken", armorBroken);
-      const sprite = /** @type {HTMLImageElement} */ (node.querySelector(".kvz-game-unit-sprite"));
+      const sprite = /** @type {HTMLImageElement} */ (node.querySelector(".cvz-game-unit-sprite"));
       let assetKey = enemy.definition.assetKey;
       if (shieldBroken) {
         assetKey = armorBroken
@@ -455,23 +455,23 @@ export class GameRenderer {
     const node = document.createElement("div");
     const behaviorClass = String(entity.definition.behaviorType).replace(/[^a-z0-9-]/gi, "-");
     const unitClass = String(entity.definition.id).replace(/[^a-z0-9-]/gi, "-");
-    node.className = `kvz-game-${type} behavior-${behaviorClass} unit-${unitClass}`;
+    node.className = `cvz-game-${type} behavior-${behaviorClass} unit-${unitClass}`;
     node.dataset.unitId = entity.definition.id;
     const name = entity.definition.name;
     const asset = entity.definition.assets.unit;
     node.innerHTML = `
-      <div class="kvz-game-healthbar" aria-hidden="true"><span></span></div>
-      ${entity.maxArmor > 0 ? '<div class="kvz-game-armorbar" aria-hidden="true"><span></span></div>' : ""}
-      ${entity.maxShieldHealth > 0 ? '<div class="kvz-game-shieldbar" aria-hidden="true"><span></span></div>' : ""}
-      <img class="kvz-game-unit-sprite" src="${asset}" alt="${name} ${type === "defender" ? "cat defender" : "zombie dog enemy"}" draggable="false" decoding="async" />`;
+      <div class="cvz-game-healthbar" aria-hidden="true"><span></span></div>
+      ${entity.maxArmor > 0 ? '<div class="cvz-game-armorbar" aria-hidden="true"><span></span></div>' : ""}
+      ${entity.maxShieldHealth > 0 ? '<div class="cvz-game-shieldbar" aria-hidden="true"><span></span></div>' : ""}
+      <img class="cvz-game-unit-sprite" src="${asset}" alt="${name} ${type === "defender" ? "cat defender" : "zombie dog enemy"}" draggable="false" decoding="async" />`;
     return node;
   }
 
   /** @param {HTMLElement} node @param {any} entity */
   updateBars(node, entity) {
-    const health = /** @type {HTMLElement | null} */ (node.querySelector(".kvz-game-healthbar span"));
-    const armor = /** @type {HTMLElement | null} */ (node.querySelector(".kvz-game-armorbar span"));
-    const shield = /** @type {HTMLElement | null} */ (node.querySelector(".kvz-game-shieldbar span"));
+    const health = /** @type {HTMLElement | null} */ (node.querySelector(".cvz-game-healthbar span"));
+    const armor = /** @type {HTMLElement | null} */ (node.querySelector(".cvz-game-armorbar span"));
+    const shield = /** @type {HTMLElement | null} */ (node.querySelector(".cvz-game-shieldbar span"));
     health?.style.setProperty("--value", String(ratio(entity.health / entity.maxHealth)));
     armor?.style.setProperty("--value", String(ratio(entity.armor / entity.maxArmor)));
     shield?.style.setProperty("--value", String(ratio(entity.shieldHealth / entity.maxShieldHealth)));
@@ -485,7 +485,7 @@ export class GameRenderer {
       let node = this.projectileNodes.get(projectile.id);
       if (!node) {
         node = this.projectilePool.pop() ?? document.createElement("div");
-        node.className = `kvz-game-projectile ${projectile.kind === "frost" ? "is-frost" : projectile.kind === "heavy" ? "is-heavy" : ""}`;
+        node.className = `cvz-game-projectile ${projectile.kind === "frost" ? "is-frost" : projectile.kind === "heavy" ? "is-heavy" : ""}`;
         node.setAttribute("aria-hidden", "true");
         this.projectileNodes.set(projectile.id, node);
         this.entityLayer.append(node);
@@ -509,7 +509,7 @@ export class GameRenderer {
       if (!node) {
         node = document.createElement("button");
         node.type = "button";
-        node.className = "kvz-game-energy-orb";
+        node.className = "cvz-game-energy-orb";
         node.dataset.orbId = orb.id;
         node.setAttribute("aria-label", `Collect ${orb.value} Paw Energy`);
         this.orbNodes.set(orb.id, node);
@@ -554,7 +554,7 @@ export class GameRenderer {
       const node = this.orbNodes.get(id);
       if (!node) return;
       const orbRect = node.getBoundingClientRect();
-      const meterRect = this.energyNode.closest(".kvz-game-energy-meter")?.getBoundingClientRect();
+      const meterRect = this.energyNode.closest(".cvz-game-energy-meter")?.getBoundingClientRect();
       if (meterRect) {
         node.style.setProperty("--collect-x", `${meterRect.left + meterRect.width / 2 - (orbRect.left + orbRect.width / 2)}px`);
         node.style.setProperty("--collect-y", `${meterRect.top + meterRect.height / 2 - (orbRect.top + orbRect.height / 2)}px`);
@@ -602,7 +602,7 @@ export class GameRenderer {
   /** @param {number} x @param {number} lane @param {string} kind */
   spawnEffect(x, lane, kind) {
     const effect = document.createElement("i");
-    effect.className = `kvz-game-effect ${kind}`;
+    effect.className = `cvz-game-effect ${kind}`;
     effect.style.left = `${(x / this.engine.level.columnCount) * 100}%`;
     effect.style.top = `${(lane + 0.5) * 20}%`;
     effect.setAttribute("aria-hidden", "true");

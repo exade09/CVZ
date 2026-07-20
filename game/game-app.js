@@ -22,11 +22,11 @@ import {
   saveSave,
 } from "./storage/save-store.js";
 
-const HISTORY_STATE_KEY = "kvzGameOpen";
+const HISTORY_STATE_KEY = "cvzGameOpen";
 
 const MENU_ASSETS = [
-  new URL("../kvz-avatar.jpg", import.meta.url).href,
-  new URL("../kvz-fon.png", import.meta.url).href,
+  new URL("../cvz-brand-hero.jpg", import.meta.url).href,
+  new URL("../cvz-fon.png", import.meta.url).href,
   ...DEFENDERS.slice(0, 3).map((definition) => definition.assets.card),
 ];
 
@@ -72,39 +72,39 @@ export class GardenGameApp {
 
   createRoot() {
     this.root = document.createElement("div");
-    this.root.id = "kvz-game-root";
-    this.root.className = "kvz-game-overlay";
+    this.root.id = "cvz-game-root";
+    this.root.className = "cvz-game-overlay";
     this.root.hidden = true;
     this.root.setAttribute("role", "dialog");
     this.root.setAttribute("aria-modal", "true");
-    this.root.setAttribute("aria-label", "Paws and Peril game");
+    this.root.setAttribute("aria-label", "CVZ Cat Vs Zomb game");
     this.root.innerHTML = `
-      <div class="kvz-game-frame">
-        <header class="kvz-game-topbar">
-          <div class="kvz-game-brand-mark">
-            <button class="kvz-game-icon-button" type="button" data-app-action="back" aria-label="Back to main menu" hidden>&larr;</button>
-            <span>Paws &amp; Peril</span>
+      <div class="cvz-game-frame">
+        <header class="cvz-game-topbar">
+          <div class="cvz-game-brand-mark">
+            <button class="cvz-game-icon-button" type="button" data-app-action="back" aria-label="Back to main menu" hidden>&larr;</button>
+            <span>CVZ</span>
           </div>
           <strong data-screen-title>Garden Gate</strong>
-          <div class="kvz-game-hud-status">
-            <button class="kvz-game-icon-button" type="button" data-app-action="fullscreen" aria-label="Enter full screen" title="Full screen">&#x26F6;</button>
-            <button class="kvz-game-icon-button" type="button" data-app-action="close" aria-label="Return to website" title="Return to website">&#x2715;</button>
+          <div class="cvz-game-hud-status">
+            <button class="cvz-game-icon-button" type="button" data-app-action="fullscreen" aria-label="Enter full screen" title="Full screen">&#x26F6;</button>
+            <button class="cvz-game-icon-button" type="button" data-app-action="close" aria-label="Return to website" title="Return to website">&#x2715;</button>
           </div>
         </header>
-        <main class="kvz-game-screen" tabindex="-1"></main>
-        <div class="kvz-game-toast-stack" aria-live="polite" aria-atomic="false"></div>
-        <div class="kvz-game-modal-backdrop" hidden></div>
-        <div class="kvz-game-victory-confetti" aria-hidden="true"></div>
+        <main class="cvz-game-screen" tabindex="-1"></main>
+        <div class="cvz-game-toast-stack" aria-live="polite" aria-atomic="false"></div>
+        <div class="cvz-game-modal-backdrop" hidden></div>
+        <div class="cvz-game-victory-confetti" aria-hidden="true"></div>
       </div>`;
     document.body.append(this.root);
-    this.screen = /** @type {HTMLElement} */ (this.root.querySelector(".kvz-game-screen"));
-    this.topbar = /** @type {HTMLElement} */ (this.root.querySelector(".kvz-game-topbar"));
+    this.screen = /** @type {HTMLElement} */ (this.root.querySelector(".cvz-game-screen"));
+    this.topbar = /** @type {HTMLElement} */ (this.root.querySelector(".cvz-game-topbar"));
     this.screenTitle = /** @type {HTMLElement} */ (this.root.querySelector("[data-screen-title]"));
     this.backButton = /** @type {HTMLButtonElement} */ (this.root.querySelector("[data-app-action='back']"));
     this.fullscreenButton = /** @type {HTMLButtonElement} */ (this.root.querySelector("[data-app-action='fullscreen']"));
-    this.modalBackdrop = /** @type {HTMLElement} */ (this.root.querySelector(".kvz-game-modal-backdrop"));
-    this.toastStack = /** @type {HTMLElement} */ (this.root.querySelector(".kvz-game-toast-stack"));
-    this.confetti = /** @type {HTMLElement} */ (this.root.querySelector(".kvz-game-victory-confetti"));
+    this.modalBackdrop = /** @type {HTMLElement} */ (this.root.querySelector(".cvz-game-modal-backdrop"));
+    this.toastStack = /** @type {HTMLElement} */ (this.root.querySelector(".cvz-game-toast-stack"));
+    this.confetti = /** @type {HTMLElement} */ (this.root.querySelector(".cvz-game-victory-confetti"));
     this.root.addEventListener("click", this.boundRootClick);
     this.root.addEventListener("input", this.boundRootInput);
     this.root.addEventListener("error", this.boundImageError, true);
@@ -123,23 +123,23 @@ export class GardenGameApp {
     this.opened = true;
     this.previousFocus = trigger instanceof HTMLElement ? trigger : document.activeElement instanceof HTMLElement ? document.activeElement : null;
     this.root.hidden = false;
-    document.body.classList.add("kvz-game-open");
+    document.body.classList.add("cvz-game-open");
     this.ensureHistoryEntry();
 
     if (!this.loaded) {
-      this.showLoading("Opening the garden...");
+      this.showLoading("Opening the garden");
       if (!this.loadingPromise) {
-        this.loadingPromise = preloadImages(MENU_ASSETS, (progress) => this.updateLoading(progress, "Preparing painted garden panels..."));
+        this.loadingPromise = preloadImages(MENU_ASSETS, (progress) => this.updateLoading(progress, "Preparing painted garden panels"));
       }
       const result = await this.loadingPromise;
       if (!this.opened || openToken !== this.openToken) return;
       this.loaded = true;
-      if (result.failed > 0) this.showToast("Some optional artwork could not be loaded. Gameplay can continue.", "warning");
+      if (result.failed > 0) this.showToast("Some optional artwork could not be loaded. Gameplay can continue", "warning");
     }
 
     if (this.engine && this.activeScreen === "gameplay" && this.engine.getState().status === "paused") {
       this.root.classList.add("is-playing", "is-paused");
-      this.showPauseModal(this.engine.getState().pauseReason === "hidden" ? "The browser tab became inactive." : "The game is paused.");
+      this.showPauseModal(this.engine.getState().pauseReason === "hidden" ? "The browser tab became inactive" : "The game is paused");
       this.renderer?.render(this.engine.getState());
       void this.audio.suspend();
     } else {
@@ -166,13 +166,13 @@ export class GardenGameApp {
     this.clearConfetti();
     this.root.hidden = true;
     this.root.classList.remove("is-closing");
-    document.body.classList.remove("kvz-game-open");
+    document.body.classList.remove("cvz-game-open");
     this.audio.suspend();
     this.opened = false;
     if (document.fullscreenElement === this.root) document.exitFullscreen().catch(() => {});
     const focusTarget = this.previousFocus?.isConnected && isUsableFocusTarget(this.previousFocus)
       ? this.previousFocus
-      : [...document.querySelectorAll("[data-kvz-open-game], .nav-toggle")].find(isUsableFocusTarget);
+      : [...document.querySelectorAll("[data-cvz-open-game], .nav-toggle")].find(isUsableFocusTarget);
     if (focusTarget instanceof HTMLElement) focusTarget.focus({ preventScroll: true });
     const shouldRewindHistory = !fromHistory && this.historyEntryActive && history.state?.[HISTORY_STATE_KEY] === true;
     this.historyEntryActive = false;
@@ -190,11 +190,11 @@ export class GardenGameApp {
     this.backButton.hidden = true;
     this.screenTitle.textContent = "Loading";
     this.screen.innerHTML = `
-      <section class="kvz-game-loading" aria-labelledby="kvz-loading-title">
-        <div class="kvz-game-panel">
-          <h1 class="kvz-game-title" id="kvz-loading-title">Garden Waking Up</h1>
-          <p class="kvz-game-subtitle" data-loading-message>${message}</p>
-          <div class="kvz-game-loading-track" role="progressbar" aria-label="Asset loading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+      <section class="cvz-game-loading" aria-labelledby="cvz-loading-title">
+        <div class="cvz-game-panel">
+          <h1 class="cvz-game-title" id="cvz-loading-title">Garden Waking Up</h1>
+          <p class="cvz-game-subtitle" data-loading-message>${message}</p>
+          <div class="cvz-game-loading-track" role="progressbar" aria-label="Asset loading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
           <strong data-loading-percent>0%</strong>
         </div>
       </section>`;
@@ -204,7 +204,7 @@ export class GardenGameApp {
   /** @param {number} progress @param {string} message */
   updateLoading(progress, message) {
     const percent = Math.round(Math.min(1, Math.max(0, progress)) * 100);
-    const track = /** @type {HTMLElement | null} */ (this.screen.querySelector(".kvz-game-loading-track"));
+    const track = /** @type {HTMLElement | null} */ (this.screen.querySelector(".cvz-game-loading-track"));
     const fill = /** @type {HTMLElement | null} */ (track?.querySelector("span") ?? null);
     const label = /** @type {HTMLElement | null} */ (this.screen.querySelector("[data-loading-percent]"));
     const copy = /** @type {HTMLElement | null} */ (this.screen.querySelector("[data-loading-message]"));
@@ -270,7 +270,7 @@ export class GardenGameApp {
   async startLevel(levelId) {
     const level = LEVEL_BY_ID[levelId];
     if (!level || level.number > this.save.campaignProgress.highestUnlockedLevel) {
-      this.showToast("Complete the previous garden before entering this one.", "warning");
+      this.showToast("Complete the previous garden before entering this one", "warning");
       return;
     }
 
@@ -282,16 +282,16 @@ export class GardenGameApp {
     this.save.campaignProgress.hasStarted = true;
     this.save.unlockedCats = [...new Set([...this.save.unlockedCats, ...level.availableDefenders])];
     this.persistSave();
-    this.showLoading(`Preparing ${level.name}...`);
+    this.showLoading(`Preparing ${level.name}`);
     const result = await preloadForLevel(DEFENDERS, ENEMIES, level, (progress) => {
-      this.updateLoading(progress, `Loading cats and dogs for ${level.name}...`);
+      this.updateLoading(progress, `Loading cats and dogs for ${level.name}`);
     });
     if (!this.opened || loadToken !== this.levelLoadToken) return;
     if (document.hidden) {
       this.showMenu();
       return;
     }
-    if (result.failed > 0) this.showToast("A character image could not be loaded. The level will still run.", "warning");
+    if (result.failed > 0) this.showToast("A character image could not be loaded. The level will still run", "warning");
 
     this.activeScreen = "gameplay";
     this.root.classList.add("is-playing");
@@ -323,20 +323,20 @@ export class GardenGameApp {
     if (!this.engine?.isRunning() || this.activeScreen !== "gameplay") return;
     this.engine.pause(reason);
     this.root.classList.add("is-paused");
-    this.showPauseModal(reason === "hidden" ? "The browser tab became inactive." : "The garden is waiting for you.");
+    this.showPauseModal(reason === "hidden" ? "The browser tab became inactive" : "The garden is waiting for you");
     void this.audio.suspend();
   }
 
   showPauseModal(message) {
     this.showModal(`
-      <div class="kvz-game-modal paused" role="dialog" aria-modal="true" aria-labelledby="kvz-pause-title">
-        <h2 id="kvz-pause-title">Game Paused</h2>
+      <div class="cvz-game-modal paused" role="dialog" aria-modal="true" aria-labelledby="cvz-pause-title">
+        <h2 id="cvz-pause-title">Game Paused</h2>
         <p>${message}</p>
-        <button class="kvz-game-button primary" type="button" data-app-action="resume-game">Resume</button>
-        <button class="kvz-game-button secondary" type="button" data-app-action="restart-level">Restart Level</button>
-        <button class="kvz-game-button" type="button" data-app-action="level-select">Level Select</button>
-        <button class="kvz-game-button back" type="button" data-app-action="quit-game">Main Menu</button>
-        <button class="kvz-game-button back" type="button" data-app-action="return-site">Return to Website</button>
+        <button class="cvz-game-button primary" type="button" data-app-action="resume-game">Resume</button>
+        <button class="cvz-game-button secondary" type="button" data-app-action="restart-level">Restart Level</button>
+        <button class="cvz-game-button" type="button" data-app-action="level-select">Level Select</button>
+        <button class="cvz-game-button back" type="button" data-app-action="quit-game">Main Menu</button>
+        <button class="cvz-game-button back" type="button" data-app-action="return-site">Return to Website</button>
       </div>`);
   }
 
@@ -367,7 +367,7 @@ export class GardenGameApp {
         break;
       case "defender-placed":
         this.audio.playSfx("place");
-        if (this.engine?.getState().stats.placed === 1) this.showToast("Great placement! Watch that lane for approaching dogs.", "success");
+        if (this.engine?.getState().stats.placed === 1) this.showToast("Great placement! Watch that lane for approaching dogs", "success");
         break;
       case "invalid-placement":
         this.audio.playSfx("button");
@@ -407,7 +407,7 @@ export class GardenGameApp {
       case "lane-defense-activated":
         this.audio.playSfx("wavewarning");
         this.shakeFrame();
-        this.showToast(`Lane ${event.detail.lane + 1} Yarn Sweeper activated. That lane is now unguarded.`, "warning", 3800);
+        this.showToast(`Lane ${event.detail.lane + 1} Yarn Sweeper activated. That lane is now unguarded`, "warning", 3800);
         break;
       case "enemy-spawned":
         this.recordEncounter(event.detail.enemy.definitionId);
@@ -426,14 +426,14 @@ export class GardenGameApp {
   /** @param {string} reason @returns {string} */
   placementMessage(reason) {
     const messages = {
-      "no-selection": "Select a cat card first.",
-      "insufficient-energy": "Collect more Paw Energy for that cat.",
-      cooldown: "That cat card is still cooling down.",
-      occupied: "One cat already protects that garden cell.",
-      "out-of-bounds": "Choose a visible garden cell.",
-      paused: "Resume the game before placing a cat.",
+      "no-selection": "Select a cat card first",
+      "insufficient-energy": "Collect more Paw Energy for that cat",
+      cooldown: "That cat card is still cooling down",
+      occupied: "One cat already protects that garden cell",
+      "out-of-bounds": "Choose a visible garden cell",
+      paused: "Resume the game before placing a cat",
     };
-    return messages[reason] ?? "That cat cannot be placed there right now.";
+    return messages[reason] ?? "That cat cannot be placed there right now";
   }
 
   /** @param {string} enemyId */
@@ -460,13 +460,13 @@ export class GardenGameApp {
     this.root.classList.add("is-paused");
     this.createConfetti();
     this.showModal(`
-      <div class="kvz-game-modal" role="dialog" aria-modal="true" aria-labelledby="kvz-victory-title">
-        <h2 id="kvz-victory-title">Garden Saved!</h2>
-        <p>${level.name} is peaceful again. ${persisted ? "Your collection and campaign progress were saved on this device." : "Progress is available for this session, but browser storage is unavailable."}</p>
-        ${next ? `<button class="kvz-game-button primary" type="button" data-app-action="next-level" data-level-id="${next.id}">Next Level</button>` : '<button class="kvz-game-button primary" type="button" data-app-action="level-select">Campaign Complete</button>'}
-        <button class="kvz-game-button secondary" type="button" data-app-action="restart-level">Play Again</button>
-        <button class="kvz-game-button back" type="button" data-app-action="quit-game">Main Menu</button>
-        <button class="kvz-game-button back" type="button" data-app-action="return-site">Return to Website</button>
+      <div class="cvz-game-modal" role="dialog" aria-modal="true" aria-labelledby="cvz-victory-title">
+        <h2 id="cvz-victory-title">Garden Saved!</h2>
+        <p>${level.name} is peaceful again. ${persisted ? "Your collection and campaign progress were saved on this device" : "Progress is available for this session, but browser storage is unavailable"}</p>
+        ${next ? `<button class="cvz-game-button primary" type="button" data-app-action="next-level" data-level-id="${next.id}">Next Level</button>` : '<button class="cvz-game-button primary" type="button" data-app-action="level-select">Campaign Complete</button>'}
+        <button class="cvz-game-button secondary" type="button" data-app-action="restart-level">Play Again</button>
+        <button class="cvz-game-button back" type="button" data-app-action="quit-game">Main Menu</button>
+        <button class="cvz-game-button back" type="button" data-app-action="return-site">Return to Website</button>
       </div>`);
   }
 
@@ -476,28 +476,28 @@ export class GardenGameApp {
     this.audio.stopMusic();
     this.root.classList.add("is-paused");
     this.showModal(`
-      <div class="kvz-game-modal" role="dialog" aria-modal="true" aria-labelledby="kvz-defeat-title">
-        <h2 id="kvz-defeat-title">Garden Gate Reached</h2>
-        <p>A zombie dog slipped through Lane ${lane + 1}. Shift your blockers and try a new cat combination.</p>
-        <button class="kvz-game-button primary" type="button" data-app-action="restart-level">Restart Level</button>
-        <button class="kvz-game-button secondary" type="button" data-app-action="level-select">Level Select</button>
-        <button class="kvz-game-button back" type="button" data-app-action="quit-game">Main Menu</button>
-        <button class="kvz-game-button back" type="button" data-app-action="return-site">Return to Website</button>
+      <div class="cvz-game-modal" role="dialog" aria-modal="true" aria-labelledby="cvz-defeat-title">
+        <h2 id="cvz-defeat-title">Garden Gate Reached</h2>
+        <p>A zombie dog slipped through Lane ${lane + 1}. Shift your blockers and try a new cat combination</p>
+        <button class="cvz-game-button primary" type="button" data-app-action="restart-level">Restart Level</button>
+        <button class="cvz-game-button secondary" type="button" data-app-action="level-select">Level Select</button>
+        <button class="cvz-game-button back" type="button" data-app-action="quit-game">Main Menu</button>
+        <button class="cvz-game-button back" type="button" data-app-action="return-site">Return to Website</button>
       </div>`);
   }
 
   showFinalWarning() {
     this.removeFinalWarning();
     const warning = document.createElement("div");
-    warning.className = "kvz-game-final-warning";
+    warning.className = "cvz-game-final-warning";
     warning.setAttribute("role", "status");
     warning.textContent = "Final Wave Approaching!";
-    this.root.querySelector(".kvz-game-frame")?.append(warning);
+    this.root.querySelector(".cvz-game-frame")?.append(warning);
     warning.addEventListener("animationend", () => warning.remove(), { once: true });
   }
 
   removeFinalWarning() {
-    this.root.querySelector(".kvz-game-final-warning")?.remove();
+    this.root.querySelector(".cvz-game-final-warning")?.remove();
   }
 
   /** @param {string} markup */
@@ -540,7 +540,7 @@ export class GardenGameApp {
   showToast(message, type = "success", duration = 3000) {
     if (!this.opened) return;
     const toast = document.createElement("div");
-    toast.className = `kvz-game-toast ${type}`;
+    toast.className = `cvz-game-toast ${type}`;
     toast.setAttribute("role", type === "error" ? "alert" : "status");
     toast.textContent = message;
     this.toastStack.append(toast);
@@ -665,11 +665,11 @@ export class GardenGameApp {
 
   confirmReset() {
     this.showModal(`
-      <div class="kvz-game-modal" role="alertdialog" aria-modal="true" aria-labelledby="kvz-reset-title">
-        <h2 id="kvz-reset-title">Reset Local Progress?</h2>
-        <p>This removes completed levels, discovered dogs, unlocks, and saved settings from this browser.</p>
-        <button class="kvz-game-button danger" type="button" data-app-action="confirm-reset">Reset Everything</button>
-        <button class="kvz-game-button secondary" type="button" data-app-action="cancel-modal" data-modal-autofocus>Keep Progress</button>
+      <div class="cvz-game-modal" role="alertdialog" aria-modal="true" aria-labelledby="cvz-reset-title">
+        <h2 id="cvz-reset-title">Reset Local Progress?</h2>
+        <p>This removes completed levels, discovered dogs, unlocks, and saved settings from this browser</p>
+        <button class="cvz-game-button danger" type="button" data-app-action="confirm-reset">Reset Everything</button>
+        <button class="cvz-game-button secondary" type="button" data-app-action="cancel-modal" data-modal-autofocus>Keep Progress</button>
       </div>`);
   }
 
@@ -680,7 +680,7 @@ export class GardenGameApp {
     this.applyComfortSettings();
     this.hideModal();
     this.showSettings();
-    this.showToast("Local campaign progress was reset.", "success");
+    this.showToast("Local campaign progress was reset", "success");
   }
 
   /** @param {Event} event */
@@ -707,13 +707,13 @@ export class GardenGameApp {
 
   shakeFrame() {
     if (!this.save.settings.screenShake || this.save.settings.reducedMotion) return;
-    const frame = this.root.querySelector(".kvz-game-frame");
+    const frame = this.root.querySelector(".cvz-game-frame");
     if (!(frame instanceof HTMLElement)) return;
     frame.classList.remove("is-shaking");
     void frame.offsetWidth;
     frame.classList.add("is-shaking");
     const finish = (event) => {
-      if (event.target !== frame || event.animationName !== "kvz-screen-shake") return;
+      if (event.target !== frame || event.animationName !== "cvz-screen-shake") return;
       frame.classList.remove("is-shaking");
       frame.removeEventListener("animationend", finish);
     };
@@ -725,7 +725,7 @@ export class GardenGameApp {
       if (document.fullscreenElement === this.root) await document.exitFullscreen();
       else await this.root.requestFullscreen();
     } catch {
-      this.showToast("Full screen is not available in this browser.", "warning");
+      this.showToast("Full screen is not available in this browser", "warning");
     } finally {
       this.syncFullscreenButton();
     }
@@ -792,10 +792,10 @@ export class GardenGameApp {
 
   syncOrientationState() {
     const blocked = this.isPortraitGameplay();
-    const hint = this.root.querySelector(".kvz-game-orientation-hint");
+    const hint = this.root.querySelector(".cvz-game-orientation-hint");
     hint?.setAttribute("aria-hidden", String(!blocked));
     this.root.classList.toggle("orientation-blocked", blocked);
-    for (const selector of [".kvz-game-hud", ".kvz-game-card-tray", ".kvz-game-battlefield-wrap"]) {
+    for (const selector of [".cvz-game-hud", ".cvz-game-card-tray", ".cvz-game-battlefield-wrap"]) {
       const section = this.root.querySelector(selector);
       if (!(section instanceof HTMLElement)) continue;
       section.inert = blocked;
@@ -811,7 +811,7 @@ export class GardenGameApp {
       this.engine.pause("orientation");
       this.root.classList.add("is-paused");
       void this.audio.suspend();
-      const panel = hint?.querySelector(".kvz-game-panel");
+      const panel = hint?.querySelector(".cvz-game-panel");
       if (panel instanceof HTMLElement) panel.focus({ preventScroll: true });
       return;
     }
@@ -873,7 +873,7 @@ export class GardenGameApp {
     const saved = saveSave(this.save);
     if (!saved && this.opened && !this.storageWarningShown) {
       this.storageWarningShown = true;
-      this.showToast("Browser storage is unavailable. Progress will last only for this session.", "warning", 5000);
+      this.showToast("Browser storage is unavailable. Progress will last only for this session", "warning", 5000);
     }
     return saved;
   }
@@ -910,14 +910,14 @@ export class GardenGameApp {
     image.dataset.fallbackApplied = "true";
     image.hidden = true;
     const fallback = document.createElement("span");
-    fallback.className = "kvz-game-image-fallback";
+    fallback.className = "cvz-game-image-fallback";
     fallback.setAttribute("role", "img");
     fallback.setAttribute("aria-label", image.alt || "Artwork unavailable");
     fallback.textContent = image.alt.toLowerCase().includes("dog") ? "DOG" : "PAW";
     image.insertAdjacentElement("afterend", fallback);
     if (!this.assetWarningShown) {
       this.assetWarningShown = true;
-      this.showToast("Some artwork is unavailable, so a readable fallback is being used.", "warning", 4200);
+      this.showToast("Some artwork is unavailable, so a readable fallback is being used", "warning", 4200);
     }
   }
 
@@ -969,7 +969,7 @@ export class GardenGameApp {
       }
     }
     this.historyEntryActive = false;
-    document.body.classList.remove("kvz-game-open");
+    document.body.classList.remove("cvz-game-open");
     this.root.remove();
     this.opened = false;
   }

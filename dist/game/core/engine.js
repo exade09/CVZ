@@ -778,7 +778,7 @@ export class GameEngine {
     try {
       this.onEvent({ type, detail });
     } catch (error) {
-      console.error("Game event handler failed.", error);
+      console.error("Game event handler failed", error);
     }
   }
 
@@ -786,7 +786,7 @@ export class GameEngine {
     try {
       this.onFrame(this.state);
     } catch (error) {
-      console.error("Game renderer failed.", error);
+      console.error("Game renderer failed", error);
     }
   }
 

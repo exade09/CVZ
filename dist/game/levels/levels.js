@@ -55,7 +55,7 @@ export const LEVELS = Object.freeze([
     id: "level-1",
     number: 1,
     name: "First Pawprints",
-    description: "Learn to gather Paw Energy and protect the garden paths.",
+    description: "Learn to gather Paw Energy and protect the garden paths",
     laneCount: 5,
     columnCount: 9,
     startingEnergy: 175,
@@ -66,17 +66,17 @@ export const LEVELS = Object.freeze([
     tutorial: Object.freeze([
       Object.freeze({
         atMs: 500,
-        message: "Collect the glowing paw to gain Paw Energy.",
+        message: "Collect the glowing paw to gain Paw Energy",
         anchor: "energy",
       }),
       Object.freeze({
         atMs: 2_800,
-        message: "Choose Bubble Sprout, then place it in a highlighted garden cell.",
+        message: "Choose Bubble Sprout, then place it in a highlighted garden cell",
         anchor: "cards",
       }),
       Object.freeze({
         atMs: 8_000,
-        message: "Cats only target dogs in their own lane. Build where a threat is coming.",
+        message: "Cats only target dogs in their own lane. Build where a threat is coming",
         anchor: "battlefield",
       }),
     ]),
@@ -104,7 +104,7 @@ export const LEVELS = Object.freeze([
     id: "level-2",
     number: 2,
     name: "Tin and Tangerine",
-    description: "Crack layered armor with sturdy blockers, frost, and focused fire.",
+    description: "Crack layered armor with sturdy blockers, frost, and focused fire",
     laneCount: 5,
     columnCount: 9,
     startingEnergy: 225,
@@ -121,12 +121,12 @@ export const LEVELS = Object.freeze([
     tutorial: Object.freeze([
       Object.freeze({
         atMs: 4_000,
-        message: "Orange cones and metal buckets absorb damage before the dog underneath is hurt.",
+        message: "Orange cones and metal buckets absorb damage before the dog underneath is hurt",
         anchor: "battlefield",
       }),
       Object.freeze({
         atMs: 12_000,
-        message: "Shell Guard can hold a lane while Frost Bloom slows the crowd.",
+        message: "Shell Guard can hold a lane while Frost Bloom slows the crowd",
         anchor: "cards",
       }),
     ]),
@@ -164,7 +164,7 @@ export const LEVELS = Object.freeze([
     id: "level-3",
     number: 3,
     name: "Moonlit Garden Stand",
-    description: "Use every trick against shields, chargers, and one enormous final rush.",
+    description: "Use every trick against shields, chargers, and one enormous final rush",
     laneCount: 5,
     columnCount: 9,
     startingEnergy: 350,
@@ -184,12 +184,12 @@ export const LEVELS = Object.freeze([
     tutorial: Object.freeze([
       Object.freeze({
         atMs: 4_000,
-        message: "Gate Shields protect everything behind the gate. Heavy shots help after it breaks.",
+        message: "Gate Shields protect everything behind the gate. Heavy shots help after it breaks",
         anchor: "battlefield",
       }),
       Object.freeze({
         atMs: 16_000,
-        message: "Bulb Guide can briefly root a dangerous charger in place.",
+        message: "Bulb Guide can briefly root a dangerous charger in place",
         anchor: "cards",
       }),
     ]),

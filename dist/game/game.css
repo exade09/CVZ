@@ -1,39 +1,39 @@
 :root {
-  --kvz-ink: #25170f;
-  --kvz-bark: #70431e;
-  --kvz-bark-deep: #442817;
-  --kvz-cream: #fff4c7;
-  --kvz-paper: #fffdf5;
-  --kvz-grass: #55c936;
-  --kvz-grass-deep: #238b2b;
-  --kvz-lime: #a8ec36;
-  --kvz-mint: #dffbd1;
-  --kvz-pink: #ff82ad;
-  --kvz-pink-deep: #df4e83;
-  --kvz-yellow: #ffe15d;
-  --kvz-orange: #ff922f;
-  --kvz-sky: #99e6ed;
-  --kvz-blue: #5ecce2;
-  --kvz-danger: #ef5b4f;
-  --kvz-shadow: rgba(37, 23, 15, 0.28);
-  --kvz-outline: 4px solid var(--kvz-ink);
-  --kvz-radius: 12px;
-  --kvz-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --cvz-ink: #25170f;
+  --cvz-bark: #70431e;
+  --cvz-bark-deep: #442817;
+  --cvz-cream: #fff4c7;
+  --cvz-paper: #fffdf5;
+  --cvz-grass: #55c936;
+  --cvz-grass-deep: #238b2b;
+  --cvz-lime: #a8ec36;
+  --cvz-mint: #dffbd1;
+  --cvz-pink: #ff82ad;
+  --cvz-pink-deep: #df4e83;
+  --cvz-yellow: #ffe15d;
+  --cvz-orange: #ff922f;
+  --cvz-sky: #99e6ed;
+  --cvz-blue: #5ecce2;
+  --cvz-danger: #ef5b4f;
+  --cvz-shadow: rgba(37, 23, 15, 0.28);
+  --cvz-outline: 4px solid var(--cvz-ink);
+  --cvz-radius: 12px;
+  --cvz-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-body.kvz-game-open {
+body.cvz-game-open {
   overflow: hidden;
   overscroll-behavior: none;
 }
 
-.kvz-game-overlay,
-.kvz-game-overlay *,
-.kvz-game-overlay *::before,
-.kvz-game-overlay *::after {
+.cvz-game-overlay,
+.cvz-game-overlay *,
+.cvz-game-overlay *::before,
+.cvz-game-overlay *::after {
   box-sizing: border-box;
 }
 
-.kvz-game-overlay {
+.cvz-game-overlay {
   position: fixed;
   inset: 0;
   z-index: 1000;
@@ -45,44 +45,44 @@ body.kvz-game-open {
     max(clamp(6px, 1.2vw, 18px), env(safe-area-inset-bottom))
     max(clamp(6px, 1.2vw, 18px), env(safe-area-inset-left));
   place-items: center;
-  color: var(--kvz-ink);
+  color: var(--cvz-ink);
   font-family: "Baloo 2", "Trebuchet MS", Arial, sans-serif;
   background:
     linear-gradient(rgba(28, 79, 30, 0.5), rgba(37, 23, 15, 0.64)),
-    url("../kvz-fon.png") center / cover no-repeat,
+    url("../cvz-fon.png") center / cover no-repeat,
     #76c959;
   opacity: 1;
   overscroll-behavior: contain;
   transition: opacity 220ms ease, visibility 220ms ease;
 }
 
-.kvz-game-overlay[hidden] {
+.cvz-game-overlay[hidden] {
   display: none !important;
 }
 
-.kvz-game-overlay.is-closing {
+.cvz-game-overlay.is-closing {
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
 }
 
-.kvz-game-overlay button,
-.kvz-game-overlay input {
+.cvz-game-overlay button,
+.cvz-game-overlay input {
   font: inherit;
 }
 
-.kvz-game-overlay button,
-.kvz-game-overlay [role="button"] {
+.cvz-game-overlay button,
+.cvz-game-overlay [role="button"] {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
-.kvz-game-overlay img {
+.cvz-game-overlay img {
   display: block;
   max-width: 100%;
 }
 
-.kvz-game-frame {
+.cvz-game-frame {
   position: relative;
   isolation: isolate;
   display: flex;
@@ -91,16 +91,16 @@ body.kvz-game-open {
   min-height: 420px;
   flex-direction: column;
   overflow: hidden;
-  border: 5px solid var(--kvz-ink);
+  border: 5px solid var(--cvz-ink);
   border-radius: 18px;
-  background: var(--kvz-cream);
+  background: var(--cvz-cream);
   box-shadow:
-    0 9px 0 var(--kvz-bark-deep),
+    0 9px 0 var(--cvz-bark-deep),
     0 24px 70px rgba(25, 15, 9, 0.5),
     inset 0 0 0 4px rgba(255, 255, 255, 0.36);
 }
 
-.kvz-game-frame::after {
+.cvz-game-frame::after {
   position: absolute;
   inset: 7px;
   z-index: 50;
@@ -110,23 +110,23 @@ body.kvz-game-open {
   pointer-events: none;
 }
 
-.kvz-game-overlay:fullscreen,
-.kvz-game-overlay:-webkit-full-screen {
+.cvz-game-overlay:fullscreen,
+.cvz-game-overlay:-webkit-full-screen {
   padding: 0;
   background-color: #5eaa48;
 }
 
-.kvz-game-overlay:fullscreen .kvz-game-frame,
-.kvz-game-overlay:-webkit-full-screen .kvz-game-frame,
-.kvz-game-frame:fullscreen,
-.kvz-game-frame:-webkit-full-screen {
+.cvz-game-overlay:fullscreen .cvz-game-frame,
+.cvz-game-overlay:-webkit-full-screen .cvz-game-frame,
+.cvz-game-frame:fullscreen,
+.cvz-game-frame:-webkit-full-screen {
   width: 100%;
   height: 100dvh;
   max-width: none;
   border-radius: 0;
 }
 
-.kvz-game-topbar {
+.cvz-game-topbar {
   position: relative;
   z-index: 60;
   display: grid;
@@ -135,7 +135,7 @@ body.kvz-game-open {
   align-items: center;
   min-height: 62px;
   padding: 8px 12px 10px;
-  border-bottom: 4px solid var(--kvz-ink);
+  border-bottom: 4px solid var(--cvz-ink);
   background:
     radial-gradient(circle at 8% 50%, rgba(255, 130, 173, 0.38) 0 9px, transparent 10px),
     radial-gradient(circle at 90% 35%, rgba(255, 225, 93, 0.52) 0 12px, transparent 13px),
@@ -143,39 +143,39 @@ body.kvz-game-open {
   box-shadow: 0 5px 0 rgba(112, 67, 30, 0.52);
 }
 
-.kvz-game-topbar > :last-child {
+.cvz-game-topbar > :last-child {
   justify-self: end;
 }
 
-.kvz-game-brand-mark {
+.cvz-game-brand-mark {
   display: inline-flex;
   min-width: 0;
   align-items: center;
   gap: 9px;
   font-family: "Luckiest Guy", "Baloo 2", sans-serif;
   font-size: clamp(1rem, 2vw, 1.42rem);
-  color: var(--kvz-grass-deep);
+  color: var(--cvz-grass-deep);
   line-height: 1;
   letter-spacing: 0.02em;
-  text-shadow: 2px 2px 0 var(--kvz-paper);
+  text-shadow: 2px 2px 0 var(--cvz-paper);
 }
 
-.kvz-game-brand-mark::before {
+.cvz-game-brand-mark::before {
   width: 38px;
   height: 38px;
   flex: 0 0 auto;
-  border: 3px solid var(--kvz-ink);
+  border: 3px solid var(--cvz-ink);
   border-radius: 50% 50% 46% 46%;
   content: "";
   background:
-    radial-gradient(circle at 35% 48%, var(--kvz-ink) 0 2px, transparent 3px),
-    radial-gradient(circle at 65% 48%, var(--kvz-ink) 0 2px, transparent 3px),
-    radial-gradient(ellipse at 50% 66%, var(--kvz-pink) 0 4px, transparent 5px),
-    linear-gradient(145deg, #efff9c, var(--kvz-lime));
-  box-shadow: inset -4px -5px 0 rgba(112, 67, 30, 0.16), 0 3px 0 var(--kvz-bark);
+    radial-gradient(circle at 35% 48%, var(--cvz-ink) 0 2px, transparent 3px),
+    radial-gradient(circle at 65% 48%, var(--cvz-ink) 0 2px, transparent 3px),
+    radial-gradient(ellipse at 50% 66%, var(--cvz-pink) 0 4px, transparent 5px),
+    linear-gradient(145deg, #efff9c, var(--cvz-lime));
+  box-shadow: inset -4px -5px 0 rgba(112, 67, 30, 0.16), 0 3px 0 var(--cvz-bark);
 }
 
-.kvz-game-icon-button {
+.cvz-game-icon-button {
   position: relative;
   display: inline-grid;
   width: 44px;
@@ -183,69 +183,69 @@ body.kvz-game-open {
   height: 44px;
   padding: 0;
   place-items: center;
-  border: 3px solid var(--kvz-ink);
+  border: 3px solid var(--cvz-ink);
   border-radius: 10px;
-  color: var(--kvz-ink);
-  background: linear-gradient(180deg, var(--kvz-paper), #f3dc9f);
-  box-shadow: 0 4px 0 var(--kvz-bark), inset 0 -3px 0 rgba(112, 67, 30, 0.1);
+  color: var(--cvz-ink);
+  background: linear-gradient(180deg, var(--cvz-paper), #f3dc9f);
+  box-shadow: 0 4px 0 var(--cvz-bark), inset 0 -3px 0 rgba(112, 67, 30, 0.1);
   cursor: pointer;
-  transition: transform 150ms var(--kvz-ease), box-shadow 150ms var(--kvz-ease), filter 150ms ease;
+  transition: transform 150ms var(--cvz-ease), box-shadow 150ms var(--cvz-ease), filter 150ms ease;
 }
 
-.kvz-game-icon-button svg {
+.cvz-game-icon-button svg {
   width: 23px;
   height: 23px;
   fill: currentColor;
 }
 
-.kvz-game-icon-button:hover {
+.cvz-game-icon-button:hover {
   filter: brightness(1.06) saturate(1.08);
   transform: translateY(-2px);
-  box-shadow: 0 6px 0 var(--kvz-bark), 0 9px 16px var(--kvz-shadow);
+  box-shadow: 0 6px 0 var(--cvz-bark), 0 9px 16px var(--cvz-shadow);
 }
 
-.kvz-game-icon-button:active {
+.cvz-game-icon-button:active {
   transform: translateY(2px);
-  box-shadow: 0 1px 0 var(--kvz-bark);
+  box-shadow: 0 1px 0 var(--cvz-bark);
 }
 
-.kvz-game-screen {
+.cvz-game-screen {
   position: relative;
   z-index: 1;
   min-height: 0;
   flex: 1;
   overflow: auto;
-  scrollbar-color: var(--kvz-pink) rgba(255, 244, 199, 0.8);
+  scrollbar-color: var(--cvz-pink) rgba(255, 244, 199, 0.8);
   scrollbar-width: thin;
 }
 
-.kvz-game-overlay.is-playing .kvz-game-screen {
+.cvz-game-overlay.is-playing .cvz-game-screen {
   overflow: hidden;
 }
 
-.kvz-game-screen[hidden] {
+.cvz-game-screen[hidden] {
   display: none !important;
 }
 
-.kvz-game-screen::-webkit-scrollbar,
-.kvz-game-card-tray::-webkit-scrollbar {
+.cvz-game-screen::-webkit-scrollbar,
+.cvz-game-card-tray::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
-.kvz-game-screen::-webkit-scrollbar-track,
-.kvz-game-card-tray::-webkit-scrollbar-track {
+.cvz-game-screen::-webkit-scrollbar-track,
+.cvz-game-card-tray::-webkit-scrollbar-track {
   background: rgba(255, 244, 199, 0.82);
 }
 
-.kvz-game-screen::-webkit-scrollbar-thumb,
-.kvz-game-card-tray::-webkit-scrollbar-thumb {
-  border: 2px solid var(--kvz-ink);
+.cvz-game-screen::-webkit-scrollbar-thumb,
+.cvz-game-card-tray::-webkit-scrollbar-thumb {
+  border: 2px solid var(--cvz-ink);
   border-radius: 999px;
-  background: var(--kvz-pink);
+  background: var(--cvz-pink);
 }
 
-.kvz-game-menu-screen {
+.cvz-game-menu-screen {
   display: grid;
   grid-template-columns: minmax(300px, 0.9fr) minmax(360px, 1.1fr);
   gap: clamp(18px, 4vw, 52px);
@@ -256,11 +256,11 @@ body.kvz-game-open {
     radial-gradient(circle at 8% 16%, rgba(255, 225, 93, 0.7) 0 6px, transparent 7px),
     radial-gradient(circle at 92% 72%, rgba(255, 130, 173, 0.62) 0 7px, transparent 8px),
     linear-gradient(rgba(255, 253, 245, 0.14), rgba(126, 211, 79, 0.18)),
-    url("../kvz-fon.png") center / cover no-repeat,
-    var(--kvz-grass);
+    url("../cvz-fon.png") center / cover no-repeat,
+    var(--cvz-grass);
 }
 
-.kvz-game-menu-hero {
+.cvz-game-menu-hero {
   position: relative;
   z-index: 2;
   display: grid;
@@ -268,46 +268,46 @@ body.kvz-game-open {
   align-content: center;
 }
 
-.kvz-game-menu-art {
+.cvz-game-menu-art {
   position: relative;
   min-width: 0;
   max-width: 620px;
   justify-self: center;
-  border: 5px solid var(--kvz-ink);
+  border: 5px solid var(--cvz-ink);
   border-radius: 20px;
   background:
     radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.7) 0 5%, transparent 5.4%),
     linear-gradient(150deg, #dffbd1, #7cdb55 56%, #4eae3e);
-  box-shadow: 0 10px 0 var(--kvz-bark), 0 25px 44px var(--kvz-shadow);
+  box-shadow: 0 10px 0 var(--cvz-bark), 0 25px 44px var(--cvz-shadow);
   transform: rotate(1deg);
-  animation: kvz-menu-float 4.5s ease-in-out infinite;
+  animation: cvz-menu-float 4.5s ease-in-out infinite;
 }
 
-.kvz-game-menu-art::before,
-.kvz-game-menu-art::after {
+.cvz-game-menu-art::before,
+.cvz-game-menu-art::after {
   position: absolute;
   z-index: 2;
   width: 38px;
   height: 38px;
-  border: 3px solid var(--kvz-ink);
+  border: 3px solid var(--cvz-ink);
   border-radius: 50%;
   content: "";
   box-shadow: inset -4px -5px 0 rgba(112, 67, 30, 0.15);
 }
 
-.kvz-game-menu-art::before {
+.cvz-game-menu-art::before {
   top: -15px;
   left: 9%;
-  background: var(--kvz-yellow);
+  background: var(--cvz-yellow);
 }
 
-.kvz-game-menu-art::after {
+.cvz-game-menu-art::after {
   right: 8%;
   bottom: -17px;
-  background: var(--kvz-pink);
+  background: var(--cvz-pink);
 }
 
-.kvz-game-menu-art img {
+.cvz-game-menu-art img {
   width: 100%;
   max-height: min(62vh, 580px);
   aspect-ratio: 1.05;
@@ -316,31 +316,31 @@ body.kvz-game-open {
   object-position: center;
 }
 
-.kvz-game-menu-actions {
+.cvz-game-menu-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   width: min(100%, 600px);
 }
 
-.kvz-game-menu-actions .kvz-game-button:first-child,
-.kvz-game-menu-actions .kvz-game-button:last-child {
+.cvz-game-menu-actions .cvz-game-button:first-child,
+.cvz-game-menu-actions .cvz-game-button:last-child {
   grid-column: 1 / -1;
 }
 
-.kvz-game-panel {
+.cvz-game-panel {
   position: relative;
   padding: clamp(18px, 3vw, 34px);
-  border: 5px solid var(--kvz-ink);
-  border-radius: var(--kvz-radius);
+  border: 5px solid var(--cvz-ink);
+  border-radius: var(--cvz-radius);
   background:
     radial-gradient(circle at 7% 12%, rgba(255, 130, 173, 0.2) 0 36px, transparent 37px),
     radial-gradient(circle at 96% 88%, rgba(255, 225, 93, 0.3) 0 52px, transparent 53px),
     linear-gradient(180deg, #fff8d7, #f4d991);
-  box-shadow: 0 8px 0 var(--kvz-bark), 0 18px 34px var(--kvz-shadow);
+  box-shadow: 0 8px 0 var(--cvz-bark), 0 18px 34px var(--cvz-shadow);
 }
 
-.kvz-game-panel::after {
+.cvz-game-panel::after {
   position: absolute;
   inset: 9px;
   border: 2px dashed rgba(112, 67, 30, 0.32);
@@ -349,8 +349,8 @@ body.kvz-game-open {
   pointer-events: none;
 }
 
-.kvz-game-title,
-.kvz-game-subtitle {
+.cvz-game-title,
+.cvz-game-subtitle {
   position: relative;
   z-index: 1;
   margin: 0;
@@ -358,21 +358,21 @@ body.kvz-game-open {
   line-height: 0.98;
 }
 
-.kvz-game-title {
-  color: var(--kvz-yellow);
+.cvz-game-title {
+  color: var(--cvz-yellow);
   font-size: clamp(2.5rem, 6vw, 5.4rem);
-  -webkit-text-stroke: 3px var(--kvz-ink);
+  -webkit-text-stroke: 3px var(--cvz-ink);
   paint-order: stroke fill;
-  text-shadow: 0 6px 0 var(--kvz-bark), 0 10px 20px rgba(37, 23, 15, 0.3);
+  text-shadow: 0 6px 0 var(--cvz-bark), 0 10px 20px rgba(37, 23, 15, 0.3);
 }
 
-.kvz-game-subtitle {
-  color: var(--kvz-grass-deep);
+.cvz-game-subtitle {
+  color: var(--cvz-grass-deep);
   font-size: clamp(1.15rem, 2.2vw, 1.7rem);
   text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.72);
 }
 
-.kvz-game-button {
+.cvz-game-button {
   position: relative;
   z-index: 1;
   display: inline-flex;
@@ -381,66 +381,66 @@ body.kvz-game-open {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: 4px solid var(--kvz-ink);
+  border: 4px solid var(--cvz-ink);
   border-radius: 11px;
-  color: var(--kvz-ink);
-  background: linear-gradient(180deg, var(--kvz-paper), #edd99d);
-  box-shadow: 0 5px 0 var(--kvz-bark), 0 9px 15px rgba(37, 23, 15, 0.18);
+  color: var(--cvz-ink);
+  background: linear-gradient(180deg, var(--cvz-paper), #edd99d);
+  box-shadow: 0 5px 0 var(--cvz-bark), 0 9px 15px rgba(37, 23, 15, 0.18);
   font-weight: 900;
   line-height: 1.05;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
-  transition: transform 150ms var(--kvz-ease), box-shadow 150ms var(--kvz-ease), filter 150ms ease;
+  transition: transform 150ms var(--cvz-ease), box-shadow 150ms var(--cvz-ease), filter 150ms ease;
 }
 
-.kvz-game-button.primary,
-.kvz-game-button.kvz-game-primary {
+.cvz-game-button.primary,
+.cvz-game-button.cvz-game-primary {
   background: linear-gradient(180deg, #fff67a, #f5b83e);
 }
 
-.kvz-game-button.secondary,
-.kvz-game-button.kvz-game-secondary {
+.cvz-game-button.secondary,
+.cvz-game-button.cvz-game-secondary {
   background: linear-gradient(180deg, #efffd7, #8be25e);
 }
 
-.kvz-game-button.danger,
-.kvz-game-button.kvz-game-danger {
+.cvz-game-button.danger,
+.cvz-game-button.cvz-game-danger {
   color: #fffdf5;
-  background: linear-gradient(180deg, #ff8c79, var(--kvz-danger));
+  background: linear-gradient(180deg, #ff8c79, var(--cvz-danger));
   text-shadow: 1px 2px 0 rgba(68, 40, 23, 0.35);
 }
 
-.kvz-game-button.back,
-.kvz-game-button.kvz-game-back {
-  background: linear-gradient(180deg, #ffd5e5, var(--kvz-pink));
+.cvz-game-button.back,
+.cvz-game-button.cvz-game-back {
+  background: linear-gradient(180deg, #ffd5e5, var(--cvz-pink));
 }
 
-.kvz-game-button:hover:not(:disabled) {
+.cvz-game-button:hover:not(:disabled) {
   filter: brightness(1.07) saturate(1.05);
   transform: translateY(-3px) rotate(-0.3deg);
-  box-shadow: 0 8px 0 var(--kvz-bark), 0 13px 20px rgba(37, 23, 15, 0.2);
+  box-shadow: 0 8px 0 var(--cvz-bark), 0 13px 20px rgba(37, 23, 15, 0.2);
 }
 
-.kvz-game-button:active:not(:disabled) {
+.cvz-game-button:active:not(:disabled) {
   transform: translateY(2px);
-  box-shadow: 0 1px 0 var(--kvz-bark);
+  box-shadow: 0 1px 0 var(--cvz-bark);
 }
 
-.kvz-game-button:disabled,
-.kvz-game-button[aria-disabled="true"] {
+.cvz-game-button:disabled,
+.cvz-game-button[aria-disabled="true"] {
   filter: grayscale(0.78) opacity(0.72);
   cursor: not-allowed;
 }
 
-.kvz-game-menu-grid {
+.cvz-game-menu-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
   padding: clamp(18px, 3vw, 32px);
 }
 
-.kvz-game-loading {
+.cvz-game-loading {
   display: grid;
   min-height: 100%;
   padding: 24px;
@@ -451,27 +451,27 @@ body.kvz-game-open {
     linear-gradient(155deg, #a3e66e, #4aad3d);
 }
 
-.kvz-game-loading .kvz-game-panel {
+.cvz-game-loading .cvz-game-panel {
   display: grid;
   width: min(560px, 100%);
   gap: 18px;
   justify-items: center;
 }
 
-.kvz-game-loading-track {
+.cvz-game-loading-track {
   position: relative;
   z-index: 2;
   width: min(420px, 100%);
   height: 28px;
   overflow: hidden;
-  border: 4px solid var(--kvz-ink);
+  border: 4px solid var(--cvz-ink);
   border-radius: 999px;
   background: #d8bd7b;
-  box-shadow: inset 0 4px 0 rgba(112, 67, 30, 0.18), 0 4px 0 var(--kvz-bark);
+  box-shadow: inset 0 4px 0 rgba(112, 67, 30, 0.18), 0 4px 0 var(--cvz-bark);
 }
 
-.kvz-game-loading-track > span,
-.kvz-game-loading-track:empty::before {
+.cvz-game-loading-track > span,
+.cvz-game-loading-track:empty::before {
   display: block;
   width: var(--progress, 0%);
   height: 100%;
@@ -479,18 +479,18 @@ body.kvz-game-open {
   border-radius: inherit;
   background:
     repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0 9px, transparent 9px 18px),
-    linear-gradient(90deg, var(--kvz-lime), var(--kvz-yellow));
-  transition: width 220ms var(--kvz-ease);
+    linear-gradient(90deg, var(--cvz-lime), var(--cvz-yellow));
+  transition: width 220ms var(--cvz-ease);
 }
 
-.kvz-game-codex-grid {
+.cvz-game-codex-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(12px, 2vw, 22px);
   padding: clamp(16px, 3vw, 30px);
 }
 
-.kvz-game-codex-card {
+.cvz-game-codex-card {
   position: relative;
   display: grid;
   min-width: 0;
@@ -498,93 +498,93 @@ body.kvz-game-open {
   align-content: start;
   overflow: hidden;
   padding: 12px;
-  border: 4px solid var(--kvz-ink);
+  border: 4px solid var(--cvz-ink);
   border-radius: 14px;
   background: linear-gradient(180deg, #fffbe3, #eed593);
-  box-shadow: 0 6px 0 var(--kvz-bark), 0 12px 22px var(--kvz-shadow);
-  transition: transform 180ms var(--kvz-ease), box-shadow 180ms var(--kvz-ease);
+  box-shadow: 0 6px 0 var(--cvz-bark), 0 12px 22px var(--cvz-shadow);
+  transition: transform 180ms var(--cvz-ease), box-shadow 180ms var(--cvz-ease);
 }
 
-.kvz-game-codex-card:hover {
+.cvz-game-codex-card:hover {
   transform: translateY(-5px) rotate(-0.5deg);
-  box-shadow: 0 10px 0 var(--kvz-bark), 0 18px 26px var(--kvz-shadow);
+  box-shadow: 0 10px 0 var(--cvz-bark), 0 18px 26px var(--cvz-shadow);
 }
 
-.kvz-game-codex-card h3,
-.kvz-game-codex-card p {
+.cvz-game-codex-card h3,
+.cvz-game-codex-card p {
   margin: 0;
 }
 
-.kvz-game-codex-card h3 {
-  color: var(--kvz-grass-deep);
+.cvz-game-codex-card h3 {
+  color: var(--cvz-grass-deep);
   font-size: 1.18rem;
   line-height: 1;
 }
 
-.kvz-game-codex-card p {
+.cvz-game-codex-card p {
   font-size: 0.88rem;
   font-weight: 700;
   line-height: 1.25;
 }
 
-.kvz-game-codex-image {
+.cvz-game-codex-image {
   position: relative;
   width: 100%;
   aspect-ratio: 1.12;
   overflow: hidden;
-  border: 3px solid var(--kvz-ink);
+  border: 3px solid var(--cvz-ink);
   border-radius: 10px;
   background:
     radial-gradient(circle at 50% 82%, rgba(37, 23, 15, 0.13) 0 22%, transparent 23%),
     linear-gradient(155deg, #e9ffd2, #81d85a);
 }
 
-.kvz-game-codex-image img {
+.cvz-game-codex-image img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 7px 5px rgba(37, 23, 15, 0.22));
-  transition: transform 240ms var(--kvz-ease);
+  transition: transform 240ms var(--cvz-ease);
 }
 
-.kvz-game-codex-card:hover .kvz-game-codex-image img {
+.cvz-game-codex-card:hover .cvz-game-codex-image img {
   transform: translateY(-3px) scale(1.035);
 }
 
-.kvz-game-codex-stats {
+.cvz-game-codex-stats {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
 
-.kvz-game-stat-pill {
+.cvz-game-stat-pill {
   display: inline-flex;
   min-height: 27px;
   padding: 3px 8px;
   align-items: center;
   gap: 4px;
-  border: 2px solid var(--kvz-ink);
+  border: 2px solid var(--cvz-ink);
   border-radius: 999px;
-  background: var(--kvz-mint);
+  background: var(--cvz-mint);
   box-shadow: 0 2px 0 rgba(112, 67, 30, 0.45);
   font-size: 0.75rem;
   font-weight: 900;
   line-height: 1;
 }
 
-.kvz-game-stat-pill:nth-child(3n + 2) {
+.cvz-game-stat-pill:nth-child(3n + 2) {
   background: #fff0a0;
 }
 
-.kvz-game-stat-pill:nth-child(3n) {
+.cvz-game-stat-pill:nth-child(3n) {
   background: #ffd5e5;
 }
 
-.kvz-game-locked {
+.cvz-game-locked {
   filter: grayscale(0.9) saturate(0.4);
 }
 
-.kvz-game-locked::after {
+.cvz-game-locked::after {
   position: absolute;
   inset: 0;
   z-index: 5;
@@ -592,15 +592,15 @@ body.kvz-game-open {
   padding: 18px;
   place-items: center;
   content: attr(data-locked-label);
-  color: var(--kvz-paper);
+  color: var(--cvz-paper);
   background: rgba(37, 23, 15, 0.7);
   font-size: 1rem;
   font-weight: 900;
   text-align: center;
-  text-shadow: 1px 2px 0 var(--kvz-ink);
+  text-shadow: 1px 2px 0 var(--cvz-ink);
 }
 
-.kvz-game-settings-grid {
+.cvz-game-settings-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
@@ -609,8 +609,8 @@ body.kvz-game-open {
   margin: 0 auto;
 }
 
-.kvz-game-range-row,
-.kvz-game-toggle-row {
+.cvz-game-range-row,
+.cvz-game-toggle-row {
   position: relative;
   z-index: 1;
   display: grid;
@@ -618,34 +618,34 @@ body.kvz-game-open {
   padding: 10px 12px;
   align-items: center;
   gap: 10px;
-  border: 3px solid var(--kvz-ink);
+  border: 3px solid var(--cvz-ink);
   border-radius: 10px;
   background: rgba(255, 253, 245, 0.76);
   box-shadow: 0 4px 0 rgba(112, 67, 30, 0.5);
   font-weight: 900;
 }
 
-.kvz-game-range-row {
+.cvz-game-range-row {
   grid-template-columns: minmax(110px, auto) minmax(100px, 1fr) auto;
 }
 
-.kvz-game-range-row input[type="range"] {
+.cvz-game-range-row input[type="range"] {
   width: 100%;
-  accent-color: var(--kvz-grass-deep);
+  accent-color: var(--cvz-grass-deep);
   cursor: pointer;
 }
 
-.kvz-game-toggle-row {
+.cvz-game-toggle-row {
   grid-template-columns: 1fr auto;
   cursor: pointer;
 }
 
-.kvz-game-toggle-row input {
+.cvz-game-toggle-row input {
   width: 48px;
   height: 27px;
   margin: 0;
   appearance: none;
-  border: 3px solid var(--kvz-ink);
+  border: 3px solid var(--cvz-ink);
   border-radius: 999px;
   background: #c4b897;
   box-shadow: inset 0 3px 0 rgba(37, 23, 15, 0.16);
@@ -653,28 +653,28 @@ body.kvz-game-open {
   transition: background 150ms ease;
 }
 
-.kvz-game-toggle-row input::before {
+.cvz-game-toggle-row input::before {
   display: block;
   width: 17px;
   height: 17px;
   margin: 2px;
-  border: 2px solid var(--kvz-ink);
+  border: 2px solid var(--cvz-ink);
   border-radius: 50%;
   content: "";
-  background: var(--kvz-paper);
+  background: var(--cvz-paper);
   box-shadow: 0 2px 0 rgba(112, 67, 30, 0.4);
-  transition: transform 150ms var(--kvz-ease);
+  transition: transform 150ms var(--cvz-ease);
 }
 
-.kvz-game-toggle-row input:checked {
-  background: var(--kvz-lime);
+.cvz-game-toggle-row input:checked {
+  background: var(--cvz-lime);
 }
 
-.kvz-game-toggle-row input:checked::before {
+.cvz-game-toggle-row input:checked::before {
   transform: translateX(21px);
 }
 
-.kvz-game-gameplay {
+.cvz-game-gameplay {
   display: flex;
   height: 100%;
   min-height: 0;
@@ -686,7 +686,7 @@ body.kvz-game-open {
   touch-action: none;
 }
 
-.kvz-game-hud {
+.cvz-game-hud {
   position: relative;
   z-index: 30;
   display: grid;
@@ -695,21 +695,21 @@ body.kvz-game-open {
   align-items: center;
   min-height: 76px;
   padding: 7px 10px 9px;
-  border-bottom: 4px solid var(--kvz-ink);
+  border-bottom: 4px solid var(--cvz-ink);
   background:
     radial-gradient(circle at 4% 20%, rgba(255, 130, 173, 0.34) 0 14px, transparent 15px),
     linear-gradient(180deg, #fff8d9, #e7c77f);
   box-shadow: 0 5px 0 rgba(112, 67, 30, 0.48);
 }
 
-.kvz-game-hud-status {
+.cvz-game-hud-status {
   display: flex;
   min-width: 0;
   align-items: center;
   gap: 8px;
 }
 
-.kvz-game-energy-meter {
+.cvz-game-energy-meter {
   position: relative;
   display: inline-flex;
   min-width: 118px;
@@ -717,40 +717,40 @@ body.kvz-game-open {
   padding: 5px 11px 5px 48px;
   align-items: center;
   justify-content: center;
-  border: 3px solid var(--kvz-ink);
+  border: 3px solid var(--cvz-ink);
   border-radius: 999px 12px 12px 999px;
-  background: linear-gradient(180deg, #fff793, var(--kvz-yellow));
-  box-shadow: 0 4px 0 var(--kvz-bark), inset 0 -3px 0 rgba(112, 67, 30, 0.12);
+  background: linear-gradient(180deg, #fff793, var(--cvz-yellow));
+  box-shadow: 0 4px 0 var(--cvz-bark), inset 0 -3px 0 rgba(112, 67, 30, 0.12);
   font-family: "Luckiest Guy", "Baloo 2", sans-serif;
   font-size: 1.25rem;
   line-height: 1;
 }
 
-.kvz-game-energy-meter::before {
+.cvz-game-energy-meter::before {
   position: absolute;
   top: 50%;
   left: 5px;
   width: 34px;
   height: 34px;
-  border: 3px solid var(--kvz-ink);
+  border: 3px solid var(--cvz-ink);
   border-radius: 50%;
   content: "";
   background:
     radial-gradient(circle at 33% 33%, #fff 0 9%, transparent 10%),
-    radial-gradient(circle at 50% 60%, var(--kvz-orange) 0 27%, transparent 28%),
-    var(--kvz-yellow);
-  box-shadow: 0 2px 0 var(--kvz-bark);
+    radial-gradient(circle at 50% 60%, var(--cvz-orange) 0 27%, transparent 28%),
+    var(--cvz-yellow);
+  box-shadow: 0 2px 0 var(--cvz-bark);
   transform: translateY(-50%);
 }
 
-.kvz-game-wave-meter {
+.cvz-game-wave-meter {
   display: grid;
   min-width: 0;
   gap: 4px;
 }
 
-.kvz-game-wave-meter > span,
-.kvz-game-wave-meter > strong {
+.cvz-game-wave-meter > span,
+.cvz-game-wave-meter > strong {
   overflow: hidden;
   font-weight: 900;
   line-height: 1;
@@ -758,18 +758,18 @@ body.kvz-game-open {
   white-space: nowrap;
 }
 
-.kvz-game-wave-track {
+.cvz-game-wave-track {
   position: relative;
   height: 18px;
   overflow: hidden;
-  border: 3px solid var(--kvz-ink);
+  border: 3px solid var(--cvz-ink);
   border-radius: 999px;
   background: #cab275;
   box-shadow: inset 0 3px 0 rgba(37, 23, 15, 0.14);
 }
 
-.kvz-game-wave-track > span,
-.kvz-game-wave-track:empty::before {
+.cvz-game-wave-track > span,
+.cvz-game-wave-track:empty::before {
   display: block;
   width: var(--progress, 0%);
   height: 100%;
@@ -777,21 +777,21 @@ body.kvz-game-open {
   border-radius: inherit;
   background:
     repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.24) 0 7px, transparent 7px 14px),
-    linear-gradient(90deg, var(--kvz-grass), var(--kvz-lime));
+    linear-gradient(90deg, var(--cvz-grass), var(--cvz-lime));
   transition: width 300ms linear;
 }
 
-.kvz-game-wave-track::after {
+.cvz-game-wave-track::after {
   position: absolute;
   top: -2px;
   bottom: -2px;
   left: calc(var(--final-wave-start, 80%) - 2px);
   width: 4px;
   content: "";
-  background: var(--kvz-danger);
+  background: var(--cvz-danger);
 }
 
-.kvz-game-card-tray {
+.cvz-game-card-tray {
   position: relative;
   z-index: 24;
   display: grid;
@@ -802,7 +802,7 @@ body.kvz-game-open {
   padding: 7px 9px 9px;
   overflow-x: auto;
   overflow-y: hidden;
-  border-bottom: 4px solid var(--kvz-ink);
+  border-bottom: 4px solid var(--cvz-ink);
   background:
     repeating-linear-gradient(90deg, rgba(112, 67, 30, 0.08) 0 1px, transparent 1px 16px),
     linear-gradient(180deg, #d6b16c, #ba8445);
@@ -812,7 +812,7 @@ body.kvz-game-open {
   touch-action: pan-x;
 }
 
-.kvz-game-card {
+.cvz-game-card {
   position: relative;
   display: grid;
   width: 100%;
@@ -823,11 +823,11 @@ body.kvz-game-open {
   grid-template-rows: auto minmax(0, 1fr) 24px;
   gap: 2px 5px;
   overflow: hidden;
-  border: 3px solid var(--kvz-ink);
+  border: 3px solid var(--cvz-ink);
   border-radius: 9px;
-  color: var(--kvz-ink);
+  color: var(--cvz-ink);
   background: linear-gradient(160deg, #f7ffdb, #9be36b);
-  box-shadow: 0 4px 0 var(--kvz-bark), inset 0 0 0 2px rgba(255, 255, 255, 0.44);
+  box-shadow: 0 4px 0 var(--cvz-bark), inset 0 0 0 2px rgba(255, 255, 255, 0.44);
   font: inherit;
   font-size: 0.69rem;
   font-weight: 900;
@@ -835,62 +835,62 @@ body.kvz-game-open {
   text-align: left;
   cursor: pointer;
   scroll-snap-align: start;
-  transition: transform 120ms var(--kvz-ease), filter 120ms ease, box-shadow 120ms ease;
+  transition: transform 120ms var(--cvz-ease), filter 120ms ease, box-shadow 120ms ease;
 }
 
-.kvz-game-card:hover:not(:disabled) {
+.cvz-game-card:hover:not(:disabled) {
   filter: brightness(1.06);
   transform: translateY(-2px);
-  box-shadow: 0 6px 0 var(--kvz-bark);
+  box-shadow: 0 6px 0 var(--cvz-bark);
 }
 
-.kvz-game-card.selected,
-.kvz-game-card.is-selected,
-.kvz-game-card[aria-pressed="true"] {
+.cvz-game-card.selected,
+.cvz-game-card.is-selected,
+.cvz-game-card[aria-pressed="true"] {
   border-color: #fff;
-  outline: 4px solid var(--kvz-pink-deep);
+  outline: 4px solid var(--cvz-pink-deep);
   outline-offset: -2px;
   background: linear-gradient(160deg, #fff2a7, #ffc85a);
   transform: translateY(-3px);
-  box-shadow: 0 6px 0 var(--kvz-bark), 0 0 0 7px rgba(255, 130, 173, 0.42);
+  box-shadow: 0 6px 0 var(--cvz-bark), 0 0 0 7px rgba(255, 130, 173, 0.42);
 }
 
-.kvz-game-card.insufficient,
-.kvz-game-card.is-insufficient,
-.kvz-game-card:disabled:not(.cooling):not(.is-cooling) {
+.cvz-game-card.insufficient,
+.cvz-game-card.is-insufficient,
+.cvz-game-card:disabled:not(.cooling):not(.is-cooling) {
   filter: grayscale(0.78) brightness(0.78);
   cursor: not-allowed;
 }
 
-.kvz-game-card.cooling,
-.kvz-game-card.is-cooling {
+.cvz-game-card.cooling,
+.cvz-game-card.is-cooling {
   cursor: wait;
 }
 
-.kvz-game-card.locked,
-.kvz-game-card.is-locked {
+.cvz-game-card.locked,
+.cvz-game-card.is-locked {
   filter: grayscale(1) brightness(0.68);
   cursor: not-allowed;
 }
 
-.kvz-game-card-image {
+.cvz-game-card-image {
   grid-row: 1 / 4;
   width: 56px;
   height: 76px;
   align-self: center;
-  border: 2px solid var(--kvz-ink);
+  border: 2px solid var(--cvz-ink);
   border-radius: 7px;
   background: rgba(255, 253, 245, 0.5);
   object-fit: contain;
   filter: drop-shadow(0 3px 2px rgba(37, 23, 15, 0.2));
 }
 
-.kvz-game-card > strong {
+.cvz-game-card > strong {
   grid-column: 2;
   grid-row: 1;
 }
 
-.kvz-game-card-cost {
+.cvz-game-card-cost {
   grid-column: 2;
   grid-row: 3;
   display: inline-flex;
@@ -901,13 +901,13 @@ body.kvz-game-open {
   align-self: end;
   align-items: center;
   justify-content: center;
-  border: 2px solid var(--kvz-ink);
+  border: 2px solid var(--cvz-ink);
   border-radius: 999px;
-  background: var(--kvz-yellow);
+  background: var(--cvz-yellow);
   box-shadow: 0 2px 0 rgba(112, 67, 30, 0.5);
 }
 
-.kvz-game-card-description {
+.cvz-game-card-description {
   grid-column: 2;
   grid-row: 2;
   display: -webkit-box;
@@ -921,7 +921,7 @@ body.kvz-game-open {
   line-height: 1.08;
 }
 
-.kvz-game-card-tray.is-dense .kvz-game-card-description {
+.cvz-game-card-tray.is-dense .cvz-game-card-description {
   display: block;
   overflow: hidden;
   white-space: nowrap;
@@ -929,37 +929,37 @@ body.kvz-game-open {
 }
 
 @media (min-height: 621px) {
-  .kvz-game-card-tray.is-dense {
+  .cvz-game-card-tray.is-dense {
     min-height: 121px;
   }
 
-  .kvz-game-card-tray.is-dense .kvz-game-card {
+  .cvz-game-card-tray.is-dense .cvz-game-card {
     height: 104px;
   }
 }
 
-.kvz-game-card-cooldown {
+.cvz-game-card-cooldown {
   position: absolute;
   inset: 0;
   z-index: 5;
   display: grid;
   place-items: center;
-  color: var(--kvz-paper);
+  color: var(--cvz-paper);
   background: rgba(37, 23, 15, 0.7);
   clip-path: inset(var(--cooldown-inset, 0%) 0 0);
   transform: scaleY(var(--cooldown, 1));
   transform-origin: center bottom;
   font-size: 1.05rem;
   font-weight: 900;
-  text-shadow: 1px 2px 0 var(--kvz-ink);
+  text-shadow: 1px 2px 0 var(--cvz-ink);
   pointer-events: none;
 }
 
-.kvz-game-card:not(.cooling):not(.is-cooling) .kvz-game-card-cooldown:empty {
+.cvz-game-card:not(.cooling):not(.is-cooling) .cvz-game-card-cooldown:empty {
   display: none;
 }
 
-.kvz-game-battlefield-wrap {
+.cvz-game-battlefield-wrap {
   position: relative;
   display: grid;
   min-height: 0;
@@ -973,7 +973,7 @@ body.kvz-game-open {
     linear-gradient(180deg, #9ee3ec 0 15%, #62b945 15% 100%);
 }
 
-.kvz-game-battlefield-wrap::before {
+.cvz-game-battlefield-wrap::before {
   position: absolute;
   inset: 0;
   content: "";
@@ -984,7 +984,7 @@ body.kvz-game-open {
   pointer-events: none;
 }
 
-.kvz-game-battlefield {
+.cvz-game-battlefield {
   position: relative;
   isolation: isolate;
   width: min(100%, 1250px);
@@ -992,7 +992,7 @@ body.kvz-game-open {
   min-width: 0;
   aspect-ratio: 1.9 / 1;
   overflow: hidden;
-  border: 5px solid var(--kvz-ink);
+  border: 5px solid var(--cvz-ink);
   border-radius: 14px;
   background:
     radial-gradient(ellipse at 7% 10%, #ffd5e5 0 12px, transparent 13px),
@@ -1000,10 +1000,10 @@ body.kvz-game-open {
     repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.08) 0 calc(20% - 2px), rgba(68, 40, 23, 0.2) calc(20% - 2px) 20%),
     repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0 calc(11.111% - 2px), rgba(68, 40, 23, 0.12) calc(11.111% - 2px) 11.111%),
     linear-gradient(90deg, #61ca47, #72d052 48%, #56b83e);
-  box-shadow: 0 7px 0 var(--kvz-bark), 0 16px 26px var(--kvz-shadow), inset 0 0 0 3px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 7px 0 var(--cvz-bark), 0 16px 26px var(--cvz-shadow), inset 0 0 0 3px rgba(255, 255, 255, 0.2);
 }
 
-.kvz-game-battlefield::before {
+.cvz-game-battlefield::before {
   position: absolute;
   inset: 0;
   z-index: 0;
@@ -1016,7 +1016,7 @@ body.kvz-game-open {
   pointer-events: none;
 }
 
-.kvz-game-grid {
+.cvz-game-grid {
   position: absolute;
   inset: 0;
   z-index: 4;
@@ -1025,7 +1025,7 @@ body.kvz-game-open {
   grid-template-rows: repeat(5, minmax(0, 1fr));
 }
 
-.kvz-game-cell {
+.cvz-game-cell {
   position: relative;
   min-width: 0;
   min-height: 0;
@@ -1035,42 +1035,42 @@ body.kvz-game-open {
   transition: background 100ms ease, box-shadow 100ms ease;
 }
 
-.kvz-game-cell:nth-child(even) {
+.cvz-game-cell:nth-child(even) {
   background: rgba(255, 255, 255, 0.025);
 }
 
-.kvz-game-cell:hover,
-.kvz-game-cell.preview,
-.kvz-game-cell.is-preview {
+.cvz-game-cell:hover,
+.cvz-game-cell.preview,
+.cvz-game-cell.is-preview {
   background: rgba(255, 244, 199, 0.23);
   box-shadow: inset 0 0 0 3px rgba(255, 253, 245, 0.58);
 }
 
-.kvz-game-cell.valid,
-.kvz-game-cell.is-valid {
+.cvz-game-cell.valid,
+.cvz-game-cell.is-valid {
   background: rgba(168, 236, 54, 0.28);
   box-shadow: inset 0 0 0 3px rgba(239, 255, 215, 0.8);
 }
 
-.kvz-game-cell.invalid,
-.kvz-game-cell.is-invalid {
+.cvz-game-cell.invalid,
+.cvz-game-cell.is-invalid {
   background:
     linear-gradient(45deg, transparent 43%, rgba(239, 91, 79, 0.78) 44% 56%, transparent 57%),
     linear-gradient(-45deg, transparent 43%, rgba(239, 91, 79, 0.78) 44% 56%, transparent 57%),
     rgba(239, 91, 79, 0.18);
   box-shadow: inset 0 0 0 3px rgba(255, 219, 214, 0.72);
-  animation: kvz-invalid-shake 220ms ease both;
+  animation: cvz-invalid-shake 220ms ease both;
 }
 
-.kvz-game-entity-layer {
+.cvz-game-entity-layer {
   position: absolute;
   inset: 0;
   z-index: 8;
   pointer-events: none;
 }
 
-.kvz-game-defender,
-.kvz-game-enemy {
+.cvz-game-defender,
+.cvz-game-enemy {
   position: absolute;
   display: grid;
   width: 11.111%;
@@ -1081,8 +1081,8 @@ body.kvz-game-open {
   will-change: left, transform;
 }
 
-.kvz-game-defender::before,
-.kvz-game-enemy::before {
+.cvz-game-defender::before,
+.cvz-game-enemy::before {
   position: absolute;
   bottom: 3%;
   left: 19%;
@@ -1096,7 +1096,7 @@ body.kvz-game-open {
   transform: scaleX(1.08);
 }
 
-.kvz-game-placement-preview {
+.cvz-game-placement-preview {
   position: absolute;
   z-index: 38;
   width: 10.5%;
@@ -1104,29 +1104,29 @@ body.kvz-game-open {
   object-fit: contain;
   object-position: center bottom;
   opacity: 0.58;
-  filter: drop-shadow(0 0 7px var(--kvz-lime));
+  filter: drop-shadow(0 0 7px var(--cvz-lime));
   transform: translateX(-50%) scale(0.94);
   pointer-events: none;
 }
 
-.kvz-game-placement-preview[hidden] {
+.cvz-game-placement-preview[hidden] {
   display: none;
 }
 
-.kvz-game-placement-preview.is-invalid {
-  filter: grayscale(0.7) sepia(1) saturate(5) hue-rotate(320deg) drop-shadow(0 0 7px var(--kvz-danger));
+.cvz-game-placement-preview.is-invalid {
+  filter: grayscale(0.7) sepia(1) saturate(5) hue-rotate(320deg) drop-shadow(0 0 7px var(--cvz-danger));
 }
 
-.kvz-game-defender {
+.cvz-game-defender {
   z-index: calc(12 + var(--lane, 0));
 }
 
-.kvz-game-enemy {
+.cvz-game-enemy {
   z-index: calc(15 + var(--lane, 0));
   width: clamp(58px, 11.5%, 132px);
 }
 
-.kvz-game-unit-sprite {
+.cvz-game-unit-sprite {
   position: relative;
   z-index: 1;
   width: 92%;
@@ -1135,150 +1135,150 @@ body.kvz-game-open {
   object-position: center bottom;
   filter: drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
   transform-origin: 50% 85%;
-  animation: kvz-unit-idle 2.4s ease-in-out infinite;
+  animation: cvz-unit-idle 2.4s ease-in-out infinite;
   will-change: transform, filter, opacity;
 }
 
-.kvz-game-enemy .kvz-game-unit-sprite {
-  animation-name: kvz-dog-walk;
+.cvz-game-enemy .cvz-game-unit-sprite {
+  animation-name: cvz-dog-walk;
   animation-duration: 0.58s;
 }
 
-.kvz-game-defender.behavior-energy-producer .kvz-game-unit-sprite {
-  animation-name: kvz-producer-idle;
+.cvz-game-defender.behavior-energy-producer .cvz-game-unit-sprite {
+  animation-name: cvz-producer-idle;
   animation-duration: 1.9s;
 }
 
-.kvz-game-defender.behavior-blocker .kvz-game-unit-sprite {
-  animation-name: kvz-guard-idle;
+.cvz-game-defender.behavior-blocker .cvz-game-unit-sprite {
+  animation-name: cvz-guard-idle;
   animation-duration: 3.1s;
 }
 
-.kvz-game-defender.behavior-double-shot .kvz-game-unit-sprite {
-  animation-name: kvz-twin-idle;
+.cvz-game-defender.behavior-double-shot .cvz-game-unit-sprite {
+  animation-name: cvz-twin-idle;
   animation-duration: 1.55s;
 }
 
-.kvz-game-defender.behavior-slow-shot .kvz-game-unit-sprite {
-  animation-name: kvz-frost-idle;
+.cvz-game-defender.behavior-slow-shot .cvz-game-unit-sprite {
+  animation-name: cvz-frost-idle;
   animation-duration: 2.7s;
 }
 
-.kvz-game-defender.behavior-area-burst .kvz-game-unit-sprite {
-  animation-name: kvz-pop-idle;
+.cvz-game-defender.behavior-area-burst .cvz-game-unit-sprite {
+  animation-name: cvz-pop-idle;
   animation-duration: 0.72s;
 }
 
-.kvz-game-defender.behavior-heavy-shot .kvz-game-unit-sprite {
-  animation-name: kvz-heavy-idle;
+.cvz-game-defender.behavior-heavy-shot .cvz-game-unit-sprite {
+  animation-name: cvz-heavy-idle;
   animation-duration: 3.4s;
 }
 
-.kvz-game-defender.behavior-root-pulse .kvz-game-unit-sprite {
-  animation-name: kvz-guide-idle;
+.cvz-game-defender.behavior-root-pulse .cvz-game-unit-sprite {
+  animation-name: cvz-guide-idle;
   animation-duration: 2.25s;
 }
 
-.kvz-game-enemy.behavior-armored-walker .kvz-game-unit-sprite {
-  animation-name: kvz-armored-step;
+.cvz-game-enemy.behavior-armored-walker .cvz-game-unit-sprite {
+  animation-name: cvz-armored-step;
   animation-duration: 0.7s;
 }
 
-.kvz-game-enemy.behavior-heavy-armor .kvz-game-unit-sprite {
-  animation-name: kvz-bucket-step;
+.cvz-game-enemy.behavior-heavy-armor .cvz-game-unit-sprite {
+  animation-name: cvz-bucket-step;
   animation-duration: 0.88s;
 }
 
-.kvz-game-enemy.behavior-shield-walker .kvz-game-unit-sprite {
-  animation-name: kvz-shield-step;
+.cvz-game-enemy.behavior-shield-walker .cvz-game-unit-sprite {
+  animation-name: cvz-shield-step;
   animation-duration: 0.96s;
 }
 
-.kvz-game-enemy.behavior-charging-brute .kvz-game-unit-sprite {
-  animation-name: kvz-brute-charge;
+.cvz-game-enemy.behavior-charging-brute .cvz-game-unit-sprite {
+  animation-name: cvz-brute-charge;
   animation-duration: 0.4s;
 }
 
-.kvz-game-defender.is-attacking .kvz-game-unit-sprite,
-.kvz-game-defender.attacking .kvz-game-unit-sprite {
-  animation: kvz-cat-attack 260ms var(--kvz-ease) both;
+.cvz-game-defender.is-attacking .cvz-game-unit-sprite,
+.cvz-game-defender.attacking .cvz-game-unit-sprite {
+  animation: cvz-cat-attack 260ms var(--cvz-ease) both;
 }
 
-.kvz-game-defender.is-placing .kvz-game-unit-sprite {
-  animation: kvz-cat-place 500ms var(--kvz-ease) both;
+.cvz-game-defender.is-placing .cvz-game-unit-sprite {
+  animation: cvz-cat-place 500ms var(--cvz-ease) both;
 }
 
-.kvz-game-enemy.is-attacking .kvz-game-unit-sprite,
-.kvz-game-enemy.attacking .kvz-game-unit-sprite {
-  animation: kvz-dog-attack 430ms var(--kvz-ease) both;
+.cvz-game-enemy.is-attacking .cvz-game-unit-sprite,
+.cvz-game-enemy.attacking .cvz-game-unit-sprite {
+  animation: cvz-dog-attack 430ms var(--cvz-ease) both;
 }
 
-.kvz-game-defender.behavior-energy-producer.is-attacking .kvz-game-unit-sprite {
-  animation: kvz-producer-pulse 500ms var(--kvz-ease) both;
+.cvz-game-defender.behavior-energy-producer.is-attacking .cvz-game-unit-sprite {
+  animation: cvz-producer-pulse 500ms var(--cvz-ease) both;
 }
 
-.kvz-game-defender.behavior-double-shot.is-attacking .kvz-game-unit-sprite {
-  animation: kvz-twin-volley 390ms var(--kvz-ease) both;
+.cvz-game-defender.behavior-double-shot.is-attacking .cvz-game-unit-sprite {
+  animation: cvz-twin-volley 390ms var(--cvz-ease) both;
 }
 
-.kvz-game-defender.behavior-slow-shot.is-attacking .kvz-game-unit-sprite {
-  animation: kvz-frost-cast 300ms var(--kvz-ease) both;
+.cvz-game-defender.behavior-slow-shot.is-attacking .cvz-game-unit-sprite {
+  animation: cvz-frost-cast 300ms var(--cvz-ease) both;
 }
 
-.kvz-game-defender.behavior-heavy-shot.is-attacking .kvz-game-unit-sprite {
-  animation: kvz-heavy-recoil 360ms var(--kvz-ease) both;
+.cvz-game-defender.behavior-heavy-shot.is-attacking .cvz-game-unit-sprite {
+  animation: cvz-heavy-recoil 360ms var(--cvz-ease) both;
 }
 
-.kvz-game-defender.behavior-root-pulse.is-attacking .kvz-game-unit-sprite {
-  animation: kvz-guide-cast 600ms var(--kvz-ease) both;
+.cvz-game-defender.behavior-root-pulse.is-attacking .cvz-game-unit-sprite {
+  animation: cvz-guide-cast 600ms var(--cvz-ease) both;
 }
 
-.kvz-game-defender.behavior-area-burst.is-defeated .kvz-game-unit-sprite {
-  animation: kvz-pop-finale 480ms var(--kvz-ease) forwards;
+.cvz-game-defender.behavior-area-burst.is-defeated .cvz-game-unit-sprite {
+  animation: cvz-pop-finale 480ms var(--cvz-ease) forwards;
 }
 
-.kvz-game-enemy.behavior-heavy-armor.is-attacking .kvz-game-unit-sprite {
-  animation: kvz-bucket-bash 430ms var(--kvz-ease) both;
+.cvz-game-enemy.behavior-heavy-armor.is-attacking .cvz-game-unit-sprite {
+  animation: cvz-bucket-bash 430ms var(--cvz-ease) both;
 }
 
-.kvz-game-enemy.behavior-shield-walker.is-attacking .kvz-game-unit-sprite {
-  animation: kvz-shield-bash 430ms var(--kvz-ease) both;
+.cvz-game-enemy.behavior-shield-walker.is-attacking .cvz-game-unit-sprite {
+  animation: cvz-shield-bash 430ms var(--cvz-ease) both;
 }
 
-.kvz-game-enemy.behavior-charging-brute.is-attacking .kvz-game-unit-sprite {
-  animation: kvz-brute-bash 430ms var(--kvz-ease) both;
+.cvz-game-enemy.behavior-charging-brute.is-attacking .cvz-game-unit-sprite {
+  animation: cvz-brute-bash 430ms var(--cvz-ease) both;
 }
 
-.kvz-game-healthbar,
-.kvz-game-armorbar,
-.kvz-game-shieldbar {
+.cvz-game-healthbar,
+.cvz-game-armorbar,
+.cvz-game-shieldbar {
   position: absolute;
   left: 14%;
   z-index: 5;
   width: 72%;
   height: 7px;
   overflow: hidden;
-  border: 2px solid var(--kvz-ink);
+  border: 2px solid var(--cvz-ink);
   border-radius: 999px;
   background: rgba(37, 23, 15, 0.55);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-.kvz-game-healthbar {
+.cvz-game-healthbar {
   top: 2%;
 }
 
-.kvz-game-armorbar {
+.cvz-game-armorbar {
   top: 11%;
 }
 
-.kvz-game-shieldbar {
+.cvz-game-shieldbar {
   top: 20%;
 }
 
-.kvz-game-healthbar > span,
-.kvz-game-armorbar > span,
-.kvz-game-shieldbar > span {
+.cvz-game-healthbar > span,
+.cvz-game-armorbar > span,
+.cvz-game-shieldbar > span {
   display: block;
   width: calc(var(--value, 1) * 100%);
   height: 100%;
@@ -1286,141 +1286,141 @@ body.kvz-game-open {
   transition: width 140ms ease;
 }
 
-.kvz-game-healthbar > span {
-  background: linear-gradient(90deg, #5ad83e, var(--kvz-lime));
+.cvz-game-healthbar > span {
+  background: linear-gradient(90deg, #5ad83e, var(--cvz-lime));
 }
 
-.kvz-game-armorbar > span {
-  background: linear-gradient(90deg, #fb9d3e, var(--kvz-yellow));
+.cvz-game-armorbar > span {
+  background: linear-gradient(90deg, #fb9d3e, var(--cvz-yellow));
 }
 
-.kvz-game-shieldbar > span {
+.cvz-game-shieldbar > span {
   background: linear-gradient(90deg, #48bddb, #9cf7ff);
 }
 
-.kvz-game-projectile {
+.cvz-game-projectile {
   position: absolute;
   z-index: 25;
   width: clamp(9px, 1.8%, 22px);
   aspect-ratio: 1;
-  border: 2px solid var(--kvz-ink);
+  border: 2px solid var(--cvz-ink);
   border-radius: 50%;
-  background: radial-gradient(circle at 32% 27%, #f8ffbc 0 18%, transparent 19%), var(--kvz-lime);
+  background: radial-gradient(circle at 32% 27%, #f8ffbc 0 18%, transparent 19%), var(--cvz-lime);
   box-shadow: 0 0 8px rgba(168, 236, 54, 0.8), 0 3px 0 rgba(68, 40, 23, 0.42);
   pointer-events: none;
   transform: translate(-50%, -50%);
 }
 
-.kvz-game-projectile.frost,
-.kvz-game-projectile.is-frost {
-  background: radial-gradient(circle at 32% 27%, #fff 0 18%, transparent 19%), var(--kvz-blue);
+.cvz-game-projectile.frost,
+.cvz-game-projectile.is-frost {
+  background: radial-gradient(circle at 32% 27%, #fff 0 18%, transparent 19%), var(--cvz-blue);
   box-shadow: 0 0 10px rgba(153, 230, 237, 0.95), 0 3px 0 rgba(68, 40, 23, 0.42);
 }
 
-.kvz-game-projectile.is-heavy {
+.cvz-game-projectile.is-heavy {
   width: clamp(14px, 2.4%, 28px);
   background: radial-gradient(circle at 32% 27%, #fff7a5 0 16%, transparent 17%), #8b54cf;
   box-shadow: 0 0 12px rgba(139, 84, 207, 0.9), 0 4px 0 rgba(68, 40, 23, 0.45);
 }
 
-.kvz-game-effect {
+.cvz-game-effect {
   position: absolute;
   z-index: 45;
   width: 4.5%;
   min-width: 24px;
   aspect-ratio: 1;
-  border: 3px solid var(--kvz-ink);
+  border: 3px solid var(--cvz-ink);
   border-radius: 50%;
-  background: var(--kvz-yellow);
+  background: var(--cvz-yellow);
   box-shadow: 0 0 16px rgba(255, 225, 93, 0.9);
   transform: translate(-50%, -50%);
-  animation: kvz-effect-pop 580ms var(--kvz-ease) forwards;
+  animation: cvz-effect-pop 580ms var(--cvz-ease) forwards;
   pointer-events: none;
 }
 
-.kvz-game-effect.frost {
-  background: var(--kvz-sky);
+.cvz-game-effect.frost {
+  background: var(--cvz-sky);
   box-shadow: 0 0 18px rgba(153, 230, 237, 0.95);
 }
 
-.kvz-game-effect.heavy {
+.cvz-game-effect.heavy {
   background: #a985dc;
 }
 
-.kvz-game-effect.burst {
+.cvz-game-effect.burst {
   width: 18%;
-  background: radial-gradient(circle, var(--kvz-yellow) 0 22%, var(--kvz-pink) 23% 48%, transparent 49%);
+  background: radial-gradient(circle, var(--cvz-yellow) 0 22%, var(--cvz-pink) 23% 48%, transparent 49%);
   border-color: transparent;
   box-shadow: 0 0 28px rgba(255, 130, 173, 0.9);
 }
 
-.kvz-game-effect.root {
-  background: conic-gradient(from 20deg, var(--kvz-lime), var(--kvz-yellow), var(--kvz-lime));
+.cvz-game-effect.root {
+  background: conic-gradient(from 20deg, var(--cvz-lime), var(--cvz-yellow), var(--cvz-lime));
 }
 
-.kvz-game-effect.place {
+.cvz-game-effect.place {
   width: 8%;
-  border-color: var(--kvz-paper);
-  background: repeating-conic-gradient(from 15deg, var(--kvz-lime) 0 14deg, transparent 14deg 30deg);
+  border-color: var(--cvz-paper);
+  background: repeating-conic-gradient(from 15deg, var(--cvz-lime) 0 14deg, transparent 14deg 30deg);
   box-shadow: 0 0 0 6px rgba(168, 236, 54, 0.28), 0 0 18px rgba(255, 253, 245, 0.9);
 }
 
-.kvz-game-effect.energy-spawn {
+.cvz-game-effect.energy-spawn {
   width: 7%;
-  border-color: var(--kvz-yellow);
+  border-color: var(--cvz-yellow);
   background: transparent;
   box-shadow: 0 0 0 8px rgba(255, 225, 93, 0.24), 0 0 22px rgba(255, 225, 93, 0.92);
 }
 
-.kvz-game-effect.armor-break,
-.kvz-game-effect.shield-break {
+.cvz-game-effect.armor-break,
+.cvz-game-effect.shield-break {
   width: 9%;
   border-color: transparent;
-  background: repeating-conic-gradient(from 8deg, var(--kvz-orange) 0 10deg, transparent 10deg 28deg);
+  background: repeating-conic-gradient(from 8deg, var(--cvz-orange) 0 10deg, transparent 10deg 28deg);
   box-shadow: 0 0 18px rgba(255, 146, 47, 0.8);
 }
 
-.kvz-game-effect.shield-break {
-  background: repeating-conic-gradient(from 8deg, var(--kvz-sky) 0 10deg, transparent 10deg 28deg);
+.cvz-game-effect.shield-break {
+  background: repeating-conic-gradient(from 8deg, var(--cvz-sky) 0 10deg, transparent 10deg 28deg);
   box-shadow: 0 0 20px rgba(94, 204, 226, 0.9);
 }
 
-.kvz-game-effect.enemy-defeat,
-.kvz-game-effect.defender-defeat {
+.cvz-game-effect.enemy-defeat,
+.cvz-game-effect.defender-defeat {
   width: 11%;
   border-color: rgba(255, 253, 245, 0.82);
   background: radial-gradient(circle, rgba(255, 253, 245, 0.9) 0 22%, rgba(153, 230, 237, 0.62) 23% 48%, transparent 49%);
   box-shadow: 0 0 22px rgba(255, 253, 245, 0.82);
 }
 
-.kvz-game-effect.defender-defeat {
+.cvz-game-effect.defender-defeat {
   background: radial-gradient(circle, rgba(255, 253, 245, 0.9) 0 22%, rgba(168, 236, 54, 0.58) 23% 48%, transparent 49%);
 }
 
-.kvz-game-effect.sweeper {
+.cvz-game-effect.sweeper {
   width: 16%;
-  border-color: var(--kvz-paper);
-  background: repeating-conic-gradient(var(--kvz-pink) 0 12deg, var(--kvz-yellow) 12deg 24deg);
+  border-color: var(--cvz-paper);
+  background: repeating-conic-gradient(var(--cvz-pink) 0 12deg, var(--cvz-yellow) 12deg 24deg);
   box-shadow: 0 0 28px rgba(255, 130, 173, 0.92);
 }
 
-.kvz-game-enemy.armor-damaged .kvz-game-unit-sprite {
-  filter: contrast(1.05) drop-shadow(0 0 4px var(--kvz-orange)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
+.cvz-game-enemy.armor-damaged .cvz-game-unit-sprite {
+  filter: contrast(1.05) drop-shadow(0 0 4px var(--cvz-orange)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
 }
 
-.kvz-game-enemy.armor-critical .kvz-game-unit-sprite {
-  filter: contrast(1.08) saturate(0.82) drop-shadow(0 0 6px var(--kvz-danger)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
+.cvz-game-enemy.armor-critical .cvz-game-unit-sprite {
+  filter: contrast(1.08) saturate(0.82) drop-shadow(0 0 6px var(--cvz-danger)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
 }
 
-.kvz-game-enemy.shield-damaged .kvz-game-unit-sprite {
-  filter: contrast(1.05) drop-shadow(0 0 6px var(--kvz-sky)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
+.cvz-game-enemy.shield-damaged .cvz-game-unit-sprite {
+  filter: contrast(1.05) drop-shadow(0 0 6px var(--cvz-sky)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
 }
 
-.kvz-game-enemy.shield-critical .kvz-game-unit-sprite {
+.cvz-game-enemy.shield-critical .cvz-game-unit-sprite {
   filter: contrast(1.1) saturate(0.76) drop-shadow(0 0 8px #79ddec) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
 }
 
-.kvz-game-enemy:is(.armor-damaged, .armor-critical):not(.is-armor-broken)::after {
+.cvz-game-enemy:is(.armor-damaged, .armor-critical):not(.is-armor-broken)::after {
   position: absolute;
   top: 24%;
   right: 17%;
@@ -1429,14 +1429,14 @@ body.kvz-game-open {
   height: 31%;
   content: "";
   background:
-    linear-gradient(64deg, transparent 43%, var(--kvz-ink) 44% 51%, transparent 52%) 10% 8% / 55% 54% no-repeat,
-    linear-gradient(116deg, transparent 43%, var(--kvz-ink) 44% 51%, transparent 52%) 78% 48% / 58% 58% no-repeat;
+    linear-gradient(64deg, transparent 43%, var(--cvz-ink) 44% 51%, transparent 52%) 10% 8% / 55% 54% no-repeat,
+    linear-gradient(116deg, transparent 43%, var(--cvz-ink) 44% 51%, transparent 52%) 78% 48% / 58% 58% no-repeat;
   opacity: 0.74;
   transform: rotate(7deg);
   pointer-events: none;
 }
 
-.kvz-game-enemy:is(.shield-damaged, .shield-critical):not(.is-shield-broken)::after {
+.cvz-game-enemy:is(.shield-damaged, .shield-critical):not(.is-shield-broken)::after {
   position: absolute;
   top: 27%;
   right: 10%;
@@ -1450,7 +1450,7 @@ body.kvz-game-open {
   pointer-events: none;
 }
 
-.kvz-game-image-fallback {
+.cvz-game-image-fallback {
   display: inline-grid;
   min-width: 64px;
   min-height: 64px;
@@ -1458,25 +1458,25 @@ body.kvz-game-open {
   place-items: center;
   border: 2px dashed rgba(37, 23, 15, 0.55);
   border-radius: 12px;
-  color: var(--kvz-bark-deep);
+  color: var(--cvz-bark-deep);
   background:
-    radial-gradient(circle at 50% 62%, var(--kvz-pink) 0 17%, transparent 18%),
-    radial-gradient(circle at 34% 36%, var(--kvz-pink) 0 8%, transparent 9%),
-    radial-gradient(circle at 66% 36%, var(--kvz-pink) 0 8%, transparent 9%),
+    radial-gradient(circle at 50% 62%, var(--cvz-pink) 0 17%, transparent 18%),
+    radial-gradient(circle at 34% 36%, var(--cvz-pink) 0 8%, transparent 9%),
+    radial-gradient(circle at 66% 36%, var(--cvz-pink) 0 8%, transparent 9%),
     rgba(255, 253, 245, 0.72);
   font-size: 0.72rem;
   font-weight: 900;
   letter-spacing: 0.08em;
 }
 
-.kvz-game-defender > .kvz-game-image-fallback,
-.kvz-game-enemy > .kvz-game-image-fallback {
+.cvz-game-defender > .cvz-game-image-fallback,
+.cvz-game-enemy > .cvz-game-image-fallback {
   position: absolute;
   inset: 18% 9% 4%;
   z-index: 1;
 }
 
-.kvz-game-card > .kvz-game-image-fallback {
+.cvz-game-card > .cvz-game-image-fallback {
   width: 56px;
   min-width: 0;
   height: 76px;
@@ -1485,136 +1485,136 @@ body.kvz-game-open {
   grid-row: 1 / 4;
 }
 
-.kvz-game-defender.health-damaged .kvz-game-unit-sprite {
-  filter: saturate(0.88) drop-shadow(0 0 4px var(--kvz-orange)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
+.cvz-game-defender.health-damaged .cvz-game-unit-sprite {
+  filter: saturate(0.88) drop-shadow(0 0 4px var(--cvz-orange)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
 }
 
-.kvz-game-defender.health-critical .kvz-game-unit-sprite {
-  filter: saturate(0.7) contrast(0.95) drop-shadow(0 0 6px var(--kvz-danger)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
+.cvz-game-defender.health-critical .cvz-game-unit-sprite {
+  filter: saturate(0.7) contrast(0.95) drop-shadow(0 0 6px var(--cvz-danger)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
 }
 
-.kvz-game-energy-orb {
+.cvz-game-energy-orb {
   position: absolute;
   z-index: 35;
   display: grid;
   width: clamp(40px, 5.4%, 64px);
   aspect-ratio: 1;
   place-items: center;
-  border: 3px solid var(--kvz-ink);
+  border: 3px solid var(--cvz-ink);
   border-radius: 50%;
-  color: var(--kvz-ink);
+  color: var(--cvz-ink);
   background:
     radial-gradient(circle at 32% 25%, rgba(255, 255, 255, 0.94) 0 10%, transparent 11%),
-    radial-gradient(circle at 50% 60%, var(--kvz-orange) 0 23%, transparent 24%),
-    var(--kvz-yellow);
-  box-shadow: 0 0 18px rgba(255, 225, 93, 0.95), 0 5px 0 var(--kvz-bark);
+    radial-gradient(circle at 50% 60%, var(--cvz-orange) 0 23%, transparent 24%),
+    var(--cvz-yellow);
+  box-shadow: 0 0 18px rgba(255, 225, 93, 0.95), 0 5px 0 var(--cvz-bark);
   cursor: pointer;
   pointer-events: auto;
   touch-action: manipulation;
-  animation: kvz-orb-float 1.7s ease-in-out infinite;
+  animation: cvz-orb-float 1.7s ease-in-out infinite;
 }
 
-.kvz-game-energy-orb::before {
+.cvz-game-energy-orb::before {
   width: 34%;
   height: 28%;
   border-radius: 50% 50% 45% 45%;
   content: "";
-  background: var(--kvz-orange);
+  background: var(--cvz-orange);
   box-shadow:
-    -12px -10px 0 -4px var(--kvz-orange),
-    -4px -15px 0 -4px var(--kvz-orange),
-    5px -15px 0 -4px var(--kvz-orange),
-    13px -10px 0 -4px var(--kvz-orange);
+    -12px -10px 0 -4px var(--cvz-orange),
+    -4px -15px 0 -4px var(--cvz-orange),
+    5px -15px 0 -4px var(--cvz-orange),
+    13px -10px 0 -4px var(--cvz-orange);
 }
 
-.kvz-game-energy-orb:hover,
-.kvz-game-energy-orb:focus-visible {
+.cvz-game-energy-orb:hover,
+.cvz-game-energy-orb:focus-visible {
   filter: brightness(1.08);
   transform: scale(1.08);
 }
 
-.kvz-game-energy-orb.is-collecting {
-  animation: kvz-orb-collect 450ms var(--kvz-ease) forwards;
+.cvz-game-energy-orb.is-collecting {
+  animation: cvz-orb-collect 450ms var(--cvz-ease) forwards;
 }
 
-.kvz-game-sweeper {
+.cvz-game-sweeper {
   position: absolute;
   left: 0.3%;
   z-index: 20;
   width: 7.5%;
   height: 16%;
-  border: 3px solid var(--kvz-ink);
+  border: 3px solid var(--cvz-ink);
   border-radius: 45% 55% 30% 30%;
   background:
-    radial-gradient(circle at 31% 39%, var(--kvz-ink) 0 3px, transparent 4px),
-    radial-gradient(circle at 63% 39%, var(--kvz-ink) 0 3px, transparent 4px),
-    linear-gradient(145deg, var(--kvz-pink), #f5568d);
-  box-shadow: 0 5px 0 var(--kvz-bark), inset -5px -6px 0 rgba(112, 67, 30, 0.18);
+    radial-gradient(circle at 31% 39%, var(--cvz-ink) 0 3px, transparent 4px),
+    radial-gradient(circle at 63% 39%, var(--cvz-ink) 0 3px, transparent 4px),
+    linear-gradient(145deg, var(--cvz-pink), #f5568d);
+  box-shadow: 0 5px 0 var(--cvz-bark), inset -5px -6px 0 rgba(112, 67, 30, 0.18);
   transform: translateY(-50%);
   pointer-events: none;
 }
 
-.kvz-game-sweeper::before,
-.kvz-game-sweeper::after {
+.cvz-game-sweeper::before,
+.cvz-game-sweeper::after {
   position: absolute;
   top: -18%;
   width: 38%;
   height: 42%;
-  border: 3px solid var(--kvz-ink);
+  border: 3px solid var(--cvz-ink);
   border-radius: 10px 70% 10px 60%;
   content: "";
-  background: var(--kvz-pink);
+  background: var(--cvz-pink);
 }
 
-.kvz-game-sweeper::before {
+.cvz-game-sweeper::before {
   left: 4%;
   transform: rotate(-25deg);
 }
 
-.kvz-game-sweeper::after {
+.cvz-game-sweeper::after {
   right: 4%;
   transform: rotate(25deg) scaleX(-1);
 }
 
-.kvz-game-sweeper.is-active {
-  animation: kvz-sweeper-run 1.2s linear forwards;
+.cvz-game-sweeper.is-active {
+  animation: cvz-sweeper-run 1.2s linear forwards;
 }
 
-.kvz-game-sweeper.is-used {
+.cvz-game-sweeper.is-used {
   opacity: 0.25;
   filter: grayscale(1);
 }
 
-.kvz-game-status-slow .kvz-game-unit-sprite,
-.kvz-game-enemy.status-slow .kvz-game-unit-sprite {
+.cvz-game-status-slow .cvz-game-unit-sprite,
+.cvz-game-enemy.status-slow .cvz-game-unit-sprite {
   filter: hue-rotate(145deg) saturate(0.8) drop-shadow(0 0 7px #bdfaff) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.22));
 }
 
-.kvz-game-status-root .kvz-game-unit-sprite,
-.kvz-game-enemy.status-root .kvz-game-unit-sprite {
+.cvz-game-status-root .cvz-game-unit-sprite,
+.cvz-game-enemy.status-root .cvz-game-unit-sprite {
   filter: sepia(0.32) saturate(1.25) drop-shadow(0 0 7px #ffe15d) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.22));
   animation-play-state: paused;
 }
 
-.kvz-game-status-weakened .kvz-game-unit-sprite,
-.kvz-game-enemy.status-weakened .kvz-game-unit-sprite {
-  filter: saturate(0.55) contrast(0.9) drop-shadow(0 0 7px var(--kvz-pink)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.22));
+.cvz-game-status-weakened .cvz-game-unit-sprite,
+.cvz-game-enemy.status-weakened .cvz-game-unit-sprite {
+  filter: saturate(0.55) contrast(0.9) drop-shadow(0 0 7px var(--cvz-pink)) drop-shadow(0 6px 3px rgba(37, 23, 15, 0.22));
 }
 
-.kvz-game-damage-flash .kvz-game-unit-sprite,
-.kvz-game-defender.is-hit .kvz-game-unit-sprite,
-.kvz-game-enemy.is-hit .kvz-game-unit-sprite {
-  animation: kvz-damage-flash 220ms ease both;
+.cvz-game-damage-flash .cvz-game-unit-sprite,
+.cvz-game-defender.is-hit .cvz-game-unit-sprite,
+.cvz-game-enemy.is-hit .cvz-game-unit-sprite {
+  animation: cvz-damage-flash 220ms ease both;
 }
 
-.kvz-game-defeated,
-.kvz-game-defender.is-defeated,
-.kvz-game-enemy.is-defeated {
+.cvz-game-defeated,
+.cvz-game-defender.is-defeated,
+.cvz-game-enemy.is-defeated {
   pointer-events: none;
-  animation: kvz-defeated 460ms var(--kvz-ease) forwards;
+  animation: cvz-defeated 460ms var(--cvz-ease) forwards;
 }
 
-.kvz-game-toast-stack {
+.cvz-game-toast-stack {
   position: absolute;
   top: 78px;
   right: 14px;
@@ -1625,19 +1625,19 @@ body.kvz-game-open {
   pointer-events: none;
 }
 
-.kvz-game-toast {
+.cvz-game-toast {
   position: relative;
   padding: 10px 14px;
-  border: 3px solid var(--kvz-ink);
+  border: 3px solid var(--cvz-ink);
   border-radius: 10px;
   background: linear-gradient(180deg, #fffbe2, #f2d486);
-  box-shadow: 0 5px 0 var(--kvz-bark), 0 11px 20px var(--kvz-shadow);
+  box-shadow: 0 5px 0 var(--cvz-bark), 0 11px 20px var(--cvz-shadow);
   font-weight: 900;
   line-height: 1.15;
-  animation: kvz-toast-in 250ms var(--kvz-ease) both;
+  animation: cvz-toast-in 250ms var(--cvz-ease) both;
 }
 
-.kvz-game-overlay.is-playing .kvz-game-toast-stack {
+.cvz-game-overlay.is-playing .cvz-game-toast-stack {
   top: max(8px, env(safe-area-inset-top));
   right: auto;
   left: 50%;
@@ -1646,55 +1646,55 @@ body.kvz-game-open {
   transform: translateX(-50%);
 }
 
-.kvz-game-overlay.is-playing .kvz-game-toast {
+.cvz-game-overlay.is-playing .cvz-game-toast {
   padding: 6px 10px;
   border-width: 2px;
   font-size: 0.78rem;
-  box-shadow: 0 3px 0 var(--kvz-bark), 0 7px 14px var(--kvz-shadow);
+  box-shadow: 0 3px 0 var(--cvz-bark), 0 7px 14px var(--cvz-shadow);
 }
 
-.kvz-game-toast.success {
+.cvz-game-toast.success {
   background: linear-gradient(180deg, #edffd8, #9be36b);
 }
 
-.kvz-game-toast.warning {
+.cvz-game-toast.warning {
   background: linear-gradient(180deg, #fff4ad, #ffb247);
 }
 
-.kvz-game-toast.error {
-  color: var(--kvz-paper);
-  background: linear-gradient(180deg, #ff8d7a, var(--kvz-danger));
+.cvz-game-toast.error {
+  color: var(--cvz-paper);
+  background: linear-gradient(180deg, #ff8d7a, var(--cvz-danger));
 }
 
-.kvz-game-final-warning {
+.cvz-game-final-warning {
   position: absolute;
   top: 50%;
   left: 50%;
   z-index: 80;
   width: min(720px, calc(100% - 36px));
   padding: clamp(14px, 3vw, 24px);
-  border: 5px solid var(--kvz-ink);
+  border: 5px solid var(--cvz-ink);
   border-radius: 14px;
-  color: var(--kvz-paper);
+  color: var(--cvz-paper);
   background:
     repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0 12px, transparent 12px 24px),
-    linear-gradient(180deg, #ff8a57, var(--kvz-danger));
-  box-shadow: 0 8px 0 var(--kvz-bark-deep), 0 20px 40px rgba(37, 23, 15, 0.44);
+    linear-gradient(180deg, #ff8a57, var(--cvz-danger));
+  box-shadow: 0 8px 0 var(--cvz-bark-deep), 0 20px 40px rgba(37, 23, 15, 0.44);
   font-family: "Luckiest Guy", "Baloo 2", sans-serif;
   font-size: clamp(1.75rem, 5vw, 4rem);
   line-height: 1;
   text-align: center;
-  text-shadow: 0 4px 0 var(--kvz-bark-deep);
+  text-shadow: 0 4px 0 var(--cvz-bark-deep);
   transform: translate(-50%, -50%);
-  animation: kvz-warning-pop 1.8s var(--kvz-ease) both;
+  animation: cvz-warning-pop 1.8s var(--cvz-ease) both;
   pointer-events: none;
 }
 
-.kvz-game-overlay.is-paused .kvz-game-final-warning {
+.cvz-game-overlay.is-paused .cvz-game-final-warning {
   animation-play-state: paused;
 }
 
-.kvz-game-modal-backdrop {
+.cvz-game-modal-backdrop {
   position: absolute;
   inset: 0;
   z-index: 100;
@@ -1706,11 +1706,11 @@ body.kvz-game-open {
   backdrop-filter: blur(4px);
 }
 
-.kvz-game-modal-backdrop[hidden] {
+.cvz-game-modal-backdrop[hidden] {
   display: none !important;
 }
 
-.kvz-game-frame > .kvz-game-paused {
+.cvz-game-frame > .cvz-game-paused {
   position: absolute;
   inset: 0;
   z-index: 100;
@@ -1722,11 +1722,11 @@ body.kvz-game-open {
   backdrop-filter: blur(4px);
 }
 
-.kvz-game-frame > .kvz-game-paused[hidden] {
+.cvz-game-frame > .cvz-game-paused[hidden] {
   display: none !important;
 }
 
-.kvz-game-paused > .kvz-game-panel {
+.cvz-game-paused > .cvz-game-panel {
   display: grid;
   width: min(560px, 100%);
   gap: 16px;
@@ -1734,7 +1734,7 @@ body.kvz-game-open {
   text-align: center;
 }
 
-.kvz-game-modal {
+.cvz-game-modal {
   position: relative;
   display: grid;
   width: min(590px, 100%);
@@ -1742,42 +1742,42 @@ body.kvz-game-open {
   gap: 16px;
   padding: clamp(22px, 4vw, 40px);
   overflow: auto;
-  border: 5px solid var(--kvz-ink);
+  border: 5px solid var(--cvz-ink);
   border-radius: 15px;
   background:
     radial-gradient(circle at 10% 12%, rgba(255, 130, 173, 0.26) 0 24px, transparent 25px),
     radial-gradient(circle at 90% 88%, rgba(255, 225, 93, 0.4) 0 34px, transparent 35px),
     linear-gradient(180deg, #fff9da, #efd28b);
-  box-shadow: 0 9px 0 var(--kvz-bark), 0 26px 52px rgba(20, 12, 7, 0.52);
+  box-shadow: 0 9px 0 var(--cvz-bark), 0 26px 52px rgba(20, 12, 7, 0.52);
   text-align: center;
-  animation: kvz-modal-in 220ms var(--kvz-ease) both;
+  animation: cvz-modal-in 220ms var(--cvz-ease) both;
 }
 
-.kvz-game-modal h2,
-.kvz-game-modal p {
+.cvz-game-modal h2,
+.cvz-game-modal p {
   position: relative;
   z-index: 1;
   margin: 0;
 }
 
-.kvz-game-modal h2 {
-  color: var(--kvz-grass-deep);
+.cvz-game-modal h2 {
+  color: var(--cvz-grass-deep);
   font-family: "Luckiest Guy", "Baloo 2", sans-serif;
   font-size: clamp(2rem, 6vw, 3.8rem);
   line-height: 0.95;
-  -webkit-text-stroke: 2px var(--kvz-ink);
+  -webkit-text-stroke: 2px var(--cvz-ink);
   paint-order: stroke fill;
-  text-shadow: 0 4px 0 var(--kvz-bark);
+  text-shadow: 0 4px 0 var(--cvz-bark);
 }
 
-.kvz-game-paused .kvz-game-modal,
-.kvz-game-modal.paused {
+.cvz-game-paused .cvz-game-modal,
+.cvz-game-modal.paused {
   background:
     radial-gradient(circle at 50% 0, rgba(255, 225, 93, 0.5), transparent 12rem),
     linear-gradient(180deg, #fff9da, #efd28b);
 }
 
-.kvz-game-victory-confetti {
+.cvz-game-victory-confetti {
   position: absolute;
   inset: 0;
   z-index: 110;
@@ -1785,19 +1785,19 @@ body.kvz-game-open {
   pointer-events: none;
 }
 
-.kvz-game-victory-confetti > i {
+.cvz-game-victory-confetti > i {
   position: absolute;
   top: -12%;
   left: var(--x, 50%);
   width: clamp(8px, 1vw, 14px);
   height: clamp(13px, 1.6vw, 22px);
-  border: 2px solid var(--kvz-ink);
+  border: 2px solid var(--cvz-ink);
   border-radius: 4px;
-  background: var(--color, var(--kvz-pink));
-  animation: kvz-confetti-fall var(--duration, 2.8s) linear var(--delay, 0s) infinite;
+  background: var(--color, var(--cvz-pink));
+  animation: cvz-confetti-fall var(--duration, 2.8s) linear var(--delay, 0s) infinite;
 }
 
-.kvz-game-orientation-hint {
+.cvz-game-orientation-hint {
   position: absolute;
   inset: 0;
   z-index: 150;
@@ -1810,57 +1810,57 @@ body.kvz-game-open {
   text-align: center;
 }
 
-.kvz-game-orientation-hint .kvz-game-panel {
+.cvz-game-orientation-hint .cvz-game-panel {
   display: grid;
   max-width: 420px;
   gap: 12px;
   justify-items: center;
 }
 
-.kvz-game-orientation-hint::before {
+.cvz-game-orientation-hint::before {
   width: 64px;
   height: 102px;
-  border: 5px solid var(--kvz-ink);
+  border: 5px solid var(--cvz-ink);
   border-radius: 13px;
   content: "";
-  background: linear-gradient(145deg, var(--kvz-sky), var(--kvz-pink));
-  box-shadow: 0 7px 0 var(--kvz-bark);
-  animation: kvz-turn-device 2.4s ease-in-out infinite;
+  background: linear-gradient(145deg, var(--cvz-sky), var(--cvz-pink));
+  box-shadow: 0 7px 0 var(--cvz-bark);
+  animation: cvz-turn-device 2.4s ease-in-out infinite;
 }
 
-.kvz-game-overlay :is(button, [href], input, select, textarea, [tabindex]):focus-visible {
+.cvz-game-overlay :is(button, [href], input, select, textarea, [tabindex]):focus-visible {
   outline: 4px solid #fff;
   outline-offset: 2px;
-  box-shadow: 0 0 0 7px var(--kvz-pink-deep), 0 5px 0 var(--kvz-bark);
+  box-shadow: 0 0 0 7px var(--cvz-pink-deep), 0 5px 0 var(--cvz-bark);
 }
 
-.kvz-game-gameplay.is-paused .kvz-game-entity-layer *,
-.kvz-game-overlay.is-paused .kvz-game-gameplay .kvz-game-entity-layer * {
+.cvz-game-gameplay.is-paused .cvz-game-entity-layer *,
+.cvz-game-overlay.is-paused .cvz-game-gameplay .cvz-game-entity-layer * {
   animation-play-state: paused !important;
 }
 
-.kvz-game-overlay.reduce-motion,
-.kvz-game-overlay.reduce-motion *,
-.kvz-game-overlay.reduce-motion *::before,
-.kvz-game-overlay.reduce-motion *::after {
+.cvz-game-overlay.reduce-motion,
+.cvz-game-overlay.reduce-motion *,
+.cvz-game-overlay.reduce-motion *::before,
+.cvz-game-overlay.reduce-motion *::after {
   scroll-behavior: auto !important;
   animation-duration: 0.001ms !important;
   animation-iteration-count: 1 !important;
   transition-duration: 0.001ms !important;
 }
 
-.kvz-game-overlay.screen-shake-enabled .kvz-game-frame.is-shaking {
-  animation: kvz-screen-shake 320ms ease both;
+.cvz-game-overlay.screen-shake-enabled .cvz-game-frame.is-shaking {
+  animation: cvz-screen-shake 320ms ease both;
 }
 
-.kvz-game-overlay .is-paused .kvz-game-modal,
-.kvz-game-overlay.is-paused .kvz-game-modal {
+.cvz-game-overlay .is-paused .cvz-game-modal,
+.cvz-game-overlay.is-paused .cvz-game-modal {
   opacity: 1;
   animation: none;
   transform: none;
 }
 
-@keyframes kvz-menu-float {
+@keyframes cvz-menu-float {
   0%,
   100% {
     transform: translateY(0) rotate(1deg);
@@ -1870,7 +1870,7 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-unit-idle {
+@keyframes cvz-unit-idle {
   0%,
   100% {
     transform: translateY(0) rotate(-0.7deg) scale(1);
@@ -1880,118 +1880,118 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-producer-idle {
+@keyframes cvz-producer-idle {
   0%, 100% { transform: translateY(0) rotate(-1deg) scale(1); filter: drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25)); }
   50% { transform: translateY(-5%) rotate(1deg) scale(1.025, 0.98); filter: brightness(1.08) drop-shadow(0 0 7px rgba(255, 225, 93, 0.72)); }
 }
 
-@keyframes kvz-guard-idle {
+@keyframes cvz-guard-idle {
   0%, 100% { transform: translateY(0) scale(1.02, 0.98); }
   50% { transform: translateY(-1.5%) rotate(-0.8deg) scale(0.99, 1.01); }
 }
 
-@keyframes kvz-twin-idle {
+@keyframes cvz-twin-idle {
   0%, 100% { transform: translateY(0) rotate(-1.8deg); }
   45% { transform: translateY(-4%) rotate(1.8deg) scale(1.025, 0.98); }
   70% { transform: translateY(-2%) rotate(-0.8deg); }
 }
 
-@keyframes kvz-frost-idle {
+@keyframes cvz-frost-idle {
   0%, 100% { transform: translateY(0) rotate(-0.4deg); filter: drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25)); }
   50% { transform: translateY(-3.5%) rotate(0.4deg) scale(1.01); filter: drop-shadow(0 0 6px rgba(153, 230, 237, 0.62)); }
 }
 
-@keyframes kvz-pop-idle {
+@keyframes cvz-pop-idle {
   0%, 100% { transform: translate(0, 0) rotate(-1deg) scale(1); }
   35% { transform: translate(-1.5%, -3%) rotate(1deg) scale(1.025, 0.97); }
   70% { transform: translate(1.5%, -1%) rotate(-1.5deg) scale(0.99, 1.02); }
 }
 
-@keyframes kvz-heavy-idle {
+@keyframes cvz-heavy-idle {
   0%, 100% { transform: translateY(0) rotate(-0.4deg) scale(1.02, 0.98); }
   50% { transform: translateY(-2%) rotate(0.4deg) scale(0.99, 1.01); }
 }
 
-@keyframes kvz-guide-idle {
+@keyframes cvz-guide-idle {
   0%, 100% { transform: translateY(0) rotate(-1deg); filter: drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25)); }
   50% { transform: translateY(-4%) rotate(1deg) scale(1.015); filter: brightness(1.06) drop-shadow(0 0 7px rgba(168, 236, 54, 0.58)); }
 }
 
-@keyframes kvz-armored-step {
+@keyframes cvz-armored-step {
   0%, 100% { transform: translateY(0) rotate(-1deg) scale(1.01, 0.99); }
   50% { transform: translateY(-3.5%) rotate(1.2deg) scale(0.99, 1.015); }
 }
 
-@keyframes kvz-bucket-step {
+@keyframes cvz-bucket-step {
   0%, 100% { transform: translateY(0) rotate(-1.4deg) scale(1.025, 0.975); }
   42% { transform: translateY(-2%) rotate(1.1deg) scale(0.99, 1.01); }
   55% { transform: translateY(0.5%) rotate(0); }
 }
 
-@keyframes kvz-shield-step {
+@keyframes cvz-shield-step {
   0%, 100% { transform: translateX(0) translateY(0) rotate(-0.5deg); }
   50% { transform: translateX(-1.5%) translateY(-2.5%) rotate(0.8deg) scale(1.01, 0.99); }
 }
 
-@keyframes kvz-brute-charge {
+@keyframes cvz-brute-charge {
   0%, 100% { transform: translateX(1%) translateY(0) rotate(-2deg) scale(1.02, 0.98); }
   50% { transform: translateX(-2%) translateY(-5%) rotate(2deg) scale(0.99, 1.015); }
 }
 
-@keyframes kvz-producer-pulse {
+@keyframes cvz-producer-pulse {
   0%, 100% { transform: scale(1); filter: drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25)); }
-  50% { transform: translateY(-7%) scale(1.12, 0.92); filter: brightness(1.18) drop-shadow(0 0 12px var(--kvz-yellow)); }
+  50% { transform: translateY(-7%) scale(1.12, 0.92); filter: brightness(1.18) drop-shadow(0 0 12px var(--cvz-yellow)); }
 }
 
-@keyframes kvz-twin-volley {
+@keyframes cvz-twin-volley {
   0%, 100% { transform: translateX(0) scale(1); }
   26%, 68% { transform: translateX(-7%) scale(0.96, 1.04); }
   44%, 86% { transform: translateX(8%) scale(1.055, 0.96); }
 }
 
-@keyframes kvz-frost-cast {
+@keyframes cvz-frost-cast {
   0%, 100% { transform: rotate(0) scale(1); }
-  45% { transform: translateX(-5%) rotate(-3deg) scale(0.96, 1.04); filter: drop-shadow(0 0 11px var(--kvz-sky)); }
+  45% { transform: translateX(-5%) rotate(-3deg) scale(0.96, 1.04); filter: drop-shadow(0 0 11px var(--cvz-sky)); }
   72% { transform: translateX(7%) rotate(2deg) scale(1.04, 0.97); }
 }
 
-@keyframes kvz-heavy-recoil {
+@keyframes cvz-heavy-recoil {
   0%, 100% { transform: translateX(0) scale(1); }
   38% { transform: translateX(-10%) rotate(-2deg) scale(0.92, 1.07); }
   72% { transform: translateX(10%) rotate(1deg) scale(1.08, 0.93); }
 }
 
-@keyframes kvz-guide-cast {
+@keyframes cvz-guide-cast {
   0%, 100% { transform: translateY(0) rotate(0) scale(1); }
-  45% { transform: translateY(-9%) rotate(-3deg) scale(1.08, 0.94); filter: brightness(1.12) drop-shadow(0 0 12px var(--kvz-lime)); }
+  45% { transform: translateY(-9%) rotate(-3deg) scale(1.08, 0.94); filter: brightness(1.12) drop-shadow(0 0 12px var(--cvz-lime)); }
   72% { transform: translateY(-2%) rotate(2deg) scale(0.98, 1.03); }
 }
 
-@keyframes kvz-pop-finale {
+@keyframes cvz-pop-finale {
   0% { opacity: 1; transform: scale(1); }
-  45% { opacity: 1; transform: translateY(-8%) rotate(4deg) scale(1.22, 0.82); filter: brightness(1.35) drop-shadow(0 0 15px var(--kvz-pink)); }
+  45% { opacity: 1; transform: translateY(-8%) rotate(4deg) scale(1.22, 0.82); filter: brightness(1.35) drop-shadow(0 0 15px var(--cvz-pink)); }
   100% { opacity: 0; transform: scale(1.7); }
 }
 
-@keyframes kvz-bucket-bash {
+@keyframes cvz-bucket-bash {
   0%, 100% { transform: translateX(0) rotate(0); }
   48% { transform: translateX(-7%) translateY(3%) rotate(-3deg) scale(1.05, 0.95); }
   70% { transform: translateX(-2%) rotate(1deg); }
 }
 
-@keyframes kvz-shield-bash {
+@keyframes cvz-shield-bash {
   0%, 100% { transform: translateX(0) rotate(0); }
   40% { transform: translateX(-12%) rotate(-1deg) scale(1.07, 0.96); }
   67% { transform: translateX(-3%) rotate(0.5deg); }
 }
 
-@keyframes kvz-brute-bash {
+@keyframes cvz-brute-bash {
   0%, 100% { transform: translateX(0) rotate(0); }
   38% { transform: translateX(-14%) rotate(-4deg) scale(1.09, 0.94); }
   62% { transform: translateX(-4%) rotate(2deg) scale(0.98, 1.02); }
 }
 
-@keyframes kvz-screen-shake {
+@keyframes cvz-screen-shake {
   0%,
   100% { transform: translate3d(0, 0, 0); }
   24% { transform: translate3d(-5px, 2px, 0) rotate(-0.2deg); }
@@ -1999,7 +1999,7 @@ body.kvz-game-open {
   72% { transform: translate3d(-3px, 1px, 0); }
 }
 
-@keyframes kvz-effect-pop {
+@keyframes cvz-effect-pop {
   0% {
     opacity: 0;
     scale: 0.2;
@@ -2014,7 +2014,7 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-dog-walk {
+@keyframes cvz-dog-walk {
   0%,
   100% {
     transform: translateY(0) rotate(-1.5deg) scale(1, 1);
@@ -2024,7 +2024,7 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-cat-attack {
+@keyframes cvz-cat-attack {
   0% {
     transform: translateX(0) scale(1);
   }
@@ -2039,7 +2039,7 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-cat-place {
+@keyframes cvz-cat-place {
   0% {
     opacity: 0;
     transform: translateY(-35%) rotate(-6deg) scale(0.35);
@@ -2054,7 +2054,7 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-dog-attack {
+@keyframes cvz-dog-attack {
   0%,
   100% {
     transform: translateX(0) rotate(0);
@@ -2067,7 +2067,7 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-orb-float {
+@keyframes cvz-orb-float {
   0%,
   100% {
     translate: 0 0;
@@ -2079,7 +2079,7 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-orb-collect {
+@keyframes cvz-orb-collect {
   0% {
     opacity: 1;
     scale: 1;
@@ -2097,7 +2097,7 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-damage-flash {
+@keyframes cvz-damage-flash {
   0%,
   100% {
     filter: drop-shadow(0 6px 3px rgba(37, 23, 15, 0.25));
@@ -2113,7 +2113,7 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-defeated {
+@keyframes cvz-defeated {
   0% {
     opacity: 1;
     transform: rotate(0) scale(1);
@@ -2128,7 +2128,7 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-sweeper-run {
+@keyframes cvz-sweeper-run {
   0% {
     left: 0.3%;
     transform: translateY(-50%) rotate(0);
@@ -2139,7 +2139,7 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-invalid-shake {
+@keyframes cvz-invalid-shake {
   0%,
   100% {
     transform: translateX(0);
@@ -2152,7 +2152,7 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-toast-in {
+@keyframes cvz-toast-in {
   from {
     opacity: 0;
     transform: translateX(28px) scale(0.96);
@@ -2163,7 +2163,7 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-warning-pop {
+@keyframes cvz-warning-pop {
   0% {
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.35) rotate(-4deg);
@@ -2183,7 +2183,7 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-modal-in {
+@keyframes cvz-modal-in {
   from {
     opacity: 0;
     transform: translateY(18px) scale(0.93);
@@ -2194,7 +2194,7 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-confetti-fall {
+@keyframes cvz-confetti-fall {
   0% {
     translate: 0 -10%;
     rotate: 0deg;
@@ -2205,7 +2205,7 @@ body.kvz-game-open {
   }
 }
 
-@keyframes kvz-turn-device {
+@keyframes cvz-turn-device {
   0%,
   20%,
   100% {
@@ -2218,47 +2218,47 @@ body.kvz-game-open {
 }
 
 @media (max-width: 1180px) {
-  .kvz-game-menu-screen {
+  .cvz-game-menu-screen {
     grid-template-columns: minmax(280px, 0.92fr) minmax(320px, 1.08fr);
     gap: 24px;
     padding: 24px;
   }
 
-  .kvz-game-menu-grid,
-  .kvz-game-codex-grid {
+  .cvz-game-menu-grid,
+  .cvz-game-codex-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .kvz-game-card-tray {
+  .cvz-game-card-tray {
     grid-auto-columns: minmax(112px, 1fr);
   }
 }
 
 @media (max-width: 860px) {
-  .kvz-game-frame {
+  .cvz-game-frame {
     height: 100%;
     min-height: 390px;
     border-width: 4px;
     border-radius: 13px;
   }
 
-  .kvz-game-topbar {
+  .cvz-game-topbar {
     min-height: 52px;
     padding-block: 5px 7px;
   }
 
-  .kvz-game-brand-mark::before {
+  .cvz-game-brand-mark::before {
     width: 32px;
     height: 32px;
   }
 
-  .kvz-game-icon-button {
+  .cvz-game-icon-button {
     width: 40px;
     min-width: 40px;
     height: 40px;
   }
 
-  .kvz-game-menu-screen {
+  .cvz-game-menu-screen {
     grid-template-columns: 1fr;
     align-content: start;
     gap: 24px;
@@ -2266,71 +2266,71 @@ body.kvz-game-open {
     text-align: center;
   }
 
-  .kvz-game-menu-hero {
+  .cvz-game-menu-hero {
     justify-items: center;
   }
 
-  .kvz-game-menu-art {
+  .cvz-game-menu-art {
     width: min(520px, 90%);
   }
 
-  .kvz-game-menu-art img {
+  .cvz-game-menu-art img {
     max-height: 380px;
     aspect-ratio: 1.35;
   }
 
-  .kvz-game-menu-grid,
-  .kvz-game-codex-grid {
+  .cvz-game-menu-grid,
+  .cvz-game-codex-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .kvz-game-settings-grid {
+  .cvz-game-settings-grid {
     grid-template-columns: 1fr;
   }
 
-  .kvz-game-hud {
+  .cvz-game-hud {
     grid-template-columns: minmax(140px, 0.8fr) minmax(190px, 1.4fr) auto;
     gap: 7px;
     min-height: 65px;
     padding: 5px 7px 7px;
   }
 
-  .kvz-game-energy-meter {
+  .cvz-game-energy-meter {
     min-width: 104px;
     min-height: 42px;
     padding-left: 43px;
     font-size: 1.05rem;
   }
 
-  .kvz-game-energy-meter::before {
+  .cvz-game-energy-meter::before {
     width: 31px;
     height: 31px;
   }
 
-  .kvz-game-card-tray {
+  .cvz-game-card-tray {
     grid-auto-columns: 108px;
     min-height: 91px;
     padding: 5px 7px 7px;
   }
 
-  .kvz-game-card {
+  .cvz-game-card {
     min-width: 104px;
     height: 77px;
     grid-template-columns: 47px 1fr;
   }
 
-  .kvz-game-card-image {
+  .cvz-game-card-image {
     width: 47px;
     height: 65px;
   }
 
-  .kvz-game-battlefield {
+  .cvz-game-battlefield {
     width: min(100%, 1040px);
   }
 }
 
 @media (orientation: landscape) and (max-height: 620px) {
-  .kvz-game-overlay {
+  .cvz-game-overlay {
     padding:
       max(3px, env(safe-area-inset-top))
       max(3px, env(safe-area-inset-right))
@@ -2338,78 +2338,78 @@ body.kvz-game-open {
       max(3px, env(safe-area-inset-left));
   }
 
-  .kvz-game-frame {
+  .cvz-game-frame {
     width: 100%;
     height: 100%;
     min-height: 0;
     border-width: 3px;
     border-radius: 9px;
-    box-shadow: 0 3px 0 var(--kvz-bark-deep);
+    box-shadow: 0 3px 0 var(--cvz-bark-deep);
   }
 
-  .kvz-game-frame::after {
+  .cvz-game-frame::after {
     display: none;
   }
 
-  .kvz-game-topbar {
+  .cvz-game-topbar {
     min-height: 42px;
     padding: 3px 7px 5px;
     border-bottom-width: 3px;
   }
 
-  .kvz-game-brand-mark {
+  .cvz-game-brand-mark {
     font-size: 0.9rem;
   }
 
-  .kvz-game-brand-mark::before {
+  .cvz-game-brand-mark::before {
     width: 28px;
     height: 28px;
     border-width: 2px;
   }
 
-  .kvz-game-icon-button {
+  .cvz-game-icon-button {
     width: 34px;
     min-width: 34px;
     height: 34px;
     border-width: 2px;
     border-radius: 8px;
-    box-shadow: 0 2px 0 var(--kvz-bark);
+    box-shadow: 0 2px 0 var(--cvz-bark);
   }
 
-  .kvz-game-icon-button svg {
+  .cvz-game-icon-button svg {
     width: 19px;
     height: 19px;
   }
 
-  .kvz-game-gameplay {
+  .cvz-game-gameplay {
     display: grid;
     grid-template-columns: minmax(96px, 15vw) 1fr;
     grid-template-rows: 54px minmax(0, 1fr);
   }
 
-  .kvz-game-hud {
+  .cvz-game-hud {
     grid-column: 1 / -1;
     grid-row: 1;
     min-height: 54px;
     border-bottom-width: 3px;
   }
 
-  .kvz-game-energy-meter {
+  .cvz-game-energy-meter {
     min-width: 90px;
     min-height: 36px;
     padding: 3px 7px 3px 36px;
     border-width: 2px;
     font-size: 0.95rem;
-    box-shadow: 0 2px 0 var(--kvz-bark);
+    box-shadow: 0 2px 0 var(--cvz-bark);
   }
 
-  .kvz-game-energy-meter::before {
+  .cvz-game-energy-meter::before {
     width: 27px;
     height: 27px;
     border-width: 2px;
   }
 
-  .kvz-game-card-tray {
+  .cvz-game-card-tray {
     grid-column: 1;
     grid-row: 2;
     grid-auto-columns: auto;
@@ -2421,11 +2421,11 @@ body.kvz-game-open {
     overflow-x: hidden;
     overflow-y: auto;
     touch-action: pan-y;
-    border-right: 3px solid var(--kvz-ink);
+    border-right: 3px solid var(--cvz-ink);
     border-bottom: 0;
   }
 
-  .kvz-game-card {
+  .cvz-game-card {
     width: 100%;
     min-width: 0;
     height: 58px;
@@ -2434,30 +2434,30 @@ body.kvz-game-open {
     gap: 1px 4px;
     border-width: 2px;
     border-radius: 7px;
-    box-shadow: 0 2px 0 var(--kvz-bark);
+    box-shadow: 0 2px 0 var(--cvz-bark);
   }
 
-  .kvz-game-card-image {
+  .cvz-game-card-image {
     width: 38px;
     height: 46px;
     grid-row: 1 / 3;
     border-width: 1px;
   }
 
-  .kvz-game-card > strong {
+  .cvz-game-card > strong {
     grid-row: 1;
     align-self: center;
   }
 
-  .kvz-game-card-description {
+  .cvz-game-card-description {
     display: none;
   }
 
-  .kvz-game-card-tray.is-dense .kvz-game-card-description {
+  .cvz-game-card-tray.is-dense .cvz-game-card-description {
     display: none;
   }
 
-  .kvz-game-card-cost {
+  .cvz-game-card-cost {
     grid-row: 2;
     min-width: 27px;
     height: 18px;
@@ -2466,21 +2466,21 @@ body.kvz-game-open {
     border-width: 1px;
   }
 
-  .kvz-game-battlefield-wrap {
+  .cvz-game-battlefield-wrap {
     grid-column: 2;
     grid-row: 2;
     padding: 3px;
   }
 
-  .kvz-game-battlefield {
+  .cvz-game-battlefield {
     width: min(100%, 1080px, 190cqh);
     min-width: 0;
     border-width: 3px;
     border-radius: 8px;
-    box-shadow: 0 3px 0 var(--kvz-bark);
+    box-shadow: 0 3px 0 var(--cvz-bark);
   }
 
-  .kvz-game-menu-screen {
+  .cvz-game-menu-screen {
     grid-template-columns: minmax(250px, 0.9fr) minmax(280px, 1.1fr);
     align-content: center;
     gap: 20px;
@@ -2488,57 +2488,57 @@ body.kvz-game-open {
     text-align: left;
   }
 
-  .kvz-game-menu-hero {
+  .cvz-game-menu-hero {
     justify-items: stretch;
     gap: 8px;
   }
 
-  .kvz-game-title {
+  .cvz-game-title {
     font-size: clamp(2rem, 7vw, 3.7rem);
     -webkit-text-stroke-width: 2px;
-    text-shadow: 0 4px 0 var(--kvz-bark);
+    text-shadow: 0 4px 0 var(--cvz-bark);
   }
 
-  .kvz-game-subtitle {
+  .cvz-game-subtitle {
     font-size: 1rem;
   }
 
-  .kvz-game-menu-actions {
+  .cvz-game-menu-actions {
     gap: 6px;
   }
 
-  .kvz-game-button {
+  .cvz-game-button {
     min-height: 39px;
     padding: 6px 10px;
     border-width: 3px;
-    box-shadow: 0 3px 0 var(--kvz-bark);
+    box-shadow: 0 3px 0 var(--cvz-bark);
     font-size: 0.82rem;
   }
 
-  .kvz-game-menu-art {
+  .cvz-game-menu-art {
     width: min(100%, 500px);
     border-width: 3px;
     border-radius: 11px;
-    box-shadow: 0 5px 0 var(--kvz-bark), 0 12px 20px var(--kvz-shadow);
+    box-shadow: 0 5px 0 var(--cvz-bark), 0 12px 20px var(--cvz-shadow);
   }
 
-  .kvz-game-menu-art img {
+  .cvz-game-menu-art img {
     width: 100%;
     max-height: calc(100dvh - 86px);
     aspect-ratio: 1.2;
   }
 
-  .kvz-game-toast-stack {
+  .cvz-game-toast-stack {
     top: 50px;
   }
 }
 
 @media (max-width: 620px) {
-  .kvz-game-overlay {
+  .cvz-game-overlay {
     padding: 0;
   }
 
-  .kvz-game-frame {
+  .cvz-game-frame {
     width: 100%;
     height: 100%;
     min-height: 360px;
@@ -2547,82 +2547,82 @@ body.kvz-game-open {
     box-shadow: none;
   }
 
-  .kvz-game-frame::after {
+  .cvz-game-frame::after {
     display: none;
   }
 
-  .kvz-game-topbar {
+  .cvz-game-topbar {
     grid-template-columns: 1fr auto;
     padding-right: max(7px, env(safe-area-inset-right));
     padding-left: max(7px, env(safe-area-inset-left));
   }
 
-  .kvz-game-topbar > :nth-child(2) {
+  .cvz-game-topbar > :nth-child(2) {
     display: none;
   }
 
-  .kvz-game-menu-screen {
+  .cvz-game-menu-screen {
     padding: 18px 14px 28px;
   }
 
-  .kvz-game-menu-actions,
-  .kvz-game-menu-grid,
-  .kvz-game-codex-grid {
+  .cvz-game-menu-actions,
+  .cvz-game-menu-grid,
+  .cvz-game-codex-grid {
     grid-template-columns: 1fr;
   }
 
-  .kvz-game-menu-actions .kvz-game-button,
-  .kvz-game-menu-actions .kvz-game-button:first-child,
-  .kvz-game-menu-actions .kvz-game-button:last-child {
+  .cvz-game-menu-actions .cvz-game-button,
+  .cvz-game-menu-actions .cvz-game-button:first-child,
+  .cvz-game-menu-actions .cvz-game-button:last-child {
     grid-column: auto;
   }
 
-  .kvz-game-codex-card {
+  .cvz-game-codex-card {
     grid-template-columns: 112px 1fr;
   }
 
-  .kvz-game-codex-image {
+  .cvz-game-codex-image {
     grid-row: 1 / 5;
   }
 
-  .kvz-game-codex-stats {
+  .cvz-game-codex-stats {
     align-self: start;
   }
 
-  .kvz-game-range-row {
+  .cvz-game-range-row {
     grid-template-columns: 1fr auto;
   }
 
-  .kvz-game-range-row input[type="range"] {
+  .cvz-game-range-row input[type="range"] {
     grid-column: 1 / -1;
   }
 
-  .kvz-game-hud {
+  .cvz-game-hud {
     grid-template-columns: 1fr 1fr auto;
   }
 
-  .kvz-game-hud-status {
+  .cvz-game-hud-status {
     min-width: 0;
   }
 
-  .kvz-game-energy-meter {
+  .cvz-game-energy-meter {
     min-width: 86px;
   }
 
-  .kvz-game-wave-meter > span {
+  .cvz-game-wave-meter > span {
     font-size: 0.74rem;
   }
 
-  .kvz-game-battlefield-wrap {
+  .cvz-game-battlefield-wrap {
     place-items: center start;
     overflow: auto hidden;
   }
 
-  .kvz-game-battlefield {
+  .cvz-game-battlefield {
     min-width: 680px;
   }
 
-  .kvz-game-toast-stack {
+  .cvz-game-toast-stack {
     top: 58px;
     right: 8px;
     width: calc(100% - 16px);
@@ -2630,111 +2630,111 @@ body.kvz-game-open {
 }
 
 @media (orientation: portrait) and (max-width: 760px) {
-  .kvz-game-gameplay:not([hidden]) ~ .kvz-game-orientation-hint,
-  .kvz-game-gameplay:not([hidden]) .kvz-game-orientation-hint,
-  .kvz-game-overlay.is-playing .kvz-game-orientation-hint {
+  .cvz-game-gameplay:not([hidden]) ~ .cvz-game-orientation-hint,
+  .cvz-game-gameplay:not([hidden]) .cvz-game-orientation-hint,
+  .cvz-game-overlay.is-playing .cvz-game-orientation-hint {
     display: grid;
   }
 }
 
 @media (pointer: coarse) {
-  .kvz-game-button {
+  .cvz-game-button {
     min-height: 52px;
   }
 
-  .kvz-game-icon-button {
+  .cvz-game-icon-button {
     width: 46px;
     min-width: 46px;
     height: 46px;
   }
 
-  .kvz-game-card {
+  .cvz-game-card {
     min-width: 106px;
   }
 
-  .kvz-game-cell {
+  .cvz-game-cell {
     cursor: default;
   }
 
-  .kvz-game-cell.is-placement-valid {
+  .cvz-game-cell.is-placement-valid {
     background: rgba(168, 236, 54, 0.12);
     box-shadow: inset 0 0 0 2px rgba(239, 255, 215, 0.38);
   }
 
-  .kvz-game-cell.is-placement-unavailable {
+  .cvz-game-cell.is-placement-unavailable {
     background: rgba(68, 40, 23, 0.055);
   }
 
-  .kvz-game-energy-orb {
+  .cvz-game-energy-orb {
     min-width: 46px;
     min-height: 46px;
   }
 }
 
 @media (pointer: coarse) and (orientation: landscape) and (max-height: 620px) {
-  .kvz-game-button {
+  .cvz-game-button {
     min-height: 44px;
   }
 
-  .kvz-game-icon-button {
+  .cvz-game-icon-button {
     width: 44px;
     min-width: 44px;
     height: 44px;
   }
 
-  .kvz-game-card {
+  .cvz-game-card {
     min-width: 0;
   }
 
-  .kvz-game-energy-orb {
+  .cvz-game-energy-orb {
     min-width: 44px;
     min-height: 44px;
   }
 }
 
 @media (orientation: landscape) and (max-height: 620px) {
-  .kvz-game-battlefield {
+  .cvz-game-battlefield {
     width: min(100%, 1080px, 190cqh);
     min-width: 0;
   }
 
-  .kvz-game-card > .kvz-game-image-fallback {
+  .cvz-game-card > .cvz-game-image-fallback {
     width: 38px;
     height: 49px;
   }
 }
 
 @media (prefers-contrast: more) {
-  .kvz-game-cell {
+  .cvz-game-cell {
     border-color: rgba(37, 23, 15, 0.38);
   }
 
-  .kvz-game-healthbar,
-  .kvz-game-armorbar,
-  .kvz-game-shieldbar {
+  .cvz-game-healthbar,
+  .cvz-game-armorbar,
+  .cvz-game-shieldbar {
     height: 9px;
   }
 
-  .kvz-game-card.insufficient,
-  .kvz-game-card.is-insufficient {
+  .cvz-game-card.insufficient,
+  .cvz-game-card.is-insufficient {
     opacity: 0.68;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .kvz-game-overlay,
-  .kvz-game-overlay *,
-  .kvz-game-overlay *::before,
-  .kvz-game-overlay *::after {
+  .cvz-game-overlay,
+  .cvz-game-overlay *,
+  .cvz-game-overlay *::before,
+  .cvz-game-overlay *::after {
     scroll-behavior: auto !important;
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
 
-  .kvz-game-unit-sprite,
-  .kvz-game-energy-orb,
-  .kvz-game-orientation-hint::before {
+  .cvz-game-unit-sprite,
+  .cvz-game-energy-orb,
+  .cvz-game-orientation-hint::before {
     animation: none !important;
   }
 }

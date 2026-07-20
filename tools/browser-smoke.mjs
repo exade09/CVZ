@@ -179,19 +179,55 @@ async function tap(cdp, selector) {
   await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
 }
 
+async function assertLandingGeometry(cdp, viewport) {
+  await setViewport(cdp, viewport);
+  const landing = await evaluate(cdp, `(() => {
+    const headerPlay = document.querySelector('.header-game-button[data-cvz-open-game]');
+    const navToggle = document.querySelector('.nav-toggle');
+    const heroPlay = document.querySelector('.game-launch-button[data-cvz-open-game]');
+    const heroImage = document.querySelector('.hero-stage img');
+    if (!(headerPlay instanceof HTMLElement) || !(heroPlay instanceof HTMLElement) || !(heroImage instanceof HTMLImageElement)) return null;
+    const headerRect = headerPlay.getBoundingClientRect();
+    const toggleRect = navToggle?.getBoundingClientRect();
+    const heroRect = heroPlay.getBoundingClientRect();
+    return {
+      brand: document.querySelector('.site-header > .brand')?.textContent?.trim(),
+      brandCount: document.querySelectorAll('.site-header > .brand').length,
+      clutterCount: document.querySelectorAll('.site-header > .ticker-badge, .site-header > .brand-orb, .site-header > .header-social').length,
+      headerInside: headerRect.left >= 0 && headerRect.top >= 0 && headerRect.right <= innerWidth && headerRect.bottom <= innerHeight,
+      headerTouchHeight: headerRect.height,
+      toggleInside: innerWidth > 1040 || Boolean(toggleRect && toggleRect.left >= 0 && toggleRect.top >= 0 && toggleRect.right <= innerWidth && toggleRect.bottom <= innerHeight),
+      heroCtaVisible: heroRect.top < innerHeight && heroRect.bottom > 0,
+      heroCopy: heroPlay.textContent?.trim(),
+      nudge: document.querySelector('.play-nudge')?.textContent?.trim(),
+      imageLoaded: heroImage.complete && heroImage.naturalWidth > 0 && new URL(heroImage.currentSrc).pathname.endsWith('/cvz-brand-hero.jpg'),
+      favicon: document.querySelector('link[rel="icon"]')?.getAttribute('href'),
+      horizontalOverflow: document.documentElement.scrollWidth - innerWidth,
+    };
+  })()`);
+  const label = `${viewport.width}x${viewport.height}`;
+  assert(landing?.brand === "CVZ" && landing.brandCount === 1 && landing.clutterCount === 0, `${label}: header identity is cluttered or incorrectly branded`);
+  assert(landing.headerInside && landing.headerTouchHeight >= 43.5, `${label}: persistent Play Game control is not safely visible (${JSON.stringify(landing)})`);
+  assert(landing.toggleInside, `${label}: navigation toggle is outside the viewport`);
+  assert(landing.heroCopy?.includes("Play Cat Vs Zomb") && landing.nudge?.includes("Start here"), `${label}: game-first hero guidance is missing`);
+  if (viewport.height >= 700) assert(landing.heroCtaVisible, `${label}: main game CTA is below the initial viewport`);
+  assert(landing.imageLoaded && landing.favicon === "cvz-icon.png", `${label}: CVZ hero or favicon artwork is missing`);
+  assert(landing.horizontalOverflow <= 1, `${label}: landing page has horizontal overflow (${landing.horizontalOverflow}px)`);
+}
+
 async function assertGameplayGeometry(cdp, viewport) {
   await setViewport(cdp, viewport);
   const geometry = await evaluate(cdp, `(() => {
-    const screen = document.querySelector('#kvz-game-root .kvz-game-screen');
-    const wrapper = document.querySelector('#kvz-game-root .kvz-game-battlefield-wrap');
-    const board = document.querySelector('#kvz-game-root .kvz-game-battlefield');
-    const close = document.querySelector('#kvz-game-root [data-app-action="close"]');
+    const screen = document.querySelector('#cvz-game-root .cvz-game-screen');
+    const wrapper = document.querySelector('#cvz-game-root .cvz-game-battlefield-wrap');
+    const board = document.querySelector('#cvz-game-root .cvz-game-battlefield');
+    const close = document.querySelector('#cvz-game-root [data-app-action="close"]');
     if (!(screen instanceof HTMLElement) || !(wrapper instanceof HTMLElement) || !(board instanceof HTMLElement) || !(close instanceof HTMLElement)) return null;
     const wrapperRect = wrapper.getBoundingClientRect();
     const boardRect = board.getBoundingClientRect();
     const closeRect = close.getBoundingClientRect();
     return {
-      cells: board.querySelectorAll('.kvz-game-cell').length,
+      cells: board.querySelectorAll('.cvz-game-cell').length,
       boardWidth: boardRect.width,
       boardHeight: boardRect.height,
       boardInside: boardRect.top >= wrapperRect.top - 1 && boardRect.bottom <= wrapperRect.bottom + 1 && boardRect.left >= wrapperRect.left - 1 && boardRect.right <= wrapperRect.right + 1,
@@ -254,77 +290,113 @@ async function run(options) {
     const navigation = await cdp.send("Page.navigate", { url: options.url });
     if (navigation.errorText) throw new Error(`Navigation failed: ${navigation.errorText}`);
     await waitFor(cdp, "document.readyState === 'complete'", "landing page load", options.timeout);
-    await waitFor(cdp, "Boolean(document.querySelector('button.game-launch-button[data-kvz-open-game]'))", "game CTA", options.timeout);
+    await waitFor(cdp, "Boolean(document.querySelector('button.game-launch-button[data-cvz-open-game]'))", "game CTA", options.timeout);
+    const landingIdentity = await evaluate(cdp, `({
+      title: document.title,
+      oldBrand: [
+        ["k", "vz"].join(""),
+        ["kit", "vs", "zomb"].join("\\s*"),
+      ].some((pattern) => new RegExp(pattern, "iu").test(document.documentElement.outerHTML)),
+      links: [...new Set([...document.querySelectorAll('a[target="_blank"]')].map((link) => link.href))].sort(),
+    })`);
+    assert(landingIdentity?.title === "Cat Vs Zomb | $CVZ on Solana" && landingIdentity.oldBrand === false, "Landing metadata still contains the old brand");
+    assert(JSON.stringify(landingIdentity.links) === JSON.stringify([
+      "https://dexscreener.com/",
+      "https://pump.fun/",
+      "https://telegram.org/",
+      "https://x.com/",
+    ]), `Landing social destinations are not the requested base pages: ${JSON.stringify(landingIdentity.links)}`);
+    for (const viewport of [
+      { width: 1440, height: 900, mobile: false },
+      { width: 768, height: 1024, mobile: true },
+      { width: 390, height: 844, mobile: true },
+      { width: 844, height: 390, mobile: true },
+    ]) await assertLandingGeometry(cdp, viewport);
+    const landingDesktopPath = options.screenshot.replace(/\.png$/iu, "-landing.png");
+    const landingMobilePath = options.screenshot.replace(/\.png$/iu, "-landing-mobile.png");
+    await mkdir(dirname(options.screenshot), { recursive: true });
+    await setViewport(cdp, { width: 1440, height: 900, mobile: false });
+    const landingDesktopShot = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true, captureBeyondViewport: false });
+    await writeFile(landingDesktopPath, Buffer.from(landingDesktopShot.data, "base64"));
+    await setViewport(cdp, { width: 390, height: 844, mobile: true });
+    const landingMobileShot = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true, captureBeyondViewport: false });
+    await writeFile(landingMobilePath, Buffer.from(landingMobileShot.data, "base64"));
+    await setViewport(cdp, { width: 1440, height: 1000, mobile: false });
     await evaluate(cdp, "localStorage.removeItem('cat-garden-defense.save.v1')");
-    await click(cdp, "button.game-launch-button[data-kvz-open-game]");
-    await waitFor(cdp, "Boolean(document.querySelector('#kvz-game-root:not([hidden]) #kvz-menu-title'))", "game menu", options.timeout);
+    await click(cdp, "button.game-launch-button[data-cvz-open-game]");
+    await waitFor(cdp, "Boolean(document.querySelector('#cvz-game-root:not([hidden]) #cvz-menu-title'))", "game menu", options.timeout);
 
     const menu = await evaluate(cdp, `({
-      title: document.querySelector('#kvz-menu-title')?.textContent?.trim(),
+      title: document.querySelector('#cvz-menu-title')?.textContent?.trim(),
       screen: document.querySelector('[data-screen-title]')?.textContent?.trim(),
-      continueDisabled: document.querySelector('#kvz-game-root button[data-action="continue"]')?.disabled
+      continueDisabled: document.querySelector('#cvz-game-root button[data-action="continue"]')?.disabled
     })`);
-    assert(menu?.title === "Paws & Peril" && menu?.screen === "Main Menu" && menu?.continueDisabled === true, "Fresh main menu or Continue state did not render correctly.");
+    const gameBrand = await evaluate(cdp, `({
+      topbar: document.querySelector('.cvz-game-brand-mark span')?.textContent?.trim(),
+      art: document.querySelector('.cvz-game-menu-art img')?.getAttribute('src'),
+    })`);
+    assert(menu?.title === "Cat Vs Zomb" && menu?.screen === "Main Menu" && menu?.continueDisabled === true, "Fresh main menu or Continue state did not render correctly.");
+    assert(gameBrand?.topbar === "CVZ" && gameBrand?.art === "cvz-brand-hero.jpg", "Game overlay branding or CVZ menu artwork is incorrect");
 
-    await click(cdp, "#kvz-game-root button[data-action='cats']");
-    await waitFor(cdp, "Boolean(document.querySelector('#kvz-cats-title'))", "Cat Collection", options.timeout);
-    const catCount = await evaluate(cdp, "document.querySelectorAll('#kvz-game-root section[aria-labelledby=\"kvz-cats-title\"] > .kvz-game-codex-grid > article.kvz-game-codex-card').length");
+    await click(cdp, "#cvz-game-root button[data-action='cats']");
+    await waitFor(cdp, "Boolean(document.querySelector('#cvz-cats-title'))", "Cat Collection", options.timeout);
+    const catCount = await evaluate(cdp, "document.querySelectorAll('#cvz-game-root section[aria-labelledby=\"cvz-cats-title\"] > .cvz-game-codex-grid > article.cvz-game-codex-card').length");
     assert(catCount === 8, `Expected 8 cat cards, found ${catCount}.`);
 
-    await click(cdp, "#kvz-game-root button[data-app-action='back']:not([hidden])");
-    await waitFor(cdp, "Boolean(document.querySelector('#kvz-menu-title'))", "main menu return", options.timeout);
-    await click(cdp, "#kvz-game-root button[data-action='dogs']");
-    await waitFor(cdp, "Boolean(document.querySelector('#kvz-dogs-title'))", "Dog Encyclopedia", options.timeout);
-    const dogCount = await evaluate(cdp, "document.querySelectorAll('#kvz-game-root section[aria-labelledby=\"kvz-dogs-title\"] > .kvz-game-codex-grid > article.kvz-game-codex-card').length");
+    await click(cdp, "#cvz-game-root button[data-app-action='back']:not([hidden])");
+    await waitFor(cdp, "Boolean(document.querySelector('#cvz-menu-title'))", "main menu return", options.timeout);
+    await click(cdp, "#cvz-game-root button[data-action='dogs']");
+    await waitFor(cdp, "Boolean(document.querySelector('#cvz-dogs-title'))", "Dog Encyclopedia", options.timeout);
+    const dogCount = await evaluate(cdp, "document.querySelectorAll('#cvz-game-root section[aria-labelledby=\"cvz-dogs-title\"] > .cvz-game-codex-grid > article.cvz-game-codex-card').length");
     assert(dogCount === 5, `Expected 5 dog cards, found ${dogCount}.`);
 
-    await click(cdp, "#kvz-game-root button[data-app-action='back']:not([hidden])");
-    await waitFor(cdp, "Boolean(document.querySelector('#kvz-menu-title'))", "main menu return", options.timeout);
-    await click(cdp, "#kvz-game-root button[data-action='levels']");
-    await waitFor(cdp, "Boolean(document.querySelector('#kvz-levels-title'))", "level selection", options.timeout);
-    await click(cdp, "#kvz-game-root button[data-action='start-level'][data-level-id='level-1']");
-    await waitFor(cdp, "Boolean(document.querySelector('#kvz-game-root .kvz-game-gameplay'))", "level 1 gameplay", options.timeout);
+    await click(cdp, "#cvz-game-root button[data-app-action='back']:not([hidden])");
+    await waitFor(cdp, "Boolean(document.querySelector('#cvz-menu-title'))", "main menu return", options.timeout);
+    await click(cdp, "#cvz-game-root button[data-action='levels']");
+    await waitFor(cdp, "Boolean(document.querySelector('#cvz-levels-title'))", "level selection", options.timeout);
+    await click(cdp, "#cvz-game-root button[data-action='start-level'][data-level-id='level-1']");
+    await waitFor(cdp, "Boolean(document.querySelector('#cvz-game-root .cvz-game-gameplay'))", "level 1 gameplay", options.timeout);
 
     const hud = await evaluate(cdp, `({
       level: document.querySelector('[data-level-name]')?.textContent?.trim(),
       energy: Number(document.querySelector('[data-energy]')?.textContent),
       wave: document.querySelector('[data-wave-label]')?.textContent?.trim(),
-      cells: document.querySelectorAll('.kvz-game-cell').length,
-      sweepers: document.querySelectorAll('.kvz-game-sweeper').length,
-      cards: document.querySelectorAll('.kvz-game-card').length,
-      hud: Boolean(document.querySelector('.kvz-game-hud'))
+      cells: document.querySelectorAll('.cvz-game-cell').length,
+      sweepers: document.querySelectorAll('.cvz-game-sweeper').length,
+      cards: document.querySelectorAll('.cvz-game-card').length,
+      hud: Boolean(document.querySelector('.cvz-game-hud'))
     })`);
     assert(hud?.level === "First Pawprints", `Expected level 1, found ${hud?.level ?? "none"}.`);
     assert(hud.hud && hud.energy === 175 && hud.wave === "Wave 1 of 3" && hud.cells === 45 && hud.sweepers === 5 && hud.cards === 3, "Level 1 HUD or battlefield structure is invalid.");
 
-    await click(cdp, ".kvz-game-card[data-defender-id='bubble-sprout']");
-    await waitFor(cdp, "document.querySelector('.kvz-game-card[data-defender-id=\"bubble-sprout\"]')?.getAttribute('aria-pressed') === 'true'", "defender selection", options.timeout);
-    await click(cdp, ".kvz-game-cell[data-lane='2'][data-column='2']");
-    await waitFor(cdp, "document.querySelectorAll('.kvz-game-defender').length === 1 && Number(document.querySelector('[data-energy]')?.textContent) === 75", "defender placement", options.timeout);
-    await waitFor(cdp, "Boolean(document.querySelector('.kvz-game-enemy')) && Boolean(document.querySelector('.kvz-game-energy-orb'))", "enemy and Paw Energy entities", options.timeout);
-    await click(cdp, ".kvz-game-energy-orb");
+    await click(cdp, ".cvz-game-card[data-defender-id='bubble-sprout']");
+    await waitFor(cdp, "document.querySelector('.cvz-game-card[data-defender-id=\"bubble-sprout\"]')?.getAttribute('aria-pressed') === 'true'", "defender selection", options.timeout);
+    await click(cdp, ".cvz-game-cell[data-lane='2'][data-column='2']");
+    await waitFor(cdp, "document.querySelectorAll('.cvz-game-defender').length === 1 && Number(document.querySelector('[data-energy]')?.textContent) === 75", "defender placement", options.timeout);
+    await waitFor(cdp, "Boolean(document.querySelector('.cvz-game-enemy')) && Boolean(document.querySelector('.cvz-game-energy-orb'))", "enemy and Paw Energy entities", options.timeout);
+    await click(cdp, ".cvz-game-energy-orb");
     await waitFor(cdp, "Number(document.querySelector('[data-energy]')?.textContent) === 100", "Paw Energy collection", options.timeout);
 
     await click(cdp, "button[data-game-action='pause'][aria-label='Pause game']");
-    await waitFor(cdp, "Boolean(document.querySelector('#kvz-game-root.is-paused .kvz-game-modal-backdrop:not([hidden]) #kvz-pause-title'))", "pause state", options.timeout);
+    await waitFor(cdp, "Boolean(document.querySelector('#cvz-game-root.is-paused .cvz-game-modal-backdrop:not([hidden]) #cvz-pause-title'))", "pause state", options.timeout);
     const pausedHotkeyIgnored = await evaluate(cdp, `(() => {
-      const before = document.querySelector('.kvz-game-card[aria-pressed="true"]')?.dataset.defenderId ?? null;
+      const before = document.querySelector('.cvz-game-card[aria-pressed="true"]')?.dataset.defenderId ?? null;
       document.dispatchEvent(new KeyboardEvent('keydown', { key: '2', code: 'Digit2', bubbles: true }));
-      const after = document.querySelector('.kvz-game-card[aria-pressed="true"]')?.dataset.defenderId ?? null;
+      const after = document.querySelector('.cvz-game-card[aria-pressed="true"]')?.dataset.defenderId ?? null;
       return before === after;
     })()`);
     assert(pausedHotkeyIgnored, "Defender hotkeys remain active behind the pause dialog.");
-    await click(cdp, ".kvz-game-modal-backdrop:not([hidden]) button[data-app-action='resume-game']");
-    await waitFor(cdp, "Boolean(document.querySelector('#kvz-game-root:not(.is-paused) .kvz-game-gameplay:not(.is-paused)')) && document.querySelector('.kvz-game-modal-backdrop')?.hidden", "resume state", options.timeout);
-    await waitFor(cdp, "parseFloat(document.querySelector('.kvz-game-enemy')?.style.left ?? '101') < 98", "visible enemy movement", options.timeout);
+    await click(cdp, ".cvz-game-modal-backdrop:not([hidden]) button[data-app-action='resume-game']");
+    await waitFor(cdp, "Boolean(document.querySelector('#cvz-game-root:not(.is-paused) .cvz-game-gameplay:not(.is-paused)')) && document.querySelector('.cvz-game-modal-backdrop')?.hidden", "resume state", options.timeout);
+    await waitFor(cdp, "parseFloat(document.querySelector('.cvz-game-enemy')?.style.left ?? '101') < 98", "visible enemy movement", options.timeout);
 
-    await click(cdp, "#kvz-game-root button[data-app-action='fullscreen']");
-    await waitFor(cdp, "document.fullscreenElement?.id === 'kvz-game-root' || [...document.querySelectorAll('.kvz-game-toast')].some((toast) => toast.textContent.includes('not available'))", "full-screen response", options.timeout);
-    if (await evaluate(cdp, "document.fullscreenElement?.id === 'kvz-game-root'")) {
-      assert(await evaluate(cdp, "document.querySelector('#kvz-game-root [data-app-action=\"fullscreen\"]')?.getAttribute('aria-label') === 'Exit full screen'"), "Full-screen control did not expose its exit state.");
-      await click(cdp, "#kvz-game-root button[data-app-action='fullscreen']");
+    await click(cdp, "#cvz-game-root button[data-app-action='fullscreen']");
+    await waitFor(cdp, "document.fullscreenElement?.id === 'cvz-game-root' || [...document.querySelectorAll('.cvz-game-toast')].some((toast) => toast.textContent.includes('not available'))", "full-screen response", options.timeout);
+    if (await evaluate(cdp, "document.fullscreenElement?.id === 'cvz-game-root'")) {
+      assert(await evaluate(cdp, "document.querySelector('#cvz-game-root [data-app-action=\"fullscreen\"]')?.getAttribute('aria-label') === 'Exit full screen'"), "Full-screen control did not expose its exit state.");
+      await click(cdp, "#cvz-game-root button[data-app-action='fullscreen']");
       await waitFor(cdp, "document.fullscreenElement === null", "full-screen exit", options.timeout);
-      assert(await evaluate(cdp, "document.querySelector('#kvz-game-root [data-app-action=\"fullscreen\"]')?.getAttribute('aria-label') === 'Enter full screen'"), "Full-screen control did not restore its entry state.");
+      assert(await evaluate(cdp, "document.querySelector('#cvz-game-root [data-app-action=\"fullscreen\"]')?.getAttribute('aria-label') === 'Enter full screen'"), "Full-screen control did not restore its entry state.");
     }
 
     const targetViewports = [
@@ -347,11 +419,11 @@ async function run(options) {
     screenshotWritten = true;
 
     await setViewport(cdp, { width: 390, height: 844, mobile: true });
-    await waitFor(cdp, "document.querySelector('#kvz-game-root')?.classList.contains('orientation-blocked') && document.querySelector('.kvz-game-gameplay')?.classList.contains('is-paused')", "portrait orientation pause", options.timeout);
+    await waitFor(cdp, "document.querySelector('#cvz-game-root')?.classList.contains('orientation-blocked') && document.querySelector('.cvz-game-gameplay')?.classList.contains('is-paused')", "portrait orientation pause", options.timeout);
     await setViewport(cdp, { width: 844, height: 390, mobile: true });
-    await waitFor(cdp, "!document.querySelector('#kvz-game-root')?.classList.contains('orientation-blocked') && !document.querySelector('.kvz-game-gameplay')?.classList.contains('is-paused')", "landscape orientation resume", options.timeout);
-    const mobileCardCosts = await evaluate(cdp, `([...document.querySelectorAll('.kvz-game-card')].map((card) => {
-      const cost = card.querySelector('.kvz-game-card-cost');
+    await waitFor(cdp, "!document.querySelector('#cvz-game-root')?.classList.contains('orientation-blocked') && !document.querySelector('.cvz-game-gameplay')?.classList.contains('is-paused')", "landscape orientation resume", options.timeout);
+    const mobileCardCosts = await evaluate(cdp, `([...document.querySelectorAll('.cvz-game-card')].map((card) => {
+      const cost = card.querySelector('.cvz-game-card-cost');
       const cardRect = card.getBoundingClientRect();
       const costRect = cost?.getBoundingClientRect();
       return Boolean(cost?.textContent?.trim() && costRect && costRect.height >= 15 && costRect.top >= cardRect.top - 1 && costRect.bottom <= cardRect.bottom + 1);
@@ -362,31 +434,31 @@ async function run(options) {
     await writeFile(mobilePath, Buffer.from(mobileScreenshot.data, "base64"));
 
     await click(cdp, "button[data-game-action='pause'][aria-label='Pause game']");
-    await waitFor(cdp, "Boolean(document.querySelector('.kvz-game-modal-backdrop:not([hidden]) button[data-app-action=\"restart-level\"]'))", "restart control", options.timeout);
-    await click(cdp, ".kvz-game-modal-backdrop:not([hidden]) button[data-app-action='restart-level']");
-    await waitFor(cdp, "Boolean(document.querySelector('.kvz-game-gameplay')) && Number(document.querySelector('[data-energy]')?.textContent) === 175 && document.querySelectorAll('.kvz-game-defender').length === 0", "level restart", options.timeout);
-    await tap(cdp, ".kvz-game-card[data-defender-id='bubble-sprout']");
-    await tap(cdp, ".kvz-game-cell[data-lane='2'][data-column='2']");
-    await waitFor(cdp, "document.querySelectorAll('.kvz-game-defender').length === 1 && Number(document.querySelector('[data-energy]')?.textContent) === 75", "touch defender placement", options.timeout);
+    await waitFor(cdp, "Boolean(document.querySelector('.cvz-game-modal-backdrop:not([hidden]) button[data-app-action=\"restart-level\"]'))", "restart control", options.timeout);
+    await click(cdp, ".cvz-game-modal-backdrop:not([hidden]) button[data-app-action='restart-level']");
+    await waitFor(cdp, "Boolean(document.querySelector('.cvz-game-gameplay')) && Number(document.querySelector('[data-energy]')?.textContent) === 175 && document.querySelectorAll('.cvz-game-defender').length === 0", "level restart", options.timeout);
+    await tap(cdp, ".cvz-game-card[data-defender-id='bubble-sprout']");
+    await tap(cdp, ".cvz-game-cell[data-lane='2'][data-column='2']");
+    await waitFor(cdp, "document.querySelectorAll('.cvz-game-defender').length === 1 && Number(document.querySelector('[data-energy]')?.textContent) === 75", "touch defender placement", options.timeout);
 
     await evaluate(cdp, "history.back()");
-    await waitFor(cdp, "document.querySelector('#kvz-game-root')?.hidden === true && !document.body.classList.contains('kvz-game-open') && history.state?.kvzGameOpen !== true", "browser Back closes the game", options.timeout);
+    await waitFor(cdp, "document.querySelector('#cvz-game-root')?.hidden === true && !document.body.classList.contains('cvz-game-open') && history.state?.cvzGameOpen !== true", "browser Back closes the game", options.timeout);
     await evaluate(cdp, "history.forward()");
-    await waitFor(cdp, "Boolean(document.querySelector('#kvz-game-root:not([hidden]) .kvz-game-modal-backdrop:not([hidden]) #kvz-pause-title'))", "browser Forward restores paused game", options.timeout);
-    await click(cdp, ".kvz-game-modal-backdrop:not([hidden]) button[data-app-action='return-site']");
-    await waitFor(cdp, "document.querySelector('#kvz-game-root')?.hidden === true && !document.body.classList.contains('kvz-game-open') && history.state?.kvzGameOpen !== true", "return to website", options.timeout);
+    await waitFor(cdp, "Boolean(document.querySelector('#cvz-game-root:not([hidden]) .cvz-game-modal-backdrop:not([hidden]) #cvz-pause-title'))", "browser Forward restores paused game", options.timeout);
+    await click(cdp, ".cvz-game-modal-backdrop:not([hidden]) button[data-app-action='return-site']");
+    await waitFor(cdp, "document.querySelector('#cvz-game-root')?.hidden === true && !document.body.classList.contains('cvz-game-open') && history.state?.cvzGameOpen !== true", "return to website", options.timeout);
     await evaluate(cdp, "window.dispatchEvent(new PageTransitionEvent('pagehide', { persisted: true }))");
-    await click(cdp, "button.game-launch-button[data-kvz-open-game]");
-    await waitFor(cdp, "document.querySelector('#kvz-game-root')?.isConnected && document.querySelector('#kvz-game-root')?.hidden === false", "back-forward cache restoration", options.timeout);
-    await click(cdp, ".kvz-game-modal-backdrop:not([hidden]) button[data-app-action='quit-game']");
-    await waitFor(cdp, "Boolean(document.querySelector('#kvz-menu-title'))", "menu after cached gameplay", options.timeout);
-    await click(cdp, "#kvz-game-root button[data-action='settings']");
-    await waitFor(cdp, "Boolean(document.querySelector('#kvz-settings-title'))", "settings screen", options.timeout);
-    await click(cdp, "#kvz-game-root button[data-action='reset-progress']");
-    await click(cdp, ".kvz-game-modal-backdrop:not([hidden]) button[data-app-action='confirm-reset']");
-    await waitFor(cdp, "Boolean(document.querySelector('#kvz-settings-title')) && localStorage.getItem('cat-garden-defense.save.v1') === null", "confirmed local progress reset", options.timeout);
-    await click(cdp, "#kvz-game-root button[data-app-action='close']");
-    await waitFor(cdp, "document.querySelector('#kvz-game-root')?.hidden === true && history.state?.kvzGameOpen !== true", "settings return to website", options.timeout);
+    await click(cdp, "button.game-launch-button[data-cvz-open-game]");
+    await waitFor(cdp, "document.querySelector('#cvz-game-root')?.isConnected && document.querySelector('#cvz-game-root')?.hidden === false", "back-forward cache restoration", options.timeout);
+    await click(cdp, ".cvz-game-modal-backdrop:not([hidden]) button[data-app-action='quit-game']");
+    await waitFor(cdp, "Boolean(document.querySelector('#cvz-menu-title'))", "menu after cached gameplay", options.timeout);
+    await click(cdp, "#cvz-game-root button[data-action='settings']");
+    await waitFor(cdp, "Boolean(document.querySelector('#cvz-settings-title'))", "settings screen", options.timeout);
+    await click(cdp, "#cvz-game-root button[data-action='reset-progress']");
+    await click(cdp, ".cvz-game-modal-backdrop:not([hidden]) button[data-app-action='confirm-reset']");
+    await waitFor(cdp, "Boolean(document.querySelector('#cvz-settings-title')) && localStorage.getItem('cat-garden-defense.save.v1') === null", "confirmed local progress reset", options.timeout);
+    await click(cdp, "#cvz-game-root button[data-app-action='close']");
+    await waitFor(cdp, "document.querySelector('#cvz-game-root')?.hidden === true && history.state?.cvzGameOpen !== true", "settings return to website", options.timeout);
 
     const campaignSave = {
       version: 2,
@@ -400,52 +472,52 @@ async function run(options) {
     await evaluate(cdp, `localStorage.setItem('cat-garden-defense.save.v1', ${JSON.stringify(JSON.stringify(campaignSave))})`);
     await setViewport(cdp, { width: 1440, height: 900, mobile: false });
     await cdp.send("Page.reload", { ignoreCache: true });
-    await waitFor(cdp, "document.readyState === 'complete' && Boolean(document.querySelector('button.game-launch-button[data-kvz-open-game]'))", "campaign reload", options.timeout);
-    await click(cdp, "button.game-launch-button[data-kvz-open-game]");
-    await waitFor(cdp, "Boolean(document.querySelector('#kvz-menu-title'))", "restored campaign menu", options.timeout);
-    assert(await evaluate(cdp, "document.querySelector('#kvz-game-root button[data-action=\"continue\"]')?.disabled === false"), "Continue did not enable for restored campaign progress.");
-    await click(cdp, "#kvz-game-root button[data-action='levels']");
-    await waitFor(cdp, "Boolean(document.querySelector('#kvz-levels-title'))", "restored level selection", options.timeout);
+    await waitFor(cdp, "document.readyState === 'complete' && Boolean(document.querySelector('button.game-launch-button[data-cvz-open-game]'))", "campaign reload", options.timeout);
+    await click(cdp, "button.game-launch-button[data-cvz-open-game]");
+    await waitFor(cdp, "Boolean(document.querySelector('#cvz-menu-title'))", "restored campaign menu", options.timeout);
+    assert(await evaluate(cdp, "document.querySelector('#cvz-game-root button[data-action=\"continue\"]')?.disabled === false"), "Continue did not enable for restored campaign progress.");
+    await click(cdp, "#cvz-game-root button[data-action='levels']");
+    await waitFor(cdp, "Boolean(document.querySelector('#cvz-levels-title'))", "restored level selection", options.timeout);
 
-    await click(cdp, "#kvz-game-root button[data-action='start-level'][data-level-id='level-2']");
-    await waitFor(cdp, "document.querySelector('[data-level-name]')?.textContent?.trim() === 'Tin and Tangerine' && document.querySelectorAll('.kvz-game-card').length === 5 && Number(document.querySelector('[data-energy]')?.textContent) === 225", "level 2 gameplay", options.timeout);
-    await waitFor(cdp, "Boolean(document.querySelector('.kvz-game-enemy'))", "level 2 enemy spawn", options.timeout);
+    await click(cdp, "#cvz-game-root button[data-action='start-level'][data-level-id='level-2']");
+    await waitFor(cdp, "document.querySelector('[data-level-name]')?.textContent?.trim() === 'Tin and Tangerine' && document.querySelectorAll('.cvz-game-card').length === 5 && Number(document.querySelector('[data-energy]')?.textContent) === 225", "level 2 gameplay", options.timeout);
+    await waitFor(cdp, "Boolean(document.querySelector('.cvz-game-enemy'))", "level 2 enemy spawn", options.timeout);
     await click(cdp, "button[data-game-action='pause']");
-    await click(cdp, ".kvz-game-modal-backdrop:not([hidden]) button[data-app-action='level-select']");
-    await waitFor(cdp, "Boolean(document.querySelector('#kvz-levels-title'))", "level selection after level 2", options.timeout);
+    await click(cdp, ".cvz-game-modal-backdrop:not([hidden]) button[data-app-action='level-select']");
+    await waitFor(cdp, "Boolean(document.querySelector('#cvz-levels-title'))", "level selection after level 2", options.timeout);
 
-    await click(cdp, "#kvz-game-root button[data-action='start-level'][data-level-id='level-3']");
-    await waitFor(cdp, "document.querySelector('[data-level-name]')?.textContent?.trim() === 'Moonlit Garden Stand' && document.querySelectorAll('.kvz-game-card').length === 8 && Number(document.querySelector('[data-energy]')?.textContent) === 350", "level 3 gameplay", options.timeout);
+    await click(cdp, "#cvz-game-root button[data-action='start-level'][data-level-id='level-3']");
+    await waitFor(cdp, "document.querySelector('[data-level-name]')?.textContent?.trim() === 'Moonlit Garden Stand' && document.querySelectorAll('.cvz-game-card').length === 8 && Number(document.querySelector('[data-energy]')?.textContent) === 350", "level 3 gameplay", options.timeout);
     const cardCopyVisible = await evaluate(cdp, `(() => {
-      const description = document.querySelector('.kvz-game-card .kvz-game-card-description');
+      const description = document.querySelector('.cvz-game-card .cvz-game-card-description');
       return Boolean(description?.textContent?.trim() && description.getBoundingClientRect().height > 4);
     })()`);
     assert(cardCopyVisible, "Defender card descriptions are still clipped.");
-    const denseCardLayout = await evaluate(cdp, `([...document.querySelectorAll('.kvz-game-card')].map((card) => {
-      const description = card.querySelector('.kvz-game-card-description')?.getBoundingClientRect();
-      const cost = card.querySelector('.kvz-game-card-cost')?.getBoundingClientRect();
+    const denseCardLayout = await evaluate(cdp, `([...document.querySelectorAll('.cvz-game-card')].map((card) => {
+      const description = card.querySelector('.cvz-game-card-description')?.getBoundingClientRect();
+      const cost = card.querySelector('.cvz-game-card-cost')?.getBoundingClientRect();
       return { id: card.dataset.defenderId, descriptionBottom: description?.bottom ?? null, costTop: cost?.top ?? null };
     }))`);
     const overlappingCard = denseCardLayout?.find((card) => card.descriptionBottom === null || card.costTop === null || card.descriptionBottom > card.costTop + 0.5);
     assert(!overlappingCard, `Dense defender card descriptions overlap their Paw Energy costs: ${JSON.stringify(overlappingCard)}.`);
-    await click(cdp, ".kvz-game-card[data-defender-id='leaf-beast']");
-    await click(cdp, ".kvz-game-cell[data-lane='2'][data-column='2']");
-    await waitFor(cdp, "document.querySelector('.kvz-game-defender[data-unit-id=\"leaf-beast\"]') && Number(document.querySelector('[data-energy]')?.textContent) === 100", "level 3 heavy defender placement", options.timeout);
-    await waitFor(cdp, "parseFloat(document.querySelector('.kvz-game-enemy')?.style.left ?? '101') < 98", "visible level 3 enemy", options.timeout);
+    await click(cdp, ".cvz-game-card[data-defender-id='leaf-beast']");
+    await click(cdp, ".cvz-game-cell[data-lane='2'][data-column='2']");
+    await waitFor(cdp, "document.querySelector('.cvz-game-defender[data-unit-id=\"leaf-beast\"]') && Number(document.querySelector('[data-energy]')?.textContent) === 100", "level 3 heavy defender placement", options.timeout);
+    await waitFor(cdp, "parseFloat(document.querySelector('.cvz-game-enemy')?.style.left ?? '101') < 98", "visible level 3 enemy", options.timeout);
     const levelThreeShot = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true, captureBeyondViewport: false });
     const levelThreePath = options.screenshot.replace(/\.png$/iu, "-level3.png");
     await writeFile(levelThreePath, Buffer.from(levelThreeShot.data, "base64"));
     await assertGameplayGeometry(cdp, { width: 844, height: 390, mobile: true });
     const denseMobileCards = await evaluate(cdp, `(async () => {
-      const tray = document.querySelector('.kvz-game-card-tray');
-      const cards = [...document.querySelectorAll('.kvz-game-card')];
+      const tray = document.querySelector('.cvz-game-card-tray');
+      const cards = [...document.querySelectorAll('.cvz-game-card')];
       if (!(tray instanceof HTMLElement)) return null;
       const costsFit = cards.every((card) => {
-        const cost = card.querySelector('.kvz-game-card-cost')?.getBoundingClientRect();
+        const cost = card.querySelector('.cvz-game-card-cost')?.getBoundingClientRect();
         const bounds = card.getBoundingClientRect();
         return Boolean(cost && cost.height >= 15 && cost.top >= bounds.top - 1 && cost.bottom <= bounds.bottom + 1);
       });
-      const descriptionsHidden = cards.every((card) => getComputedStyle(card.querySelector('.kvz-game-card-description')).display === 'none');
+      const descriptionsHidden = cards.every((card) => getComputedStyle(card.querySelector('.cvz-game-card-description')).display === 'none');
       const scrollable = tray.scrollHeight > tray.clientHeight && ['auto', 'scroll'].includes(getComputedStyle(tray).overflowY);
       tray.scrollTop = tray.scrollHeight;
       await new Promise(requestAnimationFrame);
@@ -455,8 +527,8 @@ async function run(options) {
       return { count: cards.length, costsFit, descriptionsHidden, scrollable, lastCardReachable };
     })()`);
     assert(denseMobileCards?.count === 8 && denseMobileCards.costsFit && denseMobileCards.descriptionsHidden && denseMobileCards.scrollable && denseMobileCards.lastCardReachable, `Dense mobile card tray is not usable: ${JSON.stringify(denseMobileCards)}.`);
-    await click(cdp, "#kvz-game-root button[data-app-action='close']");
-    await waitFor(cdp, "document.querySelector('#kvz-game-root')?.hidden === true && history.state?.kvzGameOpen !== true", "final campaign close", options.timeout);
+    await click(cdp, "#cvz-game-root button[data-app-action='close']");
+    await waitFor(cdp, "document.querySelector('#cvz-game-root')?.hidden === true && history.state?.cvzGameOpen !== true", "final campaign close", options.timeout);
 
     await setViewport(cdp, { width: 1366, height: 768, mobile: false });
     await cdp.send("Page.reload", { ignoreCache: true });
@@ -465,7 +537,7 @@ async function run(options) {
       localStorage.removeItem('cat-garden-defense.save.v1');
       const { GardenGameApp } = await import('./game/game-app.js');
       const app = new GardenGameApp();
-      globalThis.__kvzAuditApp = app;
+      globalThis.__cvzAuditApp = app;
       await app.open();
       await app.startLevel('level-1');
       app.pauseGame('manual');
@@ -479,7 +551,7 @@ async function run(options) {
     assert(pausedLifecycle?.menuAudioActive, "Leaving Pause for the menu did not reactivate audio state.");
 
     const victoryResult = await evaluate(cdp, `(async () => {
-      const app = globalThis.__kvzAuditApp;
+      const app = globalThis.__cvzAuditApp;
       await app.startLevel('level-1');
       const engine = app.engine;
       engine.state.nextSpawnIndex = engine.state.spawnQueue.length;
@@ -487,8 +559,8 @@ async function run(options) {
       engine.evaluateOutcome();
       const saved = JSON.parse(localStorage.getItem('cat-garden-defense.save.v1'));
       return {
-        title: document.querySelector('#kvz-victory-title')?.textContent?.trim(),
-        nextButton: document.querySelector('.kvz-game-modal [data-app-action="next-level"]')?.dataset.levelId,
+        title: document.querySelector('#cvz-victory-title')?.textContent?.trim(),
+        nextButton: document.querySelector('.cvz-game-modal [data-app-action="next-level"]')?.dataset.levelId,
         completed: saved.completedLevels,
         selected: saved.lastSelectedLevel,
         version: saved.version,
@@ -498,33 +570,33 @@ async function run(options) {
     assert(victoryResult.version === 2 && victoryResult.selected === "level-2" && victoryResult.completed.includes("level-1"), "Victory progress was not persisted correctly.");
 
     const defeatAndFallback = await evaluate(cdp, `(async () => {
-      const app = globalThis.__kvzAuditApp;
+      const app = globalThis.__cvzAuditApp;
       await app.startLevel('level-1');
       app.engine.placeDefender(2, 2, 'bubble-sprout');
-      const sprite = document.querySelector('.kvz-game-defender .kvz-game-unit-sprite');
+      const sprite = document.querySelector('.cvz-game-defender .cvz-game-unit-sprite');
       sprite?.dispatchEvent(new Event('error'));
-      const fallback = document.querySelector('.kvz-game-defender .kvz-game-image-fallback');
+      const fallback = document.querySelector('.cvz-game-defender .cvz-game-image-fallback');
       app.engine.state.laneDefenses[1] = false;
       app.engine.spawnEnemy('stray-dog', 1, { waveIndex: 0, final: false });
       app.engine.handleBreach(app.engine.state.enemies.at(-1));
-      const websiteControl = document.querySelector('button.game-launch-button[data-kvz-open-game]');
+      const websiteControl = document.querySelector('button.game-launch-button[data-cvz-open-game]');
       websiteControl?.focus();
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
       return {
         fallback: fallback?.getAttribute('aria-label'),
-        title: document.querySelector('#kvz-defeat-title')?.textContent?.trim(),
-        focusContained: document.querySelector('.kvz-game-modal-backdrop')?.contains(document.activeElement),
+        title: document.querySelector('#cvz-defeat-title')?.textContent?.trim(),
+        focusContained: document.querySelector('.cvz-game-modal-backdrop')?.contains(document.activeElement),
       };
     })()`);
     assert(Boolean(defeatAndFallback?.fallback), "Runtime image failure did not create an accessible fallback.");
     assert(defeatAndFallback.title === "Garden Gate Reached", "Defeat UI did not render.");
     assert(defeatAndFallback.focusContained, "Modal focus trap allowed focus to escape into the website.");
     await evaluate(cdp, `(() => {
-      const app = globalThis.__kvzAuditApp;
+      const app = globalThis.__cvzAuditApp;
       app.destroy();
-      delete globalThis.__kvzAuditApp;
+      delete globalThis.__cvzAuditApp;
       const state = history.state && typeof history.state === 'object' ? { ...history.state } : {};
-      delete state.kvzGameOpen;
+      delete state.cvzGameOpen;
       history.replaceState(state, document.title);
     })()`);
     await delay(250);
@@ -532,6 +604,7 @@ async function run(options) {
     if (errors.length) throw new Error(`Browser errors detected:\n- ${[...new Set(errors)].join("\n- ")}`);
     console.log(`Browser smoke passed: landing, menus, all 3 levels, rosters, gameplay, victory, defeat, full screen, touch, seven landscape viewports, orientation, history, BFCache, save/reset, asset fallback, and return flow.`);
     console.log(`Screenshot: ${options.screenshot}`);
+    console.log(`Landing screenshots: ${landingDesktopPath}, ${landingMobilePath}`);
     console.log(`Mobile screenshot: ${mobilePath}`);
     console.log(`Level 3 screenshot: ${levelThreePath}`);
   } finally {

@@ -9,10 +9,11 @@ export const REQUIRED_ROOT_FILES = Object.freeze([
   "index.html",
   "styles.css",
   "script.js",
-  "kvz-fon.png",
-  "kvz-kitty.jpg",
-  "kvz-avatar.jpg",
-  "kvz-dogzombie.png",
+  "cvz-brand-hero.jpg",
+  "cvz-icon.png",
+  "cvz-fon.png",
+  "cvz-kitty.jpg",
+  "cvz-dogzombie.png",
 ]);
 
 const GAME_SOURCE_FILES = Object.freeze([
@@ -268,7 +269,7 @@ async function validateIntegration(errors) {
   const integrationChecks = [
     [/href\s*=\s*["'](?:\.\/)?styles\.css(?:[?#][^"']*)?["']/iu, "index.html must reference styles.css."],
     [/src\s*=\s*["'](?:\.\/)?script\.js(?:[?#][^"']*)?["']/iu, "index.html must reference script.js."],
-    [/data-kvz-open-game/iu, "index.html must provide a game launch control."],
+    [/data-cvz-open-game/iu, "index.html must provide a game launch control."],
   ];
 
   for (const [pattern, message] of integrationChecks) {

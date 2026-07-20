@@ -35,7 +35,7 @@ body {
   font-family: "Baloo 2", "Trebuchet MS", Arial, sans-serif;
   background:
     linear-gradient(rgba(116, 222, 75, 0.18), rgba(116, 222, 75, 0.18)),
-    url("kvz-fon.png") center top / cover fixed,
+    url("cvz-fon.png") center top / cover fixed,
     #95db65;
   overflow-x: hidden;
 }
@@ -96,7 +96,7 @@ button {
   top: 0;
   z-index: 20;
   display: grid;
-  grid-template-columns: auto auto 1fr auto;
+  grid-template-columns: auto 1fr auto;
   gap: 16px;
   align-items: center;
   min-height: var(--header-height);
@@ -143,72 +143,23 @@ button {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  min-width: 0;
-}
-
-.brand-orb {
-  position: relative;
-  display: grid;
-  width: 58px;
-  height: 58px;
-  place-items: center;
-  border: 4px solid var(--outline);
-  border-radius: 50%;
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
-    url("kvz-kitty.jpg") 48% 35% / 178% auto no-repeat;
-  box-shadow:
-    inset -5px -7px 0 rgba(0, 0, 0, 0.12),
-    inset 0 0 0 3px rgba(255, 255, 255, 0.52),
-    0 5px 0 var(--brown);
-}
-
-.cat-ear {
-  position: absolute;
-  top: -9px;
-  z-index: -1;
-  width: 24px;
-  height: 24px;
-  border: 4px solid var(--outline);
-  border-radius: 5px 16px 5px 16px;
-  background: linear-gradient(145deg, #f6ff9d, var(--lime));
-}
-
-.ear-left {
-  left: 4px;
-  transform: rotate(-28deg);
-}
-
-.ear-right {
-  right: 4px;
-  transform: rotate(28deg) scaleX(-1);
-}
-
-.cat-bow {
-  position: absolute;
-  top: 3px;
-  right: -7px;
-  width: 20px;
-  height: 14px;
-  border: 3px solid var(--outline);
-  border-radius: 50%;
-  background: var(--pink);
-  box-shadow: -13px 0 0 -1px var(--pink), -13px 0 0 2px var(--outline), inset -2px -2px 0 rgba(112, 67, 30, 0.18);
-  transform: rotate(-10deg);
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .brand-name {
   font-family: "Luckiest Guy", "Baloo 2", sans-serif;
-  font-size: clamp(1.12rem, 2.2vw, 1.65rem);
-  color: var(--grass-deep);
+  font-size: clamp(1.7rem, 3vw, 2.35rem);
+  color: var(--pink);
+  letter-spacing: 0.03em;
+  -webkit-text-stroke: 2px var(--outline);
   text-shadow:
     2px 2px 0 var(--white),
-    4px 4px 0 rgba(45, 29, 18, 0.25);
+    4px 4px 0 var(--brown);
   white-space: nowrap;
 }
 
-.ticker-badge,
 .battle-chip,
 .seed-label {
   display: inline-flex;
@@ -221,11 +172,6 @@ button {
   font-weight: 800;
   letter-spacing: 0;
   box-shadow: 0 4px 0 var(--brown);
-}
-
-.ticker-badge {
-  padding: 5px 12px;
-  background: var(--yellow);
 }
 
 .site-nav {
@@ -258,6 +204,16 @@ button {
 .site-nav a:hover::after,
 .site-nav a:focus-visible::after {
   transform: scaleX(1);
+}
+
+.header-game-button {
+  gap: 7px;
+  width: auto;
+  min-height: 46px;
+  padding: 6px 16px;
+  cursor: pointer;
+  background: linear-gradient(180deg, #ff9fc1, #ff6f9f);
+  white-space: nowrap;
 }
 
 .social-row {
@@ -453,6 +409,26 @@ h1 span:nth-child(3) {
   align-items: center;
 }
 
+.play-nudge {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: fit-content;
+  margin: -10px 0 10px;
+  color: var(--outline);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.play-nudge-arrow {
+  color: var(--pink);
+  font-size: 1.6rem;
+  line-height: 1;
+  -webkit-text-stroke: 1px var(--outline);
+}
+
 .game-button,
 .social-button {
   display: inline-flex;
@@ -473,9 +449,13 @@ h1 span:nth-child(3) {
 }
 
 .game-launch-button {
+  flex-basis: 100%;
   gap: 9px;
+  min-height: 66px;
+  font-size: 1.28rem;
   cursor: pointer;
   background: linear-gradient(180deg, #ff9fc1, #ff6f9f);
+  animation: play-invitation 2.5s ease-in-out infinite;
 }
 
 .game-launch-paw {
@@ -873,6 +853,16 @@ h2 {
   }
 }
 
+@keyframes play-invitation {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0 rgba(255, 130, 173, 0));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(255, 130, 173, 0.82));
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -887,6 +877,7 @@ h2 {
 @media (max-width: 1040px) {
   .site-header {
     grid-template-columns: auto auto auto;
+    justify-content: space-between;
   }
 
   .nav-toggle {
@@ -900,7 +891,7 @@ h2 {
     right: 16px;
     left: 16px;
     display: none;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 8px;
     padding: 12px;
     border: 4px solid var(--outline);
@@ -915,7 +906,7 @@ h2 {
 
   .site-nav a {
     display: grid;
-    min-height: 42px;
+    min-height: 44px;
     place-items: center;
     border: 3px solid var(--outline);
     border-radius: 6px;
@@ -924,11 +915,6 @@ h2 {
 
   .site-nav a::after {
     display: none;
-  }
-
-  .header-social {
-    grid-column: 1 / -1;
-    justify-content: center;
   }
 
   .hero {
@@ -940,6 +926,10 @@ h2 {
   .hero-copy {
     display: grid;
     justify-items: center;
+  }
+
+  .play-nudge {
+    margin-inline: auto;
   }
 
   .hero-actions {
@@ -991,25 +981,7 @@ h2 {
   }
 
   .brand-name {
-    max-width: 38vw;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .brand-orb {
-    width: 50px;
-    height: 50px;
-  }
-
-  .cat-ear {
-    top: -8px;
-    width: 20px;
-    height: 20px;
-  }
-
-  .ticker-badge {
-    justify-self: start;
-    padding: 4px 9px;
+    font-size: 1.7rem;
   }
 
   .site-nav {
@@ -1018,8 +990,11 @@ h2 {
     left: 12px;
   }
 
-  .header-social {
-    gap: 7px;
+  .header-game-button {
+    width: auto;
+    min-height: 44px;
+    padding: 5px 10px;
+    font-size: 0.95rem;
   }
 
   .social-icon {
@@ -1067,6 +1042,10 @@ h2 {
 
   .game-button {
     width: 100%;
+  }
+
+  .site-header .header-game-button {
+    width: auto;
   }
 
   .hero-actions {
